@@ -1,0 +1,20 @@
+{
+  "name": "disklet",
+  "version": "0.1.0",
+  "description": "A tiny, composable filesystem API",
+  "author": "Airbitz, Inc.",
+  "contributors": [
+    "William Swanson <william@airbitz.co>"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Airbitz/disklet.git"
+  },
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.js",
+  "files": [
+    "lib/*"
+  ],
+  "scripts": {}
+}
