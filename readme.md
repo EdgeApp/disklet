@@ -4,6 +4,7 @@
 
 Every Javascript environment seems to provide its own unique storage solution. If you are writing a cross-platform Javascript application, and just want to store data in ordinary files, there is no standard API to do so. Disklet aims to solve this problem by providing a consistent API across the following platforms:
 
+* Browser LocalStorage
 * Memory
 
 The API is intentionally minimalistic, and doesn't support advanced features like symlinks or permissions. It provides:
@@ -78,6 +79,7 @@ The library also provides the following helper functions:
 
 The following functions create new `Folder` objects:
 
+* makeLocalStorageFolder(storage = window.localStorage, opts = {})
 * makeMemoryFolder(storage = {})
 * makeUnionFolder(master, fallback)
 
@@ -98,6 +100,12 @@ The one wart in the Disklet API is the distinction between binary files and text
 ## API details
 
 ### Folder types
+
+#### `makeLocalStorageFolder(storage = window.localStorage, opts = {}): Folder`
+
+A localStorage folder keeps it's contents in the browser's localStorage.
+
+The file paths are the localStorage keys, and the values are strings. If a `prefix` is provided via the `opts` parameter, then all localStorage keys will begin with the provided string. Binary data is transformed to base64, since localStorage can only handle strings.
 
 #### `makeMemoryFolder(storage = {}): Folder`
 

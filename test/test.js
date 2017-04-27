@@ -4,9 +4,12 @@ import {
   locateFolder,
   mapAllFiles,
   mapFiles,
+  makeLocalStorageFolder,
   makeMemoryFolder,
   makeUnionFolder
 } from '../lib/index.js'
+
+import { FakeStorage } from './fake-storage.js'
 import { setupFiles, testFolder } from './test-helpers.js'
 import assert from 'assert'
 import { base16 } from 'rfc4648'
@@ -20,6 +23,22 @@ describe('memory folder', function () {
     const storage = { '/a/b.txt': 'Hello' }
 
     return makeMemoryFolder(storage)
+      .folder('a')
+      .file('b.txt')
+      .getText()
+      .then(text => assert.equal(text, 'Hello'))
+  })
+})
+
+describe('localStorage folder', function () {
+  it('basic tests', function () {
+    return testFolder(makeLocalStorageFolder(new FakeStorage()))
+  })
+
+  it('load existing data', function () {
+    const storage = new FakeStorage({ 'file://my-prefix/a/b.txt': 'Hello' })
+
+    return makeLocalStorageFolder(storage, { prefix: 'file://my-prefix' })
       .folder('a')
       .file('b.txt')
       .getText()
