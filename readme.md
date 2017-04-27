@@ -79,6 +79,7 @@ The library also provides the following helper functions:
 The following functions create new `Folder` objects:
 
 * makeMemoryFolder(storage = {})
+* makeUnionFolder(master, fallback)
 
 ## Design goals
 
@@ -103,6 +104,12 @@ The one wart in the Disklet API is the distinction between binary files and text
 A memory folder stores its contents in a Javascript object.
 
 The file paths are the object keys, and the file contents are stored as-is (arrays for `setData` and strings for `setText`). All paths start with `/`, so they will never conflict with "magic" Javascript names like `__proto__`.
+
+#### `makeUnionFolder(master: Folder, fallback: Folder): Folder`
+
+This folder creates a unified view of two sub-folders. When reading files, the union tries the `master` folder first, and then the `fallback` folder if anything goes wrong. All modifications go to the `master` folder.
+
+To implement deletions, the union folder uses "whiteout" files. These are zero-length files with the extension `._x_`. If a whiteout file exists, the normal file with the corresponding name will not be shown, even if it exists in the fallback folder.
 
 ### Folder methods
 

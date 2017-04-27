@@ -4,7 +4,8 @@ import {
   locateFolder,
   mapAllFiles,
   mapFiles,
-  makeMemoryFolder
+  makeMemoryFolder,
+  makeUnionFolder
 } from '../lib/index.js'
 import { setupFiles, testFolder } from './test-helpers.js'
 import assert from 'assert'
@@ -23,6 +24,24 @@ describe('memory folder', function () {
       .file('b.txt')
       .getText()
       .then(text => assert.equal(text, 'Hello'))
+  })
+})
+
+describe('union folder', function () {
+  it('basic tests', function () {
+    const master = makeMemoryFolder()
+    const fallback = makeMemoryFolder()
+
+    return testFolder(makeUnionFolder(master, fallback))
+  })
+
+  it('basic tests with fallback data', function () {
+    const master = makeMemoryFolder()
+    const fallback = makeMemoryFolder()
+
+    return setupFiles(fallback).then(() =>
+      testFolder(makeUnionFolder(master, fallback))
+    )
   })
 })
 
