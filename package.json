@@ -13,6 +13,7 @@
   },
   "main": "lib/index.cjs.js",
   "module": "lib/index.js",
+  "types": "src/index.d.ts",
   "files": [
     "lib/*"
   ],
