@@ -52,7 +52,6 @@ export function testFolder (root) {
   return Promise.resolve()
     .then(() => root.delete()) // Should be harmless
     .then(() => checkFiles(root, empty))
-    .then(() => checkFolders(root, empty))
     .then(() => setupFiles(root)) // Add  a bunch of files
     .then(() =>
       Promise.all([
@@ -81,5 +80,4 @@ export function testFolder (root) {
     .then(() => checkFiles(root, { root: ['a.txt'], sub: [], deep: [] }))
     .then(() => root.delete()) // Delete everything
     .then(() => checkFiles(root, empty))
-    .then(() => checkFolders(root, empty))
 }
