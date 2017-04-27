@@ -30,6 +30,14 @@ async function demo () {
   await root.listFiles() // []
   await root.folder('notes').listFiles() // ['todo.txt']
 
+  // If you would rather use paths, we have a helper for that:
+  await locateFile(root, 'notes/message.txt').setText('Hello')
+
+  // We also have iteration helpers:
+  await mapAllFiles(root, async function (file, path, folder) {
+    console.log(await file.getText())
+  })
+
   // Delete the `notes/todo.txt` file:
   await root.folder('notes').file('todo.txt').delete()
 
@@ -59,6 +67,14 @@ The `File` interface has the following methods:
 * getText()
 * setData(data)
 * setText(text)
+
+The library also provides the following helper functions:
+
+* locateFile(folder, path)
+* locateFolder(folder, path)
+* mapAllFiles(folder, callback)
+* mapFiles(folder, callback)
+* mapFolders(folder, callback)
 
 The following functions create new `Folder` objects:
 
@@ -131,3 +147,29 @@ Writes the file to disk from an array of binary data. Will recursively create an
 #### `setData(text: string): Promise<void>`
 
 Writes the file to disk from a string. Will recursively create any folders needed to hold the file.
+
+### Helper functions
+
+#### `locateFile(folder: Folder, path: string): File`
+
+Navigates to the file given by the `path`.
+
+The path can contain `./` and `../` components, although it is an error to try to "escape" the parent folder using too many `../` components.
+
+#### `locateFolder(folder: Folder, path: string): Folder`
+
+Navigates to the folder given by the `path`.
+
+The path can contain `./` and `../` components, although it is an error to try to "escape" the parent folder using too many `../` components.
+
+#### `mapFiles(folder: Folder, callback: (file: File, name: string, folder: Folder) => any): Promise<Array<any>>`
+
+This function applies the provided callback function to each file in a folder. The file object, file name, and parent folder are provided to the callback, mimicking the `Array.map` callback order.
+
+The callback method can be asynchronous, and the results will be combined into a single array for the return value.
+
+#### `mapAllFiles(folder: Folder, callback: (file: File, path: string, folder: Folder) => any): Promise<Array<any>>`
+
+This function applies the provided callback function to each file in a folder, recursively. The file object, file path (including folders), and direct parent folder are provided to the callback, mimicking the `Array.map` callback order.
+
+The callback method can be asynchronous, and the results will be combined into a single array for the return value.
