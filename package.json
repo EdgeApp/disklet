@@ -27,7 +27,8 @@
     "rollup": "^0.41.6",
     "rollup-plugin-buble": "^0.15.0",
     "source-map-support": "^0.4.14",
-    "standard": "^10.0.2"
+    "standard": "^10.0.2",
+    "tmp": "^0.0.31"
   },
   "scripts": {
     "build": "rollup -c",
@@ -35,5 +36,10 @@
     "precommit": "npm run lint",
     "prepublish": "npm run lint && npm run build",
     "test": "rollup -c && mocha --require reify --require source-map-support/register test/test.js"
+  },
+  "browser": {
+    "fs": null,
+    "path": null,
+    "tmp": null
   }
 }

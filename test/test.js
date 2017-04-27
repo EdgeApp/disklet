@@ -6,6 +6,7 @@ import {
   mapFiles,
   makeLocalStorageFolder,
   makeMemoryFolder,
+  makeNodeFolder,
   makeUnionFolder
 } from '../lib/index.js'
 
@@ -13,6 +14,15 @@ import { FakeStorage } from './fake-storage.js'
 import { setupFiles, testFolder } from './test-helpers.js'
 import assert from 'assert'
 import { base16 } from 'rfc4648'
+import tmp from 'tmp'
+
+tmp.setGracefulCleanup()
+
+export function makeTempDir () {
+  return new Promise((resolve, reject) => {
+    tmp.dir({}, (err, path) => (err ? reject(err) : resolve(path)))
+  })
+}
 
 describe('memory folder', function () {
   it('basic tests', function () {
@@ -43,6 +53,12 @@ describe('localStorage folder', function () {
       .file('b.txt')
       .getText()
       .then(text => assert.equal(text, 'Hello'))
+  })
+})
+
+describe('node.js folder', function () {
+  it('basic tests', function () {
+    return makeTempDir().then(path => testFolder(makeNodeFolder(path)))
   })
 })
 

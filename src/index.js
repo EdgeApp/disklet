@@ -8,4 +8,5 @@ export {
 
 export { makeLocalStorageFolder } from './localStorageFolder.js'
 export { makeMemoryFolder } from './memoryFolder.js'
+export { makeNodeFolder } from './nodeFolder.js'
 export { makeUnionFolder } from './unionFolder.js'

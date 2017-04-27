@@ -20,6 +20,7 @@ interface LocalStorageOpts {
 
 export function makeMemoryFolder(storage?: object): Folder
 export function makeLocalStorageFolder(storage?: object, opts?: LocalStorageOpts): Folder
+export function makeNodeFolder(path: string): Folder
 export function makeUnionFolder(master: Folder, fallback: Folder): Folder
 
 export function locateFile(folder: Folder, path: string): File
