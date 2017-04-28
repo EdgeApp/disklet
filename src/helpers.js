@@ -64,17 +64,16 @@ export function mapFolders (folder, f) {
 /**
  * Recursively applies an async function to all the files in a folder tree.
  * The file names and expanded into paths, and the result is a flat array.
- * The result order is nondeterministic, since everything runs in parallel.
  */
 export function mapAllFiles (folder, f) {
-  function recurse (folder, prefix, f) {
+  function recurse (folder, f, prefix) {
     return Promise.all([
       mapFiles(folder, (file, name) => f(file, prefix + name, folder)),
       mapFolders(folder, (folder, name) =>
-        recurse(folder, prefix + name + '/', f)
+        recurse(folder, f, prefix + name + '/')
       )
     ]).then(([files, folders]) => files.concat(...folders))
   }
 
-  return recurse(folder, '', f)
+  return recurse(folder, f, '')
 }
