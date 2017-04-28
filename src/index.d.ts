@@ -14,24 +14,37 @@ export interface File {
   setText(text: string): Promise<void>
 }
 
-interface LocalStorageOpts {
-  prefix?: string
-}
-
-export function makeMemoryFolder(storage?: object): Folder
-export function makeLocalStorageFolder(storage?: object, opts?: LocalStorageOpts): Folder
-export function makeNodeFolder(path: string): Folder
-export function makeUnionFolder(master: Folder, fallback: Folder): Folder
+// Helper functions:
 
 export function locateFile(folder: Folder, path: string): File
 export function locateFolder(folder: Folder, path: string): Folder
-
-export function mapFiles(
-  folder: Folder,
-  callback: (file: File, name: string, folder: Folder) => any
-): Promise<Array<any>>
 
 export function mapAllFiles(
   folder: Folder,
   callback: (file: File, path: string, parentFolder: Folder) => any
 ): Promise<Array<any>>
+
+export function mapFiles(
+  folder: Folder,
+  callback: (file: File, name: string, parent: Folder) => any
+): Promise<Array<any>>
+
+export function mapFolders(
+  folder: Folder,
+  callback: (folder: Folder, name: string, parent: Folder) => any
+): Promise<Array<any>>
+
+// Folder types:
+
+interface LocalStorageOpts {
+  prefix?: string
+}
+
+export function makeLocalStorageFolder(
+  storage?: object,
+  opts?: LocalStorageOpts
+): Folder
+
+export function makeMemoryFolder(storage?: object): Folder
+export function makeNodeFolder(path: string): Folder
+export function makeUnionFolder(master: Folder, fallback: Folder): Folder
