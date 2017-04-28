@@ -15,7 +15,9 @@
   "module": "lib/index.js",
   "types": "src/index.d.ts",
   "files": [
-    "lib/*"
+    "changelog.md",
+    "lib/*",
+    "src/index.d.ts"
   ],
   "dependencies": {
     "rfc4648": "^0.9.1"
