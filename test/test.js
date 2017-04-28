@@ -5,6 +5,7 @@ import {
   mapAllFiles,
   mapFiles,
   makeLocalStorageFolder,
+  makeLoggedFolder,
   makeMemoryFolder,
   makeNodeFolder,
   makeUnionFolder
@@ -53,6 +54,72 @@ describe('localStorage folder', function () {
       .file('b.txt')
       .getText()
       .then(text => assert.equal(text, 'Hello'))
+  })
+})
+
+describe('logged folder', function () {
+  it('basic tests', function () {
+    const log = []
+    function callback (path, operation) {
+      log.push([operation, path])
+    }
+    const folder = makeLoggedFolder(makeMemoryFolder(), { callback })
+    return testFolder(folder).then(() =>
+      assert.deepEqual(log, [
+        ['delete folder', ''],
+        ['set text', 'a.txt'],
+        ['set data', 'b.bin'],
+        ['set text', 'sub/deep/c.txt'],
+        ['delete file', 'sub/deep/c.txt'],
+        ['delete file', 'b.bin'],
+        ['delete folder', '']
+      ])
+    )
+  })
+
+  it('verbose tests', function () {
+    const log = []
+    function callback (path, operation) {
+      log.push([operation, path])
+    }
+    const folder = makeLoggedFolder(makeMemoryFolder(), {
+      callback,
+      verbose: true
+    })
+    return testFolder(folder).then(() =>
+      assert.deepEqual(log, [
+        ['delete folder', ''],
+        ['list files', ''],
+        ['list files', 'sub/'],
+        ['list files', 'sub/deep/'],
+        ['set text', 'a.txt'],
+        ['set data', 'b.bin'],
+        ['set text', 'sub/deep/c.txt'],
+        ['get text', 'a.txt'],
+        ['get data', 'b.bin'],
+        ['get text', 'sub/deep/c.txt'],
+        ['list files', ''],
+        ['list files', 'sub/'],
+        ['list files', 'sub/deep/'],
+        ['list folders', ''],
+        ['list folders', 'sub/'],
+        ['list folders', 'sub/deep/'],
+        ['delete file', 'sub/deep/c.txt'],
+        ['get data', 'sub/deep/c.txt'],
+        ['list files', ''],
+        ['list files', 'sub/'],
+        ['list files', 'sub/deep/'],
+        ['delete file', 'b.bin'],
+        ['get data', 'b.bin'],
+        ['list files', ''],
+        ['list files', 'sub/'],
+        ['list files', 'sub/deep/'],
+        ['delete folder', ''],
+        ['list files', ''],
+        ['list files', 'sub/'],
+        ['list files', 'sub/deep/']
+      ])
+    )
   })
 })
 

@@ -40,9 +40,29 @@ interface LocalStorageOpts {
   prefix?: string
 }
 
+type LoggedFolderOperations =
+  "delete file" |
+  "delete folder" |
+  "get data" |
+  "get text" |
+  "list files" |
+  "list folders" |
+  "set data" |
+  "set text"
+
+interface LoggedFolderOpts {
+  callback?: (path: string, operation: LoggedFolderOperations) => void
+  verbose?: boolean
+}
+
 export function makeLocalStorageFolder(
   storage?: object,
   opts?: LocalStorageOpts
+): Folder
+
+export function makeLoggedFolder(
+  folder: Folder,
+  opts?: LoggedFolderOpts
 ): Folder
 
 export function makeMemoryFolder(storage?: object): Folder

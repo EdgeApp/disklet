@@ -77,6 +77,7 @@ The library also provides the following helper functions:
 The following functions create new `Folder` objects:
 
 * makeLocalStorageFolder(storage = window.localStorage, opts = {})
+* makeLoggedFolder(folder, opts = {})
 * makeMemoryFolder(storage = {})
 * makeNodeFolder(path)
 * makeUnionFolder(master, fallback)
@@ -182,6 +183,23 @@ The callback method can be asynchronous, and any results will be combined into a
 A localStorage folder keeps it's contents in the browser's localStorage.
 
 The file paths are the localStorage keys, and the values are strings. If a `prefix` is provided via the `opts` parameter, then all localStorage keys will begin with the provided string. Binary data is transformed to base64, since localStorage can only handle strings.
+
+#### `makeLoggedFolder(folder, opts = {}): Folder`
+
+This function wraps a folder object with logging.
+
+By default, only changes will be logged. To log everything, set `opts.verbose` to `true`.
+
+If you would like to send the logs somewhere other than `console.log`, pass a callback function as `opts.callback`. The callback's parameters are a path and an operation name, which is one of:
+
+* "delete file"
+* "delete folder"
+* "get data"
+* "get text"
+* "list files"
+* "list folders"
+* "set data"
+* "set text"
 
 #### `makeMemoryFolder(storage = {}): Folder`
 
