@@ -44,6 +44,11 @@ async function demo () {
 }
 ```
 
+Disklet folders are designed to be easily composable:
+
+* `makeUnionFolder` creates a merged view of the files in two folders.
+* `makeLoggedFolder` adds logging to any `Folder` instance (*great* for debugging).
+
 The library has tree-shaking support, so tools like [rollup.js](https://rollupjs.org/) or [Webpack 2](https://webpack.js.org/) can automatically trim away any features you don't use. Even with all features present, the library is only about 2.5K (min + gzip).
 
 Disklet does require a `Promise` implementation, but is plain ES5 otherwise. The library also includes TypeScript typings if you need them.
@@ -96,7 +101,7 @@ The one wart in the Disklet API is the distinction between binary files and text
 
 ### Composition
 
-Disklet folders are also composable. With only 5 methods each, it is easy to wrap the `File` and `Folder` interfaces with new functionality. One example of this is the union folder, which provides a combined view of two folders. It is simple to write wrappers that provide automatic encryption, logging, or other services while providing the same basic API. The Airbitz core, where Disklet was first developed, uses this capability extensively.
+Disklet is designed to be composable. The core `File` and `Folder` objects are as simple as possible, making it easy to wrap them with new functionality such as logging or encryption. Disklet itself uses this capability in its `makeLoggedFolder` and `makeUnionFolder` functions. This is also why helpers like `mapFiles` are plain functions and not `Folder` methods — every `Folder` type automatically works with every helper function.
 
 ## API reference
 
