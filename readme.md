@@ -145,7 +145,7 @@ Loads the file's contents as text.
 
 Writes the file to disk from an array of bytes. This will recursively create any folders needed to hold the file.
 
-#### `setData(text: string): Promise<void>`
+#### `setText(text: string): Promise<void>`
 
 Writes the file to disk from a string. Will recursively create any folders needed to hold the file.
 

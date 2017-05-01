@@ -63,7 +63,7 @@ export function mapFolders (folder, f) {
 
 /**
  * Recursively applies an async function to all the files in a folder tree.
- * The file names and expanded into paths, and the result is a flat array.
+ * The file names are expanded into paths, and the result is a flat array.
  */
 export function mapAllFiles (folder, f) {
   function recurse (folder, f, prefix) {
