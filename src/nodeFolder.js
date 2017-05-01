@@ -83,8 +83,17 @@ function readdirStat (path) {
  */
 function mkdirDeep (path) {
   return mkdir(path).catch(err => {
-    if (err.code !== 'ENOENT') throw err
-    return mkdirDeep(pathUtil.dirname(path)).then(() => mkdir(path))
+    switch (err.code) {
+      case 'EEXIST':
+        // Another write might have made the directory in parallel:
+        return
+
+      case 'ENOENT':
+        return mkdirDeep(pathUtil.dirname(path)).then(() => mkdir(path))
+
+      default:
+        throw err
+    }
   })
 }
 
@@ -144,7 +153,8 @@ class NodeFolder {
           ...folders.map(name => this.folder(name).delete())
         ])
       })
-      .then(() => rmdir(this._path)).catch(ignoreMissing())
+      .then(() => rmdir(this._path))
+      .catch(ignoreMissing())
   }
 
   file (name) {
