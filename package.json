@@ -40,8 +40,8 @@
     "test": "rollup -c && mocha --require reify --require source-map-support/register test/test.js"
   },
   "browser": {
-    "fs": null,
-    "path": null,
-    "tmp": null
+    "fs": false,
+    "path": false,
+    "tmp": false
   }
 }
