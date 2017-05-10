@@ -9,7 +9,7 @@ import {
   makeMemoryFolder,
   makeNodeFolder,
   makeUnionFolder
-} from '../lib/index.js'
+} from '../lib/disklet.js'
 
 import { FakeStorage } from './fake-storage.js'
 import { setupFiles, testFolder } from './test-helpers.js'

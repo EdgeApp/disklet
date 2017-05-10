@@ -11,8 +11,8 @@
     "type": "git",
     "url": "git@github.com:Airbitz/disklet.git"
   },
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.js",
+  "main": "lib/disklet.cjs.js",
+  "module": "lib/disklet.js",
   "types": "src/index.d.ts",
   "files": [
     "changelog.md",
