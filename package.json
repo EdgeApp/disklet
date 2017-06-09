@@ -2,23 +2,35 @@
   "name": "disklet",
   "version": "0.1.2",
   "description": "A tiny, composable filesystem API",
+  "license": "MIT",
   "author": "Airbitz, Inc.",
   "contributors": [
     "William Swanson <william@airbitz.co>"
   ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:Airbitz/disklet.git"
-  },
-  "main": "lib/disklet.cjs.js",
-  "module": "lib/disklet.js",
-  "types": "src/index.d.ts",
   "files": [
     "changelog.md",
     "lib/*",
     "src/index.d.ts"
   ],
+  "main": "lib/disklet.cjs.js",
+  "module": "lib/disklet.js",
+  "types": "src/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Airbitz/disklet.git"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "precommit": "npm run lint",
+    "lint": "standard '*.js' 'src/**/*.js'",
+    "prepublish": "npm run lint && npm run build",
+    "test": "rollup -c && mocha --require reify --require source-map-support/register test/test.js"
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "tmp": false
+  },
   "dependencies": {
     "rfc4648": "^0.9.1"
   },
@@ -31,17 +43,5 @@
     "source-map-support": "^0.4.14",
     "standard": "^10.0.2",
     "tmp": "^0.0.31"
-  },
-  "scripts": {
-    "build": "rollup -c",
-    "lint": "standard '*.js' 'src/**/*.js'",
-    "precommit": "npm run lint",
-    "prepublish": "npm run lint && npm run build",
-    "test": "rollup -c && mocha --require reify --require source-map-support/register test/test.js"
-  },
-  "browser": {
-    "fs": false,
-    "path": false,
-    "tmp": false
   }
 }
