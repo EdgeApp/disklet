@@ -1,5 +1,9 @@
 # Disklet
 
+## 0.1.3
+
+* Create directories even more carefully
+
 ## 0.1.2
 
 * Fix some documentation typos
