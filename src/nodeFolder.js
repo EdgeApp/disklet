@@ -6,7 +6,10 @@ import pathUtil from 'path'
 
 function mkdir (path) {
   return new Promise((resolve, reject) =>
-    fs.mkdir(path, (err, out) => (err ? reject(err) : resolve(out)))
+    fs.mkdir(
+      path,
+      err => (err && err.code !== 'EEXIST' ? reject(err) : resolve())
+    )
   )
 }
 
@@ -83,17 +86,8 @@ function readdirStat (path) {
  */
 function mkdirDeep (path) {
   return mkdir(path).catch(err => {
-    switch (err.code) {
-      case 'EEXIST':
-        // Another write might have made the directory in parallel:
-        return
-
-      case 'ENOENT':
-        return mkdirDeep(pathUtil.dirname(path)).then(() => mkdir(path))
-
-      default:
-        throw err
-    }
+    if (err.code !== 'ENOENT') throw err
+    return mkdirDeep(pathUtil.dirname(path)).then(() => mkdir(path))
   })
 }
 
