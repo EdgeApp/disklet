@@ -16,6 +16,15 @@ export function setupFiles (root) {
     .then(() => deep.file('c.txt').setText('text c'))
 }
 
+export function setupFilesNoData (root) {
+  const sub = root.folder('sub')
+  const deep = sub.folder('deep')
+
+  return Promise.resolve()
+  .then(() => root.file('a.txt').setText('text a'))
+  .then(() => deep.file('c.txt').setText('text c'))
+}
+
 export function checkFiles (root, expected) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
@@ -80,4 +89,38 @@ export function testFolder (root) {
     .then(() => checkFiles(root, { root: ['a.txt'], sub: [], deep: [] }))
     .then(() => root.delete()) // Delete everything
     .then(() => checkFiles(root, empty))
+}
+
+export function testFolderNoData (root) {
+  const sub = root.folder('sub')
+  const deep = sub.folder('deep')
+  const empty = { root: [], sub: [], deep: [] }
+
+  return Promise.resolve()
+  .then(() => root.delete()) // Should be harmless
+  .then(() => checkFiles(root, empty))
+  .then(() => setupFilesNoData(root)) // Add  a bunch of files
+  .then(() =>
+    Promise.all([
+      root.file('a.txt').getText(),
+      deep.file('c.txt').getText()
+    ]).then(values => {
+      const [aText, cText] = values
+      assert.equal(aText, 'text a')
+      assert.equal(cText, 'text c')
+      return null
+    })
+  )
+  .then(() =>
+    checkFiles(root, { root: ['a.txt'], sub: [], deep: ['c.txt'] })
+  )
+  .then(() => checkFolders(root, { root: ['sub'], sub: ['deep'], deep: [] }))
+  .then(() => deep.file('c.txt').delete()) // Delete a deeply-nested file
+  .then(() => deep.file('c.txt').getData().then(fail, pass))
+  .then(() =>
+    checkFiles(root, { root: ['a.txt'], sub: [], deep: [] })
+  )
+  .then(() => checkFiles(root, { root: ['a.txt'], sub: [], deep: [] }))
+  .then(() => root.delete()) // Delete everything
+  .then(() => checkFiles(root, empty))
 }

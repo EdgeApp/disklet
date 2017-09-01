@@ -1,4 +1,4 @@
-import { mapFiles, mapFolders } from './index.js'
+import { mapFiles, mapFolders } from './indexDisklet.js'
 
 function removeDuplicates (master, fallback) {
   const blacklist = {}
