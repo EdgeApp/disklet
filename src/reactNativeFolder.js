@@ -1,8 +1,6 @@
 import { checkName } from './utility.js'
 import RNFS from 'react-native-fs'
 
-const pathUtil = require('path/')
-
 function mkdir (path) {
   return RNFS.mkdir(path)
 }
@@ -32,6 +30,15 @@ function writeFile (path, data, opts) {
 }
 
 // Helpers: -----------------------------------------------------------------
+
+const pathUtil = {
+  join (a, b) {
+    return a + '/' + b
+  },
+  dirname (a) {
+    return a.replace(/\/[^/]*$/, '')
+  }
+}
 
 function badError (err) {
   if (
@@ -166,5 +173,5 @@ class RNFolder {
 }
 
 export function makeReactNativeFolder () {
-  return new RNFolder(pathUtil.resolve(RNFS.DocumentDirectoryPath))
+  return new RNFolder(RNFS.DocumentDirectoryPath)
 }
