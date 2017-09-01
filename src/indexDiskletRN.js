@@ -6,6 +6,7 @@ export {
   mapFolders
 } from './helpers.js'
 
+export { makeLocalStorageFolder } from './localStorageFolder.js'
 export { makeLoggedFolder } from './loggedFolder.js'
 export { makeMemoryFolder } from './memoryFolder.js'
 export { makeReactNativeFolder } from './reactNativeFolder.js'
