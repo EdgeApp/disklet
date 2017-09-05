@@ -43,7 +43,8 @@ const pathUtil = {
 function badError (err) {
   if (
     err.code === 'ENOENT' ||
-    err.code === 'ENSCOCOAERRORDOMAIN260'
+    err.code === 'ENSCOCOAERRORDOMAIN260' ||
+    err.code === 'EUNSPECIFIED'
   ) {
     return false
   }
