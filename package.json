@@ -1,6 +1,6 @@
 {
   "name": "disklet",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A tiny, composable filesystem API",
   "license": "MIT",
   "author": "Airbitz, Inc.",
@@ -39,12 +39,11 @@
   "dependencies": {
     "assert": "^1.4.1",
     "react": "16.0.0-alpha.12",
-    "react-native": "0.47.2",
     "react-native-fs": "^2.5.1",
     "rfc4648": "^0.9.1"
   },
   "peerDependencies": {
-    "react-native": "^0.41.2"
+    "react-native": "^0.47.0"
   },
   "devDependencies": {
     "babel-preset-react-native": "3.0.2",
