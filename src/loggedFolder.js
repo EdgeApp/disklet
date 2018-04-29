@@ -41,6 +41,11 @@ class LoggedFile {
     log(this._path, 'set text', this._opts)
     return this._file.setText(text)
   }
+
+  getPath () {
+    log(this._path, 'get path', this._opts)
+    return this._file
+  }
 }
 
 class LoggedFolder {

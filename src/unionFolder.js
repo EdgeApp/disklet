@@ -65,6 +65,10 @@ class UnionFile {
   setText (text) {
     return this._master.setText(text)
   }
+
+  getPath () {
+    return this._master.getPath()
+  }
 }
 
 /**

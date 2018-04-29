@@ -41,6 +41,10 @@ class MemoryFile {
     this._storage[this._path] = text
     return Promise.resolve()
   }
+
+  getPath () {
+    return this._path
+  }
 }
 
 /**

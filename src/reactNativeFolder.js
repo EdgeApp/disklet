@@ -124,6 +124,10 @@ class RNFile {
   setText (text) {
     return writeFileDeep(this._path, text, 'utf8')
   }
+
+  getPath () {
+    return this._path
+  }
 }
 
 class RNFolder {

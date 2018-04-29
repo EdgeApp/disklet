@@ -51,6 +51,10 @@ class LocalStorageFile {
   setData (data) {
     return this.setText(base64.stringify(data))
   }
+
+  getPath () {
+    return this._path
+  }
 }
 
 /**
