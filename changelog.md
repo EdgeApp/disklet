@@ -1,5 +1,17 @@
 # Disklet
 
+## 0.2.6
+
+* Add getPath() endpoint for Files
+
+## 0.2.3
+
+* Fix Android due to varied error codes from OS
+
+## 0.2.2
+
+* Add support for using react-native-fs
+
 ## 0.1.3
 
 * Create directories even more carefully
