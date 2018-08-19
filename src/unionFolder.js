@@ -67,7 +67,7 @@ class UnionFile {
   }
 
   getPath () {
-    return this._master.getPath()
+    throw new Error('Cannot call getPath on a Union Folder')
   }
 }
 
