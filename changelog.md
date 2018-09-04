@@ -1,5 +1,9 @@
 # Disklet
 
+## 0.2.7
+
+* Fix the `EISDIR` error on React Native Android
+
 ## 0.2.6
 
 * Add getPath() endpoint for Files
