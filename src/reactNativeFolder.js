@@ -65,6 +65,20 @@ function ignoreMissing (fallback) {
 }
 
 /**
+ * If `stat` fails, return a bogus (but safe) result.
+ */
+function makeFakeStat (isDir) {
+  return {
+    isDirectory () {
+      return isDir
+    },
+    isFile () {
+      return false
+    }
+  }
+}
+
+/**
  * Reads a directory, returning a list of names and a list of stat objects.
  * Returns empty lists if the directory doesn't exist.
  */
@@ -73,7 +87,11 @@ function readdirStat (path) {
     .catch(ignoreMissing([]))
     .then(names =>
       Promise.all(
-        names.map(name => stat(pathUtil.join(path, name)))
+        names.map(name =>
+          stat(pathUtil.join(path, name)).catch(e =>
+            makeFakeStat(e.code === 'EISDIR')
+          )
+        )
       ).then(stats => ({ names, stats }))
     )
 }
