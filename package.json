@@ -13,8 +13,10 @@
     "Paul Puey <paul@airbitz.co>"
   ],
   "files": [
-    "changelog.md",
+    "CHANGELOG.md",
     "lib/*",
+    "package.json",
+    "README.md",
     "src/index.d.ts"
   ],
   "main": "lib/disklet.cjs.js",
