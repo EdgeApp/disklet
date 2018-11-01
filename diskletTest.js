@@ -5,14 +5,10 @@
  */
 
 import React, { Component } from 'react'
-import { testFolderNoData } from './test/test-helpers.js'
+import { AppRegistry, StyleSheet, Text, View } from 'react-native'
+
 import { makeReactNativeFolder } from './lib/disklet.rn.js'
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native'
+import { testFolderNoData } from './test/test-helpers.js'
 
 export default class disklet extends Component {
   constructor (props) {
@@ -27,10 +23,10 @@ export default class disklet extends Component {
       try {
         await testFolderNoData(folder)
         console.log('Success')
-        t.setState({status: 'Success'})
+        t.setState({ status: 'Success' })
       } catch (e) {
         console.log(e)
-        t.setState({status: 'Failed'})
+        t.setState({ status: 'Failed' })
       }
     }
 
@@ -40,9 +36,7 @@ export default class disklet extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          { this.state.status }
-        </Text>
+        <Text style={styles.welcome}>{this.state.status}</Text>
       </View>
     )
   }

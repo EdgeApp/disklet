@@ -1,6 +1,7 @@
-import { checkName } from './utility.js'
 import fs from 'fs'
 import pathUtil from 'path'
+
+import { checkName } from './utility.js'
 
 // Promise versions of node.js file operations: -----------------------------
 
@@ -75,9 +76,9 @@ function readdirStat (path) {
   return readdir(path)
     .catch(ignoreMissing([]))
     .then(names =>
-      Promise.all(
-        names.map(name => stat(pathUtil.join(path, name)))
-      ).then(stats => ({ names, stats }))
+      Promise.all(names.map(name => stat(pathUtil.join(path, name)))).then(
+        stats => ({ names, stats })
+      )
     )
 }
 

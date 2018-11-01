@@ -4,9 +4,8 @@
  * @flow
  */
 
+import { AppRegistry } from 'react-native'
+
 import disklet from './diskletTest.js'
-import {
-  AppRegistry
-} from 'react-native'
 
 AppRegistry.registerComponent('disklet', () => disklet)
