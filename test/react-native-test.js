@@ -3,8 +3,8 @@
 import React, { Component } from 'react'
 import { AppRegistry, StyleSheet, Text, View } from 'react-native'
 
-import { testFolderNoData } from './test/test-helpers.js'
-import { makeReactNativeFolder } from './lib/disklet.rn.js'
+import { makeReactNativeFolder } from '../lib/disklet.rn.js'
+import { testFolderNoData } from './test-helpers.js'
 
 type Props = {}
 type State = { status: string }

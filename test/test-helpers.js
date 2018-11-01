@@ -1,10 +1,17 @@
-import assert from 'assert'
+import { assert, expect } from 'chai'
 
 function fail () {
   assert(false)
 }
 
 function pass () {}
+
+function checkData (a, b) {
+  expect(a.length).equals(b.length)
+  for (let i = 0; i < a.length; ++i) {
+    expect(a[i]).equals(b[i])
+  }
+}
 
 export function setupFiles (root) {
   const sub = root.folder('sub')
@@ -70,7 +77,7 @@ export function testFolder (root) {
       ]).then(values => {
         const [aText, bData, cText] = values
         assert.equal(aText, 'text a')
-        assert.deepEqual(bData, [1, 2, 3])
+        checkData(bData, [1, 2, 3])
         assert.equal(cText, 'text c')
         return null
       })

@@ -1,5 +1,4 @@
-import assert from 'assert'
-
+import { assert } from 'chai'
 import { base16 } from 'rfc4648'
 import tmp from 'tmp'
 

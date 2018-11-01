@@ -17,19 +17,19 @@
     "lib/*",
     "package.json",
     "README.md",
-    "src/index.d.ts"
+    "src/*"
   ],
   "main": "lib/disklet.cjs.js",
   "module": "lib/disklet.js",
   "types": "src/index.d.ts",
   "scripts": {
-    "build": "rollup -c && rollup -c rollup.config.rn.js",
-    "build:flow": "flow-copy-source -v -i '**/test/**' src lib && npm run flow",
-    "precommit": "npm run lint",
+    "build": "rimraf lib && rollup -c",
+    "precommit": "lint-staged && flow && npm test && npm run build",
     "flow": "flow",
-    "lint": "standard '*.js' 'src/**/*.js'",
-    "prepare": "npm run lint && npm run build",
-    "test": "rollup -c && mocha --require reify --require source-map-support/register test/test.js"
+    "format": "import-sort -l --write '*.js' 'src/**/*.js' 'test/**/*.js'; prettier-eslint --write '*.js' 'src/**/*.js' 'test/**/*.js'",
+    "lint": "eslint '*.js' 'src/**/*.js' 'test/**/*.js'",
+    "prepare": "npm run build",
+    "test": "rollup -c && mocha -r esm -r source-map-support/register test/test.js"
   },
   "browser": {
     "fs": false,
@@ -37,27 +37,58 @@
     "tmp": false
   },
   "dependencies": {
-    "assert": "^1.4.1",
-    "react": "16.0.0-alpha.12",
-    "react-native-fs": "^2.5.1",
     "rfc4648": "^0.9.1"
   },
   "devDependencies": {
-    "babel-preset-react-native": "3.0.2",
-    "flow-bin": "^0.49.1",
-    "flow-copy-source": "^1.2.1",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-transform-object-assign": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "chai": "^4.2.0",
+    "eslint": "^5.8.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-config-standard-jsx": "^6.0.2",
+    "eslint-plugin-flowtype": "^3.1.4",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "esm": "^3.0.84",
+    "flow-bin": "^0.78.0",
     "husky": "^0.13.3",
+    "import-sort-cli": "^5.2.0",
+    "import-sort-parser-babylon": "^5.2.0",
+    "import-sort-style-module": "^5.0.0",
+    "lint-staged": "^8.0.4",
+    "metro-react-native-babel-preset": "0.49.0",
     "mocha": "^3.3.0",
-    "react-test-renderer": "16.0.0-alpha.12",
-    "reify": "^0.8.2",
-    "rollup": "^0.41.6",
-    "rollup-plugin-buble": "^0.15.0",
+    "prettier-eslint-cli": "^4.7.1",
+    "react": "16.6.0-alpha.8af6728",
+    "react-native": "0.57.4",
+    "react-native-fs": "^2.12.1",
+    "rimraf": "^2.6.2",
+    "rollup": "0.48.0",
+    "rollup-plugin-alias": "^1.4.0",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-filesize": "^4.0.1",
+    "rollup-plugin-flow-entry": "^0.2.0",
     "source-map-support": "^0.4.14",
-    "standard": "^10.0.2",
     "tmp": "^0.0.31"
   },
-  "peerDependencies": {
-    "react-native": "^0.47.0"
+  "importSort": {
+    ".js, .es": {
+      "parser": "babylon",
+      "style": "module"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint",
+      "import-sort --list-different",
+      "prettier-eslint --list-different"
+    ]
   },
   "react-native": "lib/disklet.rn.js"
 }
