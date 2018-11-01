@@ -1,8 +1,8 @@
 import { assert } from 'chai'
+import { describe, it } from 'mocha'
 import { base16 } from 'rfc4648'
 import tmp from 'tmp'
 
-/* global describe, it */
 import {
   locateFile,
   locateFolder,

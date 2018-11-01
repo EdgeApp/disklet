@@ -25,10 +25,8 @@ export class FakeStorage {
   clear () {
     this._items = {}
   }
-}
 
-Object.defineProperty(FakeStorage.prototype, 'length', {
-  get: function () {
+  get length () {
     return Object.keys(this._items).length
   }
-})
+}

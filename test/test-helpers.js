@@ -13,26 +13,24 @@ function checkData (a, b) {
   }
 }
 
-export function setupFiles (root) {
+export async function setupFiles (root) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
 
-  return Promise.resolve()
-    .then(() => root.file('a.txt').setText('text a'))
-    .then(() => root.file('b.bin').setData([1, 2, 3]))
-    .then(() => deep.file('c.txt').setText('text c'))
+  await root.file('a.txt').setText('text a')
+  await root.file('b.bin').setData([1, 2, 3])
+  await deep.file('c.txt').setText('text c')
 }
 
-export function setupFilesNoData (root) {
+export async function setupFilesNoData (root) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
 
-  return Promise.resolve()
-    .then(() => root.file('a.txt').setText('text a'))
-    .then(() => deep.file('c.txt').setText('text c'))
+  await root.file('a.txt').setText('text a')
+  await deep.file('c.txt').setText('text c')
 }
 
-export function checkFiles (root, expected) {
+function checkFiles (root, expected) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
 
@@ -46,7 +44,7 @@ export function checkFiles (root, expected) {
   })
 }
 
-export function checkFolders (root, expected) {
+function checkFolders (root, expected) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
 
@@ -60,85 +58,68 @@ export function checkFolders (root, expected) {
   })
 }
 
-export function testFolder (root) {
+export async function testFolder (root) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
   const empty = { root: [], sub: [], deep: [] }
 
-  return Promise.resolve()
-    .then(() => root.delete()) // Should be harmless
-    .then(() => checkFiles(root, empty))
-    .then(() => setupFiles(root)) // Add  a bunch of files
-    .then(() =>
-      Promise.all([
-        root.file('a.txt').getText(),
-        root.file('b.bin').getData(),
-        deep.file('c.txt').getText()
-      ]).then(values => {
-        const [aText, bData, cText] = values
-        assert.equal(aText, 'text a')
-        checkData(bData, [1, 2, 3])
-        assert.equal(cText, 'text c')
-        return null
-      })
-    )
-    .then(() =>
-      checkFiles(root, { root: ['a.txt', 'b.bin'], sub: [], deep: ['c.txt'] })
-    )
-    .then(() => checkFolders(root, { root: ['sub'], sub: ['deep'], deep: [] }))
-    .then(() => deep.file('c.txt').delete()) // Delete a deeply-nested file
-    .then(() =>
-      deep
-        .file('c.txt')
-        .getData()
-        .then(fail, pass)
-    )
-    .then(() =>
-      checkFiles(root, { root: ['a.txt', 'b.bin'], sub: [], deep: [] })
-    )
-    .then(() => root.file('b.bin').delete()) // Delete a shallow file
-    .then(() =>
-      root
-        .file('b.bin')
-        .getData()
-        .then(fail, pass)
-    )
-    .then(() => checkFiles(root, { root: ['a.txt'], sub: [], deep: [] }))
-    .then(() => root.delete()) // Delete everything
-    .then(() => checkFiles(root, empty))
+  await root.delete() // Should be harmless
+  await checkFiles(root, empty)
+  await setupFiles(root) // Add  a bunch of files
+  await Promise.all([
+    root.file('a.txt').getText(),
+    root.file('b.bin').getData(),
+    deep.file('c.txt').getText()
+  ]).then(values => {
+    const [aText, bData, cText] = values
+    assert.equal(aText, 'text a')
+    checkData(bData, [1, 2, 3])
+    assert.equal(cText, 'text c')
+  })
+  await checkFiles(root, { root: ['a.txt', 'b.bin'], sub: [], deep: ['c.txt'] })
+  await checkFolders(root, { root: ['sub'], sub: ['deep'], deep: [] })
+  await deep.file('c.txt').delete() // Delete a deeply-nested file
+  await deep
+    .file('c.txt')
+    .getData()
+    .then(fail, pass)
+  await checkFiles(root, { root: ['a.txt', 'b.bin'], sub: [], deep: [] })
+  await root.file('b.bin').delete() // Delete a shallow file
+  await root
+    .file('b.bin')
+    .getData()
+    .then(fail, pass)
+  await checkFiles(root, { root: ['a.txt'], sub: [], deep: [] })
+  await root.delete() // Delete everything
+  await checkFiles(root, empty)
 }
 
-export function testFolderNoData (root) {
+export async function testFolderNoData (root) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
   const empty = { root: [], sub: [], deep: [] }
 
-  return Promise.resolve()
-    .then(() => root.delete()) // Should be harmless
-    .then(() => checkFiles(root, empty))
-    .then(() => setupFilesNoData(root)) // Add  a bunch of files
-    .then(() =>
-      Promise.all([
-        root.file('a.txt').getText(),
-        deep.file('c.txt').getText()
-      ]).then(values => {
-        const [aText, cText] = values
-        assert.equal(aText, 'text a')
-        assert.equal(cText, 'text c')
-        return null
-      })
-    )
-    .then(() => checkFiles(root, { root: ['a.txt'], sub: [], deep: ['c.txt'] }))
-    .then(() => checkFolders(root, { root: ['sub'], sub: ['deep'], deep: [] }))
-    .then(() => deep.file('c.txt').delete()) // Delete a deeply-nested file
-    .then(() =>
-      deep
-        .file('c.txt')
-        .getData()
-        .then(fail, pass)
-    )
-    .then(() => checkFiles(root, { root: ['a.txt'], sub: [], deep: [] }))
-    .then(() => checkFiles(root, { root: ['a.txt'], sub: [], deep: [] }))
-    .then(() => root.delete()) // Delete everything
-    .then(() => checkFiles(root, empty))
+  await root.delete() // Should be harmless
+  await checkFiles(root, empty)
+  await setupFilesNoData(root) // Add  a bunch of files
+  await Promise.all([
+    root.file('a.txt').getText(),
+    deep.file('c.txt').getText()
+  ]).then(values => {
+    const [aText, cText] = values
+    assert.equal(aText, 'text a')
+    assert.equal(cText, 'text c')
+    return null
+  })
+  await checkFiles(root, { root: ['a.txt'], sub: [], deep: ['c.txt'] })
+  await checkFolders(root, { root: ['sub'], sub: ['deep'], deep: [] })
+  await deep.file('c.txt').delete() // Delete a deeply-nested file
+  await deep
+    .file('c.txt')
+    .getData()
+    .then(fail, pass)
+  await checkFiles(root, { root: ['a.txt'], sub: [], deep: [] })
+  await checkFiles(root, { root: ['a.txt'], sub: [], deep: [] })
+  await root.delete() // Delete everything
+  await checkFiles(root, empty)
 }
