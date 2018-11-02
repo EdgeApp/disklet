@@ -1,10 +1,6 @@
 import { assert, expect } from 'chai'
 
-function fail () {
-  assert(false)
-}
-
-function pass () {}
+import { expectRejection } from './expect-rejection.js'
 
 function checkData (a, b) {
   expect(a.length).equals(b.length)
@@ -79,16 +75,10 @@ export async function testFolder (root) {
   await checkFiles(root, { root: ['a.txt', 'b.bin'], sub: [], deep: ['c.txt'] })
   await checkFolders(root, { root: ['sub'], sub: ['deep'], deep: [] })
   await deep.file('c.txt').delete() // Delete a deeply-nested file
-  await deep
-    .file('c.txt')
-    .getData()
-    .then(fail, pass)
+  await expectRejection(deep.file('c.txt').getData())
   await checkFiles(root, { root: ['a.txt', 'b.bin'], sub: [], deep: [] })
   await root.file('b.bin').delete() // Delete a shallow file
-  await root
-    .file('b.bin')
-    .getData()
-    .then(fail, pass)
+  await expectRejection(root.file('b.bin').getData())
   await checkFiles(root, { root: ['a.txt'], sub: [], deep: [] })
   await root.delete() // Delete everything
   await checkFiles(root, empty)
@@ -114,10 +104,7 @@ export async function testFolderNoData (root) {
   await checkFiles(root, { root: ['a.txt'], sub: [], deep: ['c.txt'] })
   await checkFolders(root, { root: ['sub'], sub: ['deep'], deep: [] })
   await deep.file('c.txt').delete() // Delete a deeply-nested file
-  await deep
-    .file('c.txt')
-    .getData()
-    .then(fail, pass)
+  await expectRejection(deep.file('c.txt').getData())
   await checkFiles(root, { root: ['a.txt'], sub: [], deep: [] })
   await checkFiles(root, { root: ['a.txt'], sub: [], deep: [] })
   await root.delete() // Delete everything
