@@ -4,211 +4,125 @@
 import RNFS from 'react-native-fs'
 import { base64 } from 'rfc4648'
 
-import {
-  type ArrayLike,
-  type DiskletFile,
-  type DiskletFolder
-} from '../index.js'
-import { checkName } from '../utility.js'
-
-function mkdir (path) {
-  return RNFS.mkdir(path)
-}
-
-function readdir (path) {
-  return RNFS.readdir(path)
-}
-
-function readFile (path, opts) {
-  return RNFS.readFile(path, opts)
-}
-
-function stat (path) {
-  return RNFS.stat(path)
-}
-
-function unlink (path) {
-  return RNFS.unlink(path)
-}
-
-function rmdir (path) {
-  return unlink(path)
-}
-
-function writeFile (path, data, opts) {
-  return RNFS.writeFile(path, data, opts)
-}
+import { type ArrayLike, type Disklet, type DiskletListing } from '../index.js'
+import { normalizePath } from '../internals.js'
 
 // Helpers: -----------------------------------------------------------------
 
-const pathUtil = {
-  join (a, b) {
-    return a + '/' + b
-  },
-  dirname (a) {
-    return a.replace(/\/[^/]*$/, '')
-  }
-}
-
-function badError (err) {
-  if (
-    err.code === 'ENOENT' ||
-    err.code === 'ENSCOCOAERRORDOMAIN260' ||
-    err.code === 'EUNSPECIFIED'
-  ) {
-    return false
-  }
-  return true
+function dirname (a) {
+  return a.replace(/\/[^/]*$/, '')
 }
 
 /**
- * If node.js returns a missing-file error (`ENOENT`),
- * translate that into the fallback value and proceed.
+ * Recursively deletes a file or directory.
  */
-function ignoreMissing (fallback) {
-  return err => {
-    if (badError(err)) {
-      throw err
+function deepDelete (path: string): Promise<mixed> {
+  return getType(path).then(type => {
+    if (type === 'file') {
+      return RNFS.unlink(path)
     }
-    return fallback
-  }
-}
-
-/**
- * If `stat` fails, return a bogus (but safe) result.
- */
-function makeFakeStat (isDir) {
-  return {
-    isDirectory () {
-      return isDir
-    },
-    isFile () {
-      return false
-    }
-  }
-}
-
-/**
- * Reads a directory, returning a list of names and a list of stat objects.
- * Returns empty lists if the directory doesn't exist.
- */
-function readdirStat (path) {
-  return readdir(path)
-    .catch(ignoreMissing([]))
-    .then(names =>
-      Promise.all(
-        names.map(name =>
-          stat(pathUtil.join(path, name)).catch(e =>
-            makeFakeStat(e.code === 'EISDIR')
-          )
+    if (type === 'folder') {
+      return RNFS.readdir(path)
+        .then(names =>
+          Promise.all(names.map(name => deepDelete(path + '/' + name)))
         )
-      ).then(stats => ({ names, stats }))
-    )
+        .then(() => RNFS.unlink(path))
+    }
+  })
 }
 
 /**
  * Recursively creates a directory.
  */
-function mkdirDeep (path) {
-  return mkdir(path).catch(err => {
-    if (badError(err)) throw err
-    return mkdirDeep(pathUtil.dirname(path)).then(() => mkdir(path))
+function deepMkdir (path) {
+  return RNFS.mkdir(path).catch(err => {
+    if (err.code !== 'ENOENT') throw err
+    return deepMkdir(dirname(path)).then(() => RNFS.mkdir(path))
   })
 }
 
 /**
  * Writes a file, creating its directory if needed.
  */
-function writeFileDeep (path, data, opts) {
-  return writeFile(path, data, opts).catch(err => {
-    if (badError(err)) throw err
-    return mkdirDeep(pathUtil.dirname(path)).then(() =>
-      writeFile(path, data, opts)
-    )
+function deepWriteFile (path, data, opts) {
+  return RNFS.writeFile(path, data, opts).catch(err => {
+    if (err.code !== 'ENOENT') throw err
+    return deepMkdir(dirname(path)).then(() => RNFS.writeFile(path, data, opts))
   })
 }
 
-class RNFile {
-  _path: string
-
-  constructor (path: string) {
-    this._path = path
-  }
-
-  delete (): Promise<mixed> {
-    return unlink(this._path).catch(ignoreMissing())
-  }
-
-  getData (): Promise<Uint8Array> {
-    return readFile(this._path, 'base64').then(data => base64.parse(data))
-  }
-
-  getText (): Promise<string> {
-    return readFile(this._path, 'utf8')
-  }
-
-  setData (data: ArrayLike<number>): Promise<mixed> {
-    return writeFileDeep(this._path, base64.stringify(data), 'base64')
-  }
-
-  setText (text): Promise<mixed> {
-    return writeFileDeep(this._path, text, 'utf8')
-  }
-
-  getPath (): string {
-    return this._path
-  }
+/**
+ * Returns a path's type, or '' if anything goes wrong.
+ */
+function getType (path: string): Promise<'file' | 'folder' | ''> {
+  return RNFS.stat(path).then(
+    out => {
+      if (out.isFile()) return 'file'
+      if (out.isDirectory()) return 'folder'
+      return ''
+    },
+    e => {
+      if (e.code === 'EISDIR') return 'folder'
+      return ''
+    }
+  )
 }
 
-class RNFolder {
-  _path: string
+// --------------------------------------------------------------------------
 
-  constructor (path: string) {
-    this._path = path
+export function makeReactNativeDisklet (): Disklet {
+  function locate (path: string) {
+    return RNFS.DocumentDirectoryPath + normalizePath(path)
   }
 
-  delete (): Promise<mixed> {
-    return readdirStat(this._path)
-      .then(lists => {
-        const { names, stats } = lists
-        const files = names.filter((name, i) => stats[i].isFile())
-        const folders = names.filter((name, i) => stats[i].isDirectory())
+  return {
+    delete (path: string): Promise<mixed> {
+      return deepDelete(locate(path))
+    },
 
-        // Recursively delete children:
-        return Promise.all([
-          ...files.map(name => this.file(name).delete()),
-          ...folders.map(name => this.folder(name).delete())
-        ])
+    getData (path: string): Promise<Uint8Array> {
+      return RNFS.readFile(locate(path), 'base64').then(data =>
+        base64.parse(data)
+      )
+    },
+
+    getText (path: string): Promise<string> {
+      return RNFS.readFile(locate(path), 'utf8')
+    },
+
+    list (path: string = ''): Promise<DiskletListing> {
+      const nativePath = locate(path)
+      const prefix = normalizePath(path, true)
+
+      return getType(nativePath).then(type => {
+        const out: DiskletListing = {}
+
+        if (type === 'file') {
+          out[prefix.replace(/\/$/, '')] = 'file'
+          return out
+        }
+        if (type === 'folder') {
+          return RNFS.readdir(nativePath).then(names =>
+            Promise.all(
+              names.map(name => getType(nativePath + '/' + name))
+            ).then(types => {
+              for (let i = 0; i < names.length; ++i) {
+                if (types[i] !== '') out[prefix + names[i]] = types[i]
+              }
+              return out
+            })
+          )
+        }
+        return out
       })
-      .then(() => rmdir(this._path))
-      .catch(ignoreMissing())
-  }
+    },
 
-  file (name): DiskletFile {
-    checkName(name)
-    return new RNFile(pathUtil.join(this._path, name))
-  }
+    setData (path: string, data: ArrayLike<number>): Promise<mixed> {
+      return deepWriteFile(locate(path), base64.stringify(data), 'base64')
+    },
 
-  folder (name): DiskletFolder {
-    checkName(name)
-    return new RNFolder(pathUtil.join(this._path, name))
+    setText (path: string, text: string): Promise<mixed> {
+      return deepWriteFile(locate(path), text, 'utf8')
+    }
   }
-
-  listFiles (): Promise<Array<string>> {
-    return readdirStat(this._path).then(lists => {
-      const { names, stats } = lists
-      return names.filter((name, i) => stats[i].isFile())
-    })
-  }
-
-  listFolders (): Promise<Array<string>> {
-    return readdirStat(this._path).then(lists => {
-      const { names, stats } = lists
-      return names.filter((name, i) => stats[i].isDirectory())
-    })
-  }
-}
-
-export function makeReactNativeFolder (): DiskletFolder {
-  return new RNFolder(RNFS.DocumentDirectoryPath)
 }

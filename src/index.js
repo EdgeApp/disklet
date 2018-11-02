@@ -1,16 +1,20 @@
 // @flow
 
-import { makeLocalStorageFolder } from './backends/local-storage.js'
-import { makeMemoryFolder } from './backends/memory.js'
-import { makeNodeFolder } from './backends/node.js'
-import { makeReactNativeFolder } from './backends/react-native.js'
+import {
+  makeLocalStorageDisklet,
+  makeMemoryDisklet,
+  makeNodeDisklet,
+  makeReactNativeDisklet
+} from './backends/backends.js'
+import { deepList } from './deep-list.js'
 
 export * from './legacy/legacy.js'
 export {
-  makeLocalStorageFolder,
-  makeMemoryFolder,
-  makeNodeFolder,
-  makeReactNativeFolder
+  deepList,
+  makeLocalStorageDisklet,
+  makeMemoryDisklet,
+  makeNodeDisklet,
+  makeReactNativeDisklet
 }
 
 export type ArrayLike<T> =

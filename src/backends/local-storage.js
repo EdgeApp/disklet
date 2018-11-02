@@ -2,14 +2,8 @@
 
 import { base64 } from 'rfc4648'
 
-import {
-  type ArrayLike,
-  type DiskletFile,
-  type DiskletFolder
-} from '../index.js'
-import { checkName } from '../utility.js'
-
-const Data = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+import { type ArrayLike, type Disklet, type DiskletListing } from '../index.js'
+import { normalizePath } from '../internals.js'
 
 /**
  * Lists the keys in a localStorage object.
@@ -24,112 +18,76 @@ function storageKeys (storage): Array<string> {
 }
 
 /**
- * A single file stored in localStorage.
+ * Emulates a filesystem in memory.
  */
-class LocalStorageFile {
-  _storage: Storage
-  _path: string
-
-  constructor (storage: Storage, path: string) {
-    this._storage = storage
-    this._path = path
-  }
-
-  delete (): Promise<mixed> {
-    this._storage.removeItem(this._path)
-    return Promise.resolve()
-  }
-
-  getData (): Promise<Uint8Array> {
-    return this.getText().then(text => base64.parse(text, { out: Data }))
-  }
-
-  getText (): Promise<string> {
-    const item = this._storage.getItem(this._path)
-    return item != null
-      ? Promise.resolve(item)
-      : Promise.reject(new Error(`Cannot load "${this._path}"`))
-  }
-
-  setText (text: string): Promise<mixed> {
-    if (typeof text !== 'string') {
-      return Promise.reject(new TypeError('Expected a string'))
-    }
-
-    this._storage.setItem(this._path, text)
-    return Promise.resolve()
-  }
-
-  setData (data: ArrayLike<number>): Promise<mixed> {
-    return this.setText(base64.stringify(data))
-  }
-
-  getPath (): string {
-    return this._path
-  }
-}
-
-/**
- * Emulates a filesystem inside a localStorage instance.
- */
-class LocalStorageFolder {
-  _storage: Storage
-  _path: string
-
-  constructor (storage: Storage, path: string) {
-    this._storage = storage
-    this._path = path + '/'
-  }
-
-  delete (): Promise<mixed> {
-    const test = new RegExp(`^${this._path}`)
-    storageKeys(this._storage).forEach(key => {
-      if (test.test(key)) {
-        this._storage.removeItem(key)
-      }
-    })
-    return Promise.resolve()
-  }
-
-  file (name: string): DiskletFile {
-    checkName(name)
-    return new LocalStorageFile(this._storage, this._path + name)
-  }
-
-  folder (name: string): DiskletFolder {
-    checkName(name)
-    return new LocalStorageFolder(this._storage, this._path + name)
-  }
-
-  listFiles (): Promise<Array<string>> {
-    const test = new RegExp(`^${this._path}([^/]+)$`)
-
-    const names = []
-    storageKeys(this._storage).forEach(key => {
-      const results = test.exec(key)
-      if (results != null) names.push(results[1])
-    })
-
-    return Promise.resolve(names)
-  }
-
-  listFolders (): Promise<Array<string>> {
-    const test = new RegExp(`^${this._path}([^/]+)/.+`)
-
-    const names = {}
-    storageKeys(this._storage).forEach(key => {
-      const results = test.exec(key)
-      if (results != null) names[results[1]] = true
-    })
-
-    return Promise.resolve(Object.keys(names))
-  }
-}
-
-export function makeLocalStorageFolder (
+export function makeLocalStorageDisklet (
   storage: Storage = window.localStorage,
   opts: { prefix?: string } = {}
-): DiskletFolder {
+): Disklet {
   const { prefix = '' } = opts
-  return new LocalStorageFolder(storage, prefix)
+  const trim = prefix.length + 1
+
+  const normalize = (path: string) => prefix + normalizePath(path)
+
+  return {
+    delete (path: string): Promise<mixed> {
+      const key = normalize(path)
+
+      // Try deleteing as a file:
+      if (storage.getItem(key) != null) storage.removeItem(key)
+
+      // Try deleting as a folder:
+      const prefix = key + '/'
+      for (const key of storageKeys(storage)) {
+        if (key.indexOf(prefix) === 0) storage.removeItem(key)
+      }
+      return Promise.resolve()
+    },
+
+    getData (path: string): Promise<Uint8Array> {
+      return this.getText(path).then(text => base64.parse(text))
+    },
+
+    getText (path: string): Promise<string> {
+      const key = normalize(path)
+
+      const item = storage.getItem(key)
+      return item != null
+        ? Promise.resolve(item)
+        : Promise.reject(new Error(`Cannot load "${key}"`))
+    },
+
+    async list (path: string = ''): Promise<DiskletListing> {
+      const key = normalize(path)
+      const out: DiskletListing = {}
+
+      // Try the path as a file:
+      if (storage.getItem(key) != null) out[key.slice(trim)] = 'file'
+
+      // Try the path as a folder:
+      const prefix = key + '/'
+      for (const key of storageKeys(storage)) {
+        if (key.indexOf(prefix) !== 0) continue
+
+        const slash = key.indexOf('/', prefix.length)
+        if (slash < 0) out[key.slice(trim)] = 'file'
+        else out[key.slice(trim, slash)] = 'folder'
+      }
+
+      return Promise.resolve(out)
+    },
+
+    setData (path: string, data: ArrayLike<number>) {
+      return this.setText(path, base64.stringify(data))
+    },
+
+    setText (path: string, text: string): Promise<mixed> {
+      if (typeof text !== 'string') {
+        return Promise.reject(new TypeError('setText expects a string'))
+      }
+
+      storage.setItem(normalize(path), text)
+      return Promise.resolve()
+    }
+  }
 }
