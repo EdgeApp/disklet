@@ -1,5 +1,10 @@
 # Disklet
 
+## 0.2.8 (2018-11-03)
+
+* Upgrade build tooling.
+* Begin adding Flow types.
+
 ## 0.2.7
 
 * Fix the `EISDIR` error on React Native Android
