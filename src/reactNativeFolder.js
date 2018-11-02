@@ -1,4 +1,5 @@
 import RNFS from 'react-native-fs'
+import { base64 } from 'rfc4648'
 
 import { checkName } from './utility.js'
 
@@ -129,7 +130,7 @@ class RNFile {
   }
 
   getData () {
-    return readFile(this._path, null)
+    return readFile(this._path, 'base64').then(data => base64.parse(data))
   }
 
   getText () {
@@ -137,7 +138,7 @@ class RNFile {
   }
 
   setData (data) {
-    return writeFileDeep(this._path, Uint8Array.from(data), null)
+    return writeFileDeep(this._path, base64.stringify(data), 'base64')
   }
 
   setText (text) {
