@@ -1,21 +1,21 @@
-/* global describe, it */
+import { assert } from 'chai'
+import { describe, it } from 'mocha'
+import { base16 } from 'rfc4648'
+import tmp from 'tmp'
+
 import {
   locateFile,
   locateFolder,
-  mapAllFiles,
-  mapFiles,
   makeLocalStorageFolder,
   makeLoggedFolder,
   makeMemoryFolder,
   makeNodeFolder,
-  makeUnionFolder
+  makeUnionFolder,
+  mapAllFiles,
+  mapFiles
 } from '../lib/disklet.js'
-
 import { FakeStorage } from './fake-storage.js'
 import { setupFiles, testFolder } from './test-helpers.js'
-import assert from 'assert'
-import { base16 } from 'rfc4648'
-import tmp from 'tmp'
 
 tmp.setGracefulCleanup()
 

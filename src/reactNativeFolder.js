@@ -1,5 +1,6 @@
-import { checkName } from './utility.js'
 import RNFS from 'react-native-fs'
+
+import { checkName } from './utility.js'
 
 function mkdir (path) {
   return RNFS.mkdir(path)

@@ -1,8 +1,12 @@
+// @flow
+
+import { type DiskletFile, type DiskletFolder } from './index.js'
+
 /**
  * Interprets a path as a series of folder lookups,
  * handling special components like `.` and `..`.
  */
-function followPath (folder, parts) {
+function followPath (folder: DiskletFolder, parts: Array<string>) {
   let i = 0 // Read index
   let j = 0 // Write index
 
@@ -25,7 +29,7 @@ function followPath (folder, parts) {
 /**
  * Navigates down to the file indicated by the path.
  */
-export function locateFile (folder, path) {
+export function locateFile (folder: DiskletFolder, path: string): DiskletFile {
   const parts = path.split('/')
   const filename = parts.pop()
   return followPath(folder, parts).file(filename)
@@ -34,15 +38,33 @@ export function locateFile (folder, path) {
 /**
  * Navigates down to the sub-folder indicated by the path.
  */
-export function locateFolder (folder, path) {
+export function locateFolder (
+  folder: DiskletFolder,
+  path: string
+): DiskletFolder {
   const parts = path.split('/')
   return followPath(folder, parts)
 }
 
+type FileIterator = (
+  file: DiskletFile,
+  name: string,
+  folder: DiskletFolder
+) => any
+
+type FolderIterator = (
+  folder: DiskletFolder,
+  name: string,
+  folder: DiskletFolder
+) => any
+
 /**
  * Applies an async function to all the files in a folder.
  */
-export function mapFiles (folder, f) {
+export function mapFiles (
+  folder: DiskletFolder,
+  f: FileIterator
+): Promise<Array<any>> {
   return folder
     .listFiles()
     .then(names =>
@@ -53,7 +75,10 @@ export function mapFiles (folder, f) {
 /**
  * Applies an async function to all the sub-folders in a folder.
  */
-export function mapFolders (folder, f) {
+export function mapFolders (
+  folder: DiskletFolder,
+  f: FolderIterator
+): Promise<Array<any>> {
   return folder
     .listFolders()
     .then(names =>
@@ -65,8 +90,11 @@ export function mapFolders (folder, f) {
  * Recursively applies an async function to all the files in a folder tree.
  * The file names are expanded into paths, and the result is a flat array.
  */
-export function mapAllFiles (folder, f) {
-  function recurse (folder, f, prefix) {
+export function mapAllFiles (
+  folder: DiskletFolder,
+  f: FileIterator
+): Promise<Array<any>> {
+  function recurse (folder, f, prefix): Promise<Array<any>> {
     return Promise.all([
       mapFiles(folder, (file, name) => f(file, prefix + name, folder)),
       mapFolders(folder, (folder, name) =>
