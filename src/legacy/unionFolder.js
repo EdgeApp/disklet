@@ -1,11 +1,8 @@
 // @flow
 
+import { type ArrayLike } from '../index.js'
 import { mapFiles, mapFolders } from './helpers.js'
-import {
-  type ArrayLike,
-  type DiskletFile,
-  type DiskletFolder
-} from './index.js'
+import { type DiskletFile, type DiskletFolder } from './legacy.js'
 
 function removeDuplicates (master, fallback) {
   const blacklist = {}

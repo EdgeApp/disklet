@@ -1,6 +1,6 @@
 // @flow
 
-import { type DiskletFile, type DiskletFolder } from './index.js'
+import { type DiskletFile, type DiskletFolder } from './legacy.js'
 
 /**
  * Interprets a path as a series of folder lookups,
