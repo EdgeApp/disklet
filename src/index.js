@@ -1,19 +1,32 @@
 // @flow
 
-export {
+import { makeLocalStorageFolder } from './backends/local-storage.js'
+import { makeMemoryFolder } from './backends/memory.js'
+import { makeNodeFolder } from './backends/node.js'
+import { makeReactNativeFolder } from './backends/react-native.js'
+import {
   locateFile,
   locateFolder,
   mapAllFiles,
   mapFiles,
   mapFolders
 } from './helpers.js'
+import { makeLoggedFolder } from './loggedFolder.js'
+import { makeUnionFolder } from './unionFolder.js'
 
-export { makeLocalStorageFolder } from './localStorageFolder.js'
-export { makeLoggedFolder } from './loggedFolder.js'
-export { makeMemoryFolder } from './memoryFolder.js'
-export { makeNodeFolder } from './nodeFolder.js'
-export { makeReactNativeFolder } from './reactNativeFolder.js'
-export { makeUnionFolder } from './unionFolder.js'
+export {
+  locateFile,
+  locateFolder,
+  makeLocalStorageFolder,
+  makeLoggedFolder,
+  makeMemoryFolder,
+  makeNodeFolder,
+  makeReactNativeFolder,
+  makeUnionFolder,
+  mapAllFiles,
+  mapFiles,
+  mapFolders
+}
 
 export type ArrayLike<T> =
   | $ReadOnlyArray<T>

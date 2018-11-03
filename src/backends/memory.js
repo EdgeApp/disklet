@@ -1,4 +1,4 @@
-import { checkName } from './utility.js'
+import { checkName } from '../utility.js'
 
 /**
  * A single file stored in memory.

@@ -1,7 +1,7 @@
 import RNFS from 'react-native-fs'
 import { base64 } from 'rfc4648'
 
-import { checkName } from './utility.js'
+import { checkName } from '../utility.js'
 
 function mkdir (path) {
   return RNFS.mkdir(path)

@@ -1,6 +1,6 @@
 import { base64 } from 'rfc4648'
 
-import { checkName } from './utility.js'
+import { checkName } from '../utility.js'
 
 const Data = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
 

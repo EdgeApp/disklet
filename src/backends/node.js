@@ -1,7 +1,7 @@
 import fs from 'fs'
 import pathUtil from 'path'
 
-import { checkName } from './utility.js'
+import { checkName } from '../utility.js'
 
 // Promise versions of node.js file operations: -----------------------------
 
