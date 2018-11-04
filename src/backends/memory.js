@@ -1,39 +1,62 @@
-import { checkName } from './utility.js'
+// @flow
+
+import {
+  type ArrayLike,
+  type DiskletFile,
+  type DiskletFolder
+} from '../index.js'
+import { checkName } from '../utility.js'
+
+type MemoryStorage = { [path: string]: string | Uint8Array }
 
 /**
  * A single file stored in memory.
  */
 class MemoryFile {
-  constructor (storage, path) {
+  _storage: MemoryStorage
+  _path: string
+
+  constructor (storage: MemoryStorage, path: string) {
     this._storage = storage
     this._path = path
   }
 
-  delete () {
+  delete (): Promise<mixed> {
     delete this._storage[this._path]
     return Promise.resolve()
   }
 
-  getData () {
+  getData (): Promise<Uint8Array> {
     const item = this._storage[this._path]
-    return item != null
-      ? Promise.resolve(item)
-      : Promise.reject(new Error(`Cannot load "${this._path}"`))
+    if (item == null) {
+      return Promise.reject(new Error(`Cannot load "${this._path}"`))
+    }
+    if (typeof item === 'string') {
+      return Promise.reject(new Error(`"${this._path}" is a text file.`))
+    }
+    return Promise.resolve(item)
   }
 
-  getText () {
+  getText (): Promise<string> {
     const item = this._storage[this._path]
-    return item != null
-      ? Promise.resolve(item)
-      : Promise.reject(new Error(`Cannot load "${this._path}"`))
+    if (item == null) {
+      return Promise.reject(new Error(`Cannot load "${this._path}"`))
+    }
+    if (typeof item !== 'string') {
+      return Promise.reject(new Error(`"${this._path}" is a binary file.`))
+    }
+    return Promise.resolve(item)
   }
 
-  setData (data) {
-    this._storage[this._path] = data
+  setData (data: ArrayLike<number>) {
+    // We use `any` here becase Flow is too dumb to know that `ArrayLike`
+    // is a perfectly acceptable argument to `Uint8Array.from`:
+    const flowHack: any = data
+    this._storage[this._path] = Uint8Array.from(flowHack)
     return Promise.resolve()
   }
 
-  setText (text) {
+  setText (text: string): Promise<mixed> {
     if (typeof text !== 'string') {
       return Promise.reject(new TypeError('Expected a string'))
     }
@@ -42,7 +65,7 @@ class MemoryFile {
     return Promise.resolve()
   }
 
-  getPath () {
+  getPath (): string {
     return this._path
   }
 }
@@ -51,12 +74,15 @@ class MemoryFile {
  * Emulates a filesystem in memory.
  */
 class MemoryFolder {
-  constructor (storage, path) {
+  _storage: MemoryStorage
+  _path: string
+
+  constructor (storage: MemoryStorage, path: string) {
     this._storage = storage
     this._path = path + '/'
   }
 
-  delete () {
+  delete (): Promise<mixed> {
     const test = new RegExp(`^${this._path}`)
     Object.keys(this._storage).forEach(key => {
       if (test.test(key)) {
@@ -66,17 +92,17 @@ class MemoryFolder {
     return Promise.resolve()
   }
 
-  file (name) {
+  file (name: string): DiskletFile {
     checkName(name)
     return new MemoryFile(this._storage, this._path + name)
   }
 
-  folder (name) {
+  folder (name: string): DiskletFolder {
     checkName(name)
     return new MemoryFolder(this._storage, this._path + name)
   }
 
-  listFiles () {
+  listFiles (): Promise<Array<string>> {
     const test = new RegExp(`^${this._path}([^/]+)$`)
 
     const names = []
@@ -88,7 +114,7 @@ class MemoryFolder {
     return Promise.resolve(names)
   }
 
-  listFolders () {
+  listFolders (): Promise<Array<string>> {
     const test = new RegExp(`^${this._path}([^/]+)/.+`)
 
     const names = {}
@@ -101,6 +127,6 @@ class MemoryFolder {
   }
 }
 
-export function makeMemoryFolder (storage = {}) {
+export function makeMemoryFolder (storage: MemoryStorage = {}) {
   return new MemoryFolder(storage, '')
 }

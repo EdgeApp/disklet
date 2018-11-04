@@ -1,7 +1,14 @@
+// @flow
+
 import fs from 'fs'
 import pathUtil from 'path'
 
-import { checkName } from './utility.js'
+import {
+  type ArrayLike,
+  type DiskletFile,
+  type DiskletFolder
+} from '../index.js'
+import { checkName } from '../utility.js'
 
 // Promise versions of node.js file operations: -----------------------------
 
@@ -9,6 +16,7 @@ function mkdir (path) {
   return new Promise((resolve, reject) =>
     fs.mkdir(
       path,
+      void 0,
       err => (err && err.code !== 'EEXIST' ? reject(err) : resolve())
     )
   )
@@ -23,12 +31,6 @@ function rmdir (path) {
 function readdir (path) {
   return new Promise((resolve, reject) =>
     fs.readdir(path, (err, out) => (err ? reject(err) : resolve(out)))
-  )
-}
-
-function readFile (path, opts) {
-  return new Promise((resolve, reject) =>
-    fs.readFile(path, opts, (err, out) => (err ? reject(err) : resolve(out)))
   )
 }
 
@@ -105,41 +107,58 @@ function writeFileDeep (path, data, opts) {
 }
 
 class NodeFile {
-  constructor (path) {
+  _path: string
+
+  constructor (path: string) {
     this._path = path
   }
 
-  delete () {
+  delete (): Promise<mixed> {
     return unlink(this._path).catch(ignoreMissing())
   }
 
-  getData () {
-    return readFile(this._path, null)
+  getData (): Promise<Uint8Array> {
+    return new Promise((resolve, reject) =>
+      fs.readFile(
+        this._path,
+        {},
+        (err, out) => (err ? reject(err) : resolve(out))
+      )
+    )
   }
 
-  getText () {
-    return readFile(this._path, 'utf8')
+  getText (): Promise<string> {
+    return new Promise((resolve, reject) =>
+      fs.readFile(
+        this._path,
+        'utf8',
+        (err, out) => (err ? reject(err) : resolve(out))
+      )
+    )
   }
 
-  setData (data) {
-    return writeFileDeep(this._path, Uint8Array.from(data), null)
+  setData (data: ArrayLike<number>): Promise<mixed> {
+    const flowHack: any = data
+    return writeFileDeep(this._path, Buffer.from(flowHack), {})
   }
 
-  setText (text) {
+  setText (text: string): Promise<mixed> {
     return writeFileDeep(this._path, text, 'utf8')
   }
 
-  getPath () {
+  getPath (): string {
     return this._path
   }
 }
 
 class NodeFolder {
-  constructor (path) {
+  _path: string
+
+  constructor (path: string) {
     this._path = path
   }
 
-  delete () {
+  delete (): Promise<mixed> {
     return readdirStat(this._path)
       .then(lists => {
         const { names, stats } = lists
@@ -156,24 +175,24 @@ class NodeFolder {
       .catch(ignoreMissing())
   }
 
-  file (name) {
+  file (name: string): DiskletFile {
     checkName(name)
     return new NodeFile(pathUtil.join(this._path, name))
   }
 
-  folder (name) {
+  folder (name: string): DiskletFolder {
     checkName(name)
     return new NodeFolder(pathUtil.join(this._path, name))
   }
 
-  listFiles () {
+  listFiles (): Promise<Array<string>> {
     return readdirStat(this._path).then(lists => {
       const { names, stats } = lists
       return names.filter((name, i) => stats[i].isFile())
     })
   }
 
-  listFolders () {
+  listFolders (): Promise<Array<string>> {
     return readdirStat(this._path).then(lists => {
       const { names, stats } = lists
       return names.filter((name, i) => stats[i].isDirectory())
@@ -181,6 +200,6 @@ class NodeFolder {
   }
 }
 
-export function makeNodeFolder (path) {
+export function makeNodeFolder (path: string): DiskletFolder {
   return new NodeFolder(pathUtil.resolve(path))
 }

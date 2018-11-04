@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { AppRegistry, StyleSheet, Text, View } from 'react-native'
 
 import { makeReactNativeFolder } from '../lib/disklet.rn.js'
-import { testFolderNoData } from './test-helpers.js'
+import { testFolder } from './test-helpers.js'
 
 type Props = {}
 type State = { status: string }
@@ -19,7 +19,7 @@ export default class disklet extends Component<Props, State> {
 
   async componentDidMount () {
     try {
-      await testFolderNoData(folder)
+      await testFolder(folder)
       console.log('Success')
       this.setState({ status: 'Success' })
     } catch (e) {

@@ -1,6 +1,14 @@
-import RNFS from 'react-native-fs'
+// @flow
 
-import { checkName } from './utility.js'
+import RNFS from 'react-native-fs'
+import { base64 } from 'rfc4648'
+
+import {
+  type ArrayLike,
+  type DiskletFile,
+  type DiskletFolder
+} from '../index.js'
+import { checkName } from '../utility.js'
 
 function mkdir (path) {
   return RNFS.mkdir(path)
@@ -120,41 +128,45 @@ function writeFileDeep (path, data, opts) {
 }
 
 class RNFile {
-  constructor (path) {
+  _path: string
+
+  constructor (path: string) {
     this._path = path
   }
 
-  delete () {
+  delete (): Promise<mixed> {
     return unlink(this._path).catch(ignoreMissing())
   }
 
-  getData () {
-    return readFile(this._path, null)
+  getData (): Promise<Uint8Array> {
+    return readFile(this._path, 'base64').then(data => base64.parse(data))
   }
 
-  getText () {
+  getText (): Promise<string> {
     return readFile(this._path, 'utf8')
   }
 
-  setData (data) {
-    return writeFileDeep(this._path, Uint8Array.from(data), null)
+  setData (data: ArrayLike<number>): Promise<mixed> {
+    return writeFileDeep(this._path, base64.stringify(data), 'base64')
   }
 
-  setText (text) {
+  setText (text): Promise<mixed> {
     return writeFileDeep(this._path, text, 'utf8')
   }
 
-  getPath () {
+  getPath (): string {
     return this._path
   }
 }
 
 class RNFolder {
-  constructor (path) {
+  _path: string
+
+  constructor (path: string) {
     this._path = path
   }
 
-  delete () {
+  delete (): Promise<mixed> {
     return readdirStat(this._path)
       .then(lists => {
         const { names, stats } = lists
@@ -171,24 +183,24 @@ class RNFolder {
       .catch(ignoreMissing())
   }
 
-  file (name) {
+  file (name): DiskletFile {
     checkName(name)
     return new RNFile(pathUtil.join(this._path, name))
   }
 
-  folder (name) {
+  folder (name): DiskletFolder {
     checkName(name)
     return new RNFolder(pathUtil.join(this._path, name))
   }
 
-  listFiles () {
+  listFiles (): Promise<Array<string>> {
     return readdirStat(this._path).then(lists => {
       const { names, stats } = lists
       return names.filter((name, i) => stats[i].isFile())
     })
   }
 
-  listFolders () {
+  listFolders (): Promise<Array<string>> {
     return readdirStat(this._path).then(lists => {
       const { names, stats } = lists
       return names.filter((name, i) => stats[i].isDirectory())
@@ -196,6 +208,6 @@ class RNFolder {
   }
 }
 
-export function makeReactNativeFolder () {
+export function makeReactNativeFolder (): DiskletFolder {
   return new RNFolder(RNFS.DocumentDirectoryPath)
 }
