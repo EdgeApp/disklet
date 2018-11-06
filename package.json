@@ -29,8 +29,8 @@
     "format": "import-sort -l --write '*.js' 'src/**/*.js' 'test/**/*.js'; prettier-eslint --write '*.js' 'src/**/*.js' 'test/**/*.js'",
     "lint": "eslint '*.js' 'src/**/*.js' 'test/**/*.js'",
     "prepare": "npm run build",
-    "pretest": "npm run build",
-    "test": "mocha -r esm -r source-map-support/register test/test.js"
+    "pretest": "rollup -c test/rollup.config.js",
+    "test": "mocha -r source-map-support/register build/tests.js"
   },
   "browser": {
     "fs": false,
@@ -56,7 +56,6 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-standard": "^4.0.0",
-    "esm": "^3.0.84",
     "flow-bin": "^0.78.0",
     "husky": "^0.13.3",
     "import-sort-cli": "^5.2.0",

@@ -1,5 +1,8 @@
+// @flow
+
 import { assert, expect } from 'chai'
 
+import { type DiskletFolder } from '../src/index.js'
 import { expectRejection } from './expect-rejection.js'
 
 function checkData (a, b) {
@@ -9,7 +12,7 @@ function checkData (a, b) {
   }
 }
 
-export async function setupFiles (root) {
+export async function setupFiles (root: DiskletFolder) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
 
@@ -46,7 +49,7 @@ function checkFolders (root, expected) {
   })
 }
 
-export async function testFolder (root) {
+export async function testFolder (root: DiskletFolder) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
   const empty = { root: [], sub: [], deep: [] }

@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { AppRegistry, StyleSheet, Text, View } from 'react-native'
 
-import { makeReactNativeFolder } from '../lib/disklet.rn.js'
+import { makeReactNativeFolder } from '../src/index.js'
 import { testFolder } from './test-helpers.js'
 
 type Props = {}

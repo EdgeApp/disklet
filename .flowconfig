@@ -1,5 +1,6 @@
 [ignore]
-;<PROJECT_ROOT>/lib/.*
+<PROJECT_ROOT>/build/.*
+<PROJECT_ROOT>/lib/.*
 
 ; We fork some components by platform
 .*/*[.]android.js

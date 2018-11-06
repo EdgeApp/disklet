@@ -1,9 +1,14 @@
+// @flow
+
 import { expect } from 'chai'
 
 /**
  * Verifies that a promise rejects with a particular error.
  */
-export function expectRejection (promise, message) {
+export function expectRejection (
+  promise: Promise<mixed>,
+  message?: string
+): Promise<mixed> {
   return promise.then(
     ok => {
       throw new Error('Expecting this promise to reject')
