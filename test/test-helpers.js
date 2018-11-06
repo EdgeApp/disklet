@@ -51,9 +51,12 @@ export async function testFolder (root) {
   const deep = sub.folder('deep')
   const empty = { root: [], sub: [], deep: [] }
 
-  await root.delete() // Should be harmless
+  // Should be harmless:
+  await root.delete()
   await checkFiles(root, empty)
-  await setupFiles(root) // Add  a bunch of files
+
+  // Add  a bunch of files:
+  await setupFiles(root)
   await Promise.all([
     root.file('a.txt').getText(),
     root.file('b.bin').getData(),
@@ -66,12 +69,18 @@ export async function testFolder (root) {
   })
   await checkFiles(root, { root: ['a.txt', 'b.bin'], sub: [], deep: ['c.txt'] })
   await checkFolders(root, { root: ['sub'], sub: ['deep'], deep: [] })
-  await deep.file('c.txt').delete() // Delete a deeply-nested file
+
+  // Delete a deeply-nested file:
+  await deep.file('c.txt').delete()
   await expectRejection(deep.file('c.txt').getData())
   await checkFiles(root, { root: ['a.txt', 'b.bin'], sub: [], deep: [] })
-  await root.file('b.bin').delete() // Delete a shallow file
+
+  // Delete a shallow file:
+  await root.file('b.bin').delete()
   await expectRejection(root.file('b.bin').getData())
   await checkFiles(root, { root: ['a.txt'], sub: [], deep: [] })
-  await root.delete() // Delete everything
+
+  // Delete everything:
+  await root.delete()
   await checkFiles(root, empty)
 }
