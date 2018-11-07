@@ -7,14 +7,20 @@ import {
   makeReactNativeDisklet
 } from './backends/backends.js'
 import { deepList } from './deep-list.js'
+import { logDisklet } from './log.js'
+import { mergeDisklets } from './merge.js'
+import { navigateDisklet } from './navigate.js'
 
 export * from './legacy/legacy.js'
 export {
   deepList,
+  logDisklet,
   makeLocalStorageDisklet,
   makeMemoryDisklet,
   makeNodeDisklet,
-  makeReactNativeDisklet
+  makeReactNativeDisklet,
+  mergeDisklets,
+  navigateDisklet
 }
 
 export type ArrayLike<T> =

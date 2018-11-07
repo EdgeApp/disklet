@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { AppRegistry, StyleSheet, Text, View } from 'react-native'
 
-import { makeReactNativeDisklet } from '../src/index.js'
+import { logDisklet, makeReactNativeDisklet } from '../src/index.js'
 import { testDisklet } from './common.js'
 
 type Props = {}
@@ -19,7 +19,7 @@ export default class disklet extends Component<Props, State> {
 
   async componentDidMount () {
     try {
-      const disklet = makeReactNativeDisklet()
+      const disklet = logDisklet(makeReactNativeDisklet())
 
       await testDisklet(disklet)
       console.log('Success')
