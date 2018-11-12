@@ -1,3 +1,5 @@
+// @flow
+
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
 import { base16 } from 'rfc4648'
@@ -13,7 +15,7 @@ import {
   makeUnionFolder,
   mapAllFiles,
   mapFiles
-} from '../lib/disklet.js'
+} from '../src/index.js'
 import { FakeStorage } from './fake-storage.js'
 import { setupFiles, testFolder } from './test-helpers.js'
 
