@@ -1,5 +1,6 @@
 // @flow
 
+// $FlowFixMe - This library won't be installed in non-RN environments:
 import RNFS from 'react-native-fs'
 import { base64 } from 'rfc4648'
 
