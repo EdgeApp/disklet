@@ -7,7 +7,7 @@ export default {
     ...Object.keys(packageJson.devDependencies),
     '@babel/runtime/regenerator'
   ],
-  input: 'test/test.js',
+  input: 'test/index.js',
   output: [{ file: 'build/tests.js', format: 'cjs' }],
   plugins: [...config[0].plugins],
   sourcemap: true

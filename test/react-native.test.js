@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { AppRegistry, StyleSheet, Text, View } from 'react-native'
 
 import { makeReactNativeFolder } from '../src/index.js'
-import { testFolder } from './test-helpers.js'
+import { testFolder } from './legacy/legacy-helpers.js'
 
 type Props = {}
 type State = { status: string }
