@@ -1,3 +1,55 @@
+export type DiskletListing = { [path: string]: 'file' | 'folder' }
+
+export type Disklet = {
+  // Like `rm -r path`:
+  delete(path: string): Promise<unknown>
+
+  // Like `cat path`:
+  getData(path: string): Promise<Uint8Array>
+  getText(path: string): Promise<string>
+
+  // Like `ls -l path`:
+  list(path?: string): Promise<DiskletListing>
+
+  // Like `mkdir -p $(dirname path); echo data > path`:
+  setData(path: string, data: ArrayLike<number>): Promise<unknown>
+  setText(path: string, text: string): Promise<unknown>
+}
+
+export function deepList(
+  disklet: Disklet,
+  path?: string
+): Promise<DiskletListing>
+
+type LogOperation =
+  | 'delete'
+  | 'get data'
+  | 'get text'
+  | 'list'
+  | 'set data'
+  | 'set text'
+
+type LogOptions = {
+  callback?: (path: string, operation: LogOperation) => unknown
+  verbose?: boolean
+}
+
+type MemoryStorage = { [key: string]: string | Uint8Array }
+
+export function logDisklet(disklet: Disklet, opts?: LogOptions): Disklet
+export function mergeDisklets(master: Disklet, fallback: Disklet): Disklet
+export function navigateDisklet(disklet: Disklet, path: string): Disklet
+
+export function makeLocalStorageDisklet(
+  storage?: Storage,
+  opts?: { prefix?: string }
+): Disklet
+export function makeMemoryDisklet(storage?: MemoryStorage): Disklet
+export function makeNodeDisklet(path: string): Disklet
+export function makeReactNativeDisklet(): Disklet
+
+// legacy API ----------------------------------------------------------------
+
 export interface Folder {
   delete(): Promise<void>
   file(name: string): File
@@ -41,14 +93,14 @@ interface LocalStorageOpts {
 }
 
 type LoggedFolderOperations =
-  "delete file" |
-  "delete folder" |
-  "get data" |
-  "get text" |
-  "list files" |
-  "list folders" |
-  "set data" |
-  "set text"
+  | 'delete file'
+  | 'delete folder'
+  | 'get data'
+  | 'get text'
+  | 'list files'
+  | 'list folders'
+  | 'set data'
+  | 'set text'
 
 interface LoggedFolderOpts {
   callback?: (path: string, operation: LoggedFolderOperations) => void
