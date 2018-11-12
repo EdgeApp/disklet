@@ -1,5 +1,10 @@
 # Disklet
 
+## 0.2.9 (2018-11-12)
+
+* Add complete Flow typing coverage.
+* Fix binary data on React Native (`setData` / `getData` were corrupting data before).
+
 ## 0.2.8 (2018-11-03)
 
 * Upgrade build tooling.
