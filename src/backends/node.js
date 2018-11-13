@@ -63,7 +63,7 @@ function writeFile (path, data, opts) {
  * If node.js returns a missing-file error (`ENOENT`),
  * translate that into the fallback value and proceed.
  */
-function ignoreMissing (fallback) {
+function ignoreMissing (fallback): any {
   return err => {
     if (err.code !== 'ENOENT') throw err
     return fallback
