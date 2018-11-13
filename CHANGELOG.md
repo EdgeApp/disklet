@@ -1,5 +1,9 @@
 # Disklet
 
+## 0.2.10 (2018-11-13)
+
+* Fix Flow errors.
+
 ## 0.2.9 (2018-11-12)
 
 * Add complete Flow typing coverage.
