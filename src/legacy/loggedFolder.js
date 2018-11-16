@@ -1,10 +1,7 @@
 // @flow
 
-import {
-  type ArrayLike,
-  type DiskletFile,
-  type DiskletFolder
-} from './index.js'
+import { type ArrayLike } from '../index.js'
+import { type DiskletFile, type DiskletFolder } from './legacy.js'
 
 type LogOperation =
   | 'delete file'

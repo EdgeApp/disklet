@@ -40,8 +40,8 @@ export default [
     ],
     plugins: [
       alias({
-        './backends/node.js': 'src/backends/node.js',
-        './backends/react-native.js': 'src/backends/dummy.js'
+        './node.js': 'src/backends/node.js',
+        './react-native.js': 'src/backends/dummy.js'
       }),
       babel(babelOpts),
       flowEntry(),
@@ -56,8 +56,8 @@ export default [
     output: [{ file: packageJson['react-native'], format: 'cjs' }],
     plugins: [
       alias({
-        './backends/node.js': 'src/backends/dummy.js',
-        './backends/react-native.js': 'src/backends/react-native.js'
+        './node.js': 'src/backends/dummy.js',
+        './react-native.js': 'src/backends/react-native.js'
       }),
       babel(babelOpts),
       flowEntry(),

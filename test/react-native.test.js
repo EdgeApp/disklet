@@ -3,8 +3,8 @@
 import React, { Component } from 'react'
 import { AppRegistry, StyleSheet, Text, View } from 'react-native'
 
-import { makeReactNativeFolder } from '../src/index.js'
-import { testFolder } from './test-helpers.js'
+import { logDisklet, makeReactNativeDisklet } from '../src/index.js'
+import { testDisklet } from './common.js'
 
 type Props = {}
 type State = { status: string }
@@ -19,7 +19,9 @@ export default class disklet extends Component<Props, State> {
 
   async componentDidMount () {
     try {
-      await testFolder(folder)
+      const disklet = logDisklet(makeReactNativeDisklet())
+
+      await testDisklet(disklet)
       console.log('Success')
       this.setState({ status: 'Success' })
     } catch (e) {
@@ -55,7 +57,5 @@ const styles = StyleSheet.create({
     marginBottom: 5
   }
 })
-
-const folder = makeReactNativeFolder()
 
 AppRegistry.registerComponent('disklet', () => disklet)
