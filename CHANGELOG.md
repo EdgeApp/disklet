@@ -1,5 +1,19 @@
 # Disklet
 
+## 0.3.0 (2018-11-16)
+
+- Add a new, radically simplified API. All existing methods keep working, but are deprecated:
+  - `makeLocalStorageDisklet`
+  - `makeMemoryDisklet`
+  - `makeNodeDisklet`
+  - `makeReactNativeDisklet`
+- New utilities:
+  - `deepList`
+  - `logDisklet`
+  - `mergeDisklets`
+  - `navigateDisklet`
+- Add a new `downgradeDisklet` helper to convert new `Disklet` objects to the old `DiskletFolder` interface.
+
 ## 0.2.10 (2018-11-13)
 
 * Fix Flow errors.

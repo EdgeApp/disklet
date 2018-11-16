@@ -1,6 +1,6 @@
 {
   "name": "disklet",
-  "version": "0.2.10",
+  "version": "0.3.0",
   "description": "A tiny, composable filesystem API",
   "repository": {
     "type": "git",
