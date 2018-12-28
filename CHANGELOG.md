@@ -2,11 +2,11 @@
 
 ## 0.3.0 (2018-11-16)
 
-- Add a new, radically simplified API. All existing methods keep working, but are deprecated:
-  - `makeLocalStorageDisklet`
-  - `makeMemoryDisklet`
-  - `makeNodeDisklet`
-  - `makeReactNativeDisklet`
+- Add a new, radically simplified API. The existing API is still available but deprecated:
+  - `makeLocalStorageFolder` → `makeLocalStorageDisklet`
+  - `makeMemoryFolder` → `makeMemoryDisklet`
+  - `makeNodeFolder` → `makeNodeDisklet`
+  - `makeReactNativeFolder` → `makeReactNativeDisklet`
 - New utilities:
   - `deepList`
   - `logDisklet`
