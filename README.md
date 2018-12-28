@@ -34,7 +34,7 @@ async function demo () {
   await disklet.setData('a/b/file.bin', [72, 73, 10])
   await disklet.getData('a/b/file.bin') // Uint8Array [ 72, 73, 10 ]
 
-  // Listing a folder returns normalized paths and types:
+  // Listing a folder returns paths and types:
   await disklet.list('./a/') // { 'a/file.txt': 'file', 'a/b': 'folder' }
 
   // Removing stuff is easy:
@@ -44,11 +44,11 @@ async function demo () {
 
 You can compose these `Disklet` objects together in various ways:
 
-* `navigateDisklet` opens a new `Disklet` object located in a sub-folder.
+* `navigateDisklet` opens a new `Disklet` object pointed at a sub-folder. All paths are relative to this new location.
 * `logDisklet` wraps logging around any `Disklet` instance (great for debugging).
 * `mergeDisklets` creates a merged view of two folders.
 
-The library has tree-shaking support, so tools like [rollup.js](https://rollupjs.org/) or [Webpack](https://webpack.js.org/) can automatically trim away any features you don't use. Even with all features present, the library is only about 4.5K (min + gzip).
+The library has tree-shaking support, so tools like [rollup.js](https://rollupjs.org/) or [Webpack](https://webpack.js.org/) can automatically trim away any features you don't use. Even with all platforms and features present, the library is only about 4.5K (min + gzip).
 
 Disklet requires a `Promise` implementation, but is plain ES5 otherwise. The library also includes TypeScript and Flow typings if you need them.
 
@@ -107,19 +107,19 @@ This means saving a file in binary format and then loading it in text format (or
 
 ### Paths
 
-All Disklet paths are relative URI's. This means the folder separator is always '/', even on Windows. Paths are not allowed to be absolute, so something like '/home/user/somefile.txt' is not valid. Likewise, paths are not allowed to "escape" the Disklet location, so '../somefile.txt' isn't valid either.
+All Disklet paths are relative URI's. This means the folder separator is always '/', even on Windows. Paths are not allowed to be absolute, so something like '/home/user/somefile.txt' is not valid. Likewise, paths are not allowed to "escape" the Disklet location, so '../somefile.txt' isn't valid either (but 'a/../somefile.txt' is fine).
 
 You can use the `navigateDisklet` function to create a new Disklet instance locked to a particular location. If you pass this folder to a module within your program, you can rest assured that the module will only write files where it is supposed to. At the same time, the module never has to worry about *where* the right location is, since the Disklet object encapsulates that information.
 
 ## API reference
 
-### Storage Backends
+### Storage backends
 
 #### `makeLocalStorageDisklet(storage = window.localStorage, opts = {}): Disklet`
 
 Creates a Disklet that stores its data in the browser's localStorage.
 
-The file paths are the localStorage keys, and the values are strings. If a `prefix` is provided via the `opts` parameter, then all localStorage keys will begin with the provided string. Binary data is transformed to base64, since localStorage can only handle strings.
+A file's paths becomes its localStorage key, and its contents become a localStorage string value. If a `prefix` is provided via the `opts` parameter, then all localStorage keys will begin with the provided string. Binary data is transformed to base64, since localStorage can only handle strings.
 
 #### `makeMemoryFolder(storage = {}): Disklet`
 
@@ -174,15 +174,15 @@ Recursively deletes a file or folder (including all contents). Does nothing if t
 
 #### `getData(path: string): Promise<Uint8Array>`
 
-Reads a file's contents as binary data. The path must exisit and be a file, or this will fail.
+Reads a file's contents as binary data. The path must exisit and be a binary file, or this will fail.
 
 #### `getText(path: string): Promise<string>`
 
-Reads a file's contents as text. The path must exisit and be a file, or this will fail.
+Reads a file's contents as text. The path must exisit and be a text file, or this will fail.
 
 #### `list(path?: string): Promise<DiskletListing>`
 
-Lists a folders's contents. If the path points to a file instead of a folder, returns the file's normalized path and type (`{ '...normalized path...': 'file' }`). Returns an empty listing if the location is missing (`{}`).
+Lists a folders's contents. Returns an empty listing if the location is missing (`{}`). If the path points to a file instead of a folder, returns the file's normalized path and type (`{ 'a/somefile.txt': 'file' }`).
 
 #### `setData(path: string, data: ArrayLike<number>): Promise<mixed>`
 
@@ -190,4 +190,4 @@ Writes an array of bytes to disk as a file. This will recursively create any fol
 
 #### `setText(path: string, text: string): Promise<mixed>`
 
-Writes a string to disk as a file. Will recursively create any folders needed to hold the file.
+Writes a string to disk as a file. This will recursively create any folders needed to hold the file.
