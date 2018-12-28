@@ -9,7 +9,7 @@ import { testDisklet } from './common.js'
 type Props = {}
 type State = { status: string }
 
-export default class disklet extends Component<Props, State> {
+export default class DiskletTest extends Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
@@ -33,7 +33,7 @@ export default class disklet extends Component<Props, State> {
   render () {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>{this.state.status}</Text>
+        <Text style={styles.status}>{this.state.status}</Text>
       </View>
     )
   }
@@ -46,16 +46,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF'
   },
-  welcome: {
+  status: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5
   }
 })
 
-AppRegistry.registerComponent('disklet', () => disklet)
+AppRegistry.registerComponent('disklet', () => DiskletTest)

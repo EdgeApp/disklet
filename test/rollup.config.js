@@ -3,6 +3,7 @@ import config from '../rollup.config.js'
 
 export default {
   external: [
+    ...Object.keys(packageJson.browser),
     ...Object.keys(packageJson.dependencies),
     ...Object.keys(packageJson.devDependencies),
     '@babel/runtime/regenerator'
