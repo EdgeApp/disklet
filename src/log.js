@@ -1,6 +1,7 @@
 // @flow
 
 import { type ArrayLike, type Disklet, type DiskletListing } from './index.js'
+import { normalizePath } from './paths.js'
 
 type LogOperation =
   | 'delete'
@@ -29,32 +30,32 @@ export function logDisklet (disklet: Disklet, opts: LogOptions = {}): Disklet {
 
   return {
     delete (path: string): Promise<mixed> {
-      log('delete', path)
+      log('delete', normalizePath(path))
       return disklet.delete(path)
     },
 
     getData (path: string): Promise<Uint8Array> {
-      log('get data', path)
+      log('get data', normalizePath(path))
       return disklet.getData(path)
     },
 
     getText (path: string): Promise<string> {
-      log('get text', path)
+      log('get text', normalizePath(path))
       return disklet.getText(path)
     },
 
     list (path?: string): Promise<DiskletListing> {
-      log('list', path || '')
+      log('list', path != null ? normalizePath(path) : '')
       return disklet.list(path)
     },
 
     setData (path: string, data: ArrayLike<number>): Promise<mixed> {
-      log('set data', path)
+      log('set data', normalizePath(path))
       return disklet.setData(path, data)
     },
 
     setText (path: string, text: string): Promise<mixed> {
-      log('set text', path)
+      log('set text', normalizePath(path))
       return disklet.setText(path, text)
     }
   }

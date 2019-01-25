@@ -16,14 +16,14 @@ describe('logged disklet', function () {
 
     await testDisklet(disklet)
     expect(log).deep.equals([
-      ['delete', '.'],
+      ['delete', ''],
       ['set text', 'a.txt'],
       ['set data', 'a.txt.bin'],
-      ['set text', './sub//c.txt'],
-      ['set text', './sub/deep/ignore/../d.txt'],
+      ['set text', 'sub/c.txt'],
+      ['set text', 'sub/deep/d.txt'],
       ['delete', 'a.txt'],
       ['delete', 'sub/deep/d.txt'],
-      ['delete', 'sub/deep/../'],
+      ['delete', 'sub'],
       ['delete', '']
     ])
   })
@@ -37,33 +37,35 @@ describe('logged disklet', function () {
 
     await testDisklet(disklet)
     expect(log).deep.equals([
-      ['delete', '.'],
-      ['list', '.'],
+      ['delete', ''],
+      ['list', ''],
       ['set text', 'a.txt'],
       ['set data', 'a.txt.bin'],
-      ['set text', './sub//c.txt'],
-      ['set text', './sub/deep/ignore/../d.txt'],
-      ['get text', './a.txt'],
-      ['get data', './a.txt.bin'],
+      ['set text', 'sub/c.txt'],
+      ['set text', 'sub/deep/d.txt'],
+      ['get text', 'a.txt'],
+      ['get data', 'a.txt.bin'],
       ['get text', 'sub/c.txt'],
       ['get text', 'sub/deep/d.txt'],
-      ['list', '.'],
-      ['list', 'sub/'],
-      ['list', 'sub/deep/'],
+      ['list', 'a.txt'],
+      ['list', 'x.txt'],
+      ['list', ''],
+      ['list', 'sub'],
+      ['list', 'sub/deep'],
       ['delete', 'a.txt'],
       ['get data', 'a.txt'],
-      ['list', '.'],
-      ['list', 'sub/'],
-      ['list', 'sub/deep/'],
+      ['list', ''],
+      ['list', 'sub'],
+      ['list', 'sub/deep'],
       ['delete', 'sub/deep/d.txt'],
       ['get text', 'sub/deep/d.txt'],
-      ['list', '.'],
-      ['list', 'sub/'],
-      ['delete', 'sub/deep/../'],
+      ['list', ''],
+      ['list', 'sub'],
+      ['delete', 'sub'],
       ['get text', 'sub/c.txt'],
-      ['list', '.'],
+      ['list', ''],
       ['delete', ''],
-      ['list', '.']
+      ['list', '']
     ])
   })
 })
