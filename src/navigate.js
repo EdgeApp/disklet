@@ -20,7 +20,13 @@ export function navigateDisklet (disklet: Disklet, path: string): Disklet {
     },
 
     list (path: string = '.'): Promise<DiskletListing> {
-      return disklet.list(prefix + path)
+      return disklet.list(prefix + path).then(listing => {
+        const out: DiskletListing = {}
+        for (const path in listing) {
+          out[path.replace(prefix, '')] = listing[path]
+        }
+        return out
+      })
     },
 
     setData (path: string, data: ArrayLike<number>): Promise<mixed> {
