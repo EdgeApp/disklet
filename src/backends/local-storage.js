@@ -3,7 +3,7 @@
 import { base64 } from 'rfc4648'
 
 import { type ArrayLike, type Disklet, type DiskletListing } from '../index.js'
-import { normalizePath } from '../paths.js'
+import { folderizePath, normalizePath } from '../paths.js'
 
 /**
  * Lists the keys in a localStorage object.
@@ -24,22 +24,21 @@ export function makeLocalStorageDisklet (
   storage: Storage = window.localStorage,
   opts: { prefix?: string } = {}
 ): Disklet {
-  const { prefix = '' } = opts
-  const trim = prefix.length + 1
-
-  const normalize = (path: string) => prefix + normalizePath(path)
+  const prefix = opts.prefix != null ? folderizePath(opts.prefix) : '/'
 
   return {
     delete (path: string): Promise<mixed> {
-      const key = normalize(path)
+      const file = normalizePath(path)
 
       // Try deleteing as a file:
-      if (storage.getItem(key) != null) storage.removeItem(key)
+      if (storage.getItem(prefix + file) != null) {
+        storage.removeItem(prefix + file)
+      }
 
       // Try deleting as a folder:
-      const prefix = key + '/'
+      const folder = folderizePath(file)
       for (const key of storageKeys(storage)) {
-        if (key.indexOf(prefix) === 0) storage.removeItem(key)
+        if (key.indexOf(prefix + folder) === 0) storage.removeItem(key)
       }
       return Promise.resolve()
     },
@@ -49,29 +48,30 @@ export function makeLocalStorageDisklet (
     },
 
     getText (path: string): Promise<string> {
-      const key = normalize(path)
+      const file = normalizePath(path)
 
-      const item = storage.getItem(key)
-      return item != null
-        ? Promise.resolve(item)
-        : Promise.reject(new Error(`Cannot load "${key}"`))
+      const item = storage.getItem(prefix + file)
+      if (item == null) {
+        return Promise.reject(new Error(`Cannot load "${file}"`))
+      }
+      return Promise.resolve(item)
     },
 
     async list (path: string = ''): Promise<DiskletListing> {
-      const key = normalize(path)
+      const file = normalizePath(path)
       const out: DiskletListing = {}
 
       // Try the path as a file:
-      if (storage.getItem(key) != null) out[key.slice(trim)] = 'file'
+      if (storage.getItem(prefix + file) != null) out[file] = 'file'
 
       // Try the path as a folder:
-      const prefix = key + '/'
+      const folder = folderizePath(file)
       for (const key of storageKeys(storage)) {
-        if (key.indexOf(prefix) !== 0) continue
+        if (key.indexOf(prefix + folder) !== 0) continue
 
-        const slash = key.indexOf('/', prefix.length)
-        if (slash < 0) out[key.slice(trim)] = 'file'
-        else out[key.slice(trim, slash)] = 'folder'
+        const slash = key.indexOf('/', prefix.length + folder.length)
+        if (slash < 0) out[key.slice(prefix.length)] = 'file'
+        else out[key.slice(prefix.length, slash)] = 'folder'
       }
 
       return Promise.resolve(out)
@@ -86,7 +86,7 @@ export function makeLocalStorageDisklet (
         return Promise.reject(new TypeError('setText expects a string'))
       }
 
-      storage.setItem(normalize(path), text)
+      storage.setItem(prefix + normalizePath(path), text)
       return Promise.resolve()
     }
   }

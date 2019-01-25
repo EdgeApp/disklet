@@ -5,7 +5,7 @@ import RNFS from 'react-native-fs'
 import { base64 } from 'rfc4648'
 
 import { type ArrayLike, type Disklet, type DiskletListing } from '../index.js'
-import { normalizePath } from '../paths.js'
+import { folderizePath, normalizePath } from '../paths.js'
 
 // Helpers: -----------------------------------------------------------------
 
@@ -72,7 +72,7 @@ function getType (path: string): Promise<'file' | 'folder' | ''> {
 
 export function makeReactNativeDisklet (): Disklet {
   function locate (path: string) {
-    return RNFS.DocumentDirectoryPath + normalizePath(path)
+    return RNFS.DocumentDirectoryPath + '/' + normalizePath(path)
   }
 
   return {
@@ -91,14 +91,14 @@ export function makeReactNativeDisklet (): Disklet {
     },
 
     list (path: string = ''): Promise<DiskletListing> {
+      const file = normalizePath(path)
       const nativePath = locate(path)
-      const prefix = normalizePath(path, true)
 
       return getType(nativePath).then(type => {
         const out: DiskletListing = {}
 
         if (type === 'file') {
-          out[prefix.replace(/\/$/, '')] = 'file'
+          out[file] = 'file'
           return out
         }
         if (type === 'folder') {
@@ -106,8 +106,9 @@ export function makeReactNativeDisklet (): Disklet {
             Promise.all(
               names.map(name => getType(nativePath + '/' + name))
             ).then(types => {
+              const folder = folderizePath(file)
               for (let i = 0; i < names.length; ++i) {
-                if (types[i] !== '') out[prefix + names[i]] = types[i]
+                if (types[i] !== '') out[folder + names[i]] = types[i]
               }
               return out
             })

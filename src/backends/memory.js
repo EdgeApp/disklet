@@ -1,7 +1,7 @@
 // @flow
 
 import { type ArrayLike, type Disklet, type DiskletListing } from '../index.js'
-import { normalizePath } from '../paths.js'
+import { folderizePath, normalizePath } from '../paths.js'
 
 type MemoryStorage = { [key: string]: string | Uint8Array }
 
@@ -11,61 +11,58 @@ type MemoryStorage = { [key: string]: string | Uint8Array }
 export function makeMemoryDisklet (storage: MemoryStorage = {}): Disklet {
   return {
     delete (path: string): Promise<mixed> {
-      const key = normalizePath(path)
+      const file = normalizePath(path)
 
       // Try deleteing as a file:
-      if (storage[key] != null) delete storage[key]
+      if (storage['/' + file] != null) delete storage['/' + file]
 
       // Try deleting as a folder:
-      const prefix = key + '/'
+      const folder = folderizePath(file)
       for (const key of Object.keys(storage)) {
-        if (key.indexOf(prefix) === 0) delete storage[key]
+        if (key.indexOf('/' + folder) === 0) delete storage[key]
       }
       return Promise.resolve()
     },
 
     getData (path: string): Promise<Uint8Array> {
-      const key = normalizePath(path)
-      const item = storage[key]
+      const file = normalizePath(path)
+      const item = storage['/' + file]
       if (item == null) {
-        return Promise.reject(new Error(`Cannot load "${key}"`))
+        return Promise.reject(new Error(`Cannot load "${file}"`))
       }
       if (typeof item === 'string') {
-        return Promise.reject(new Error(`"${key}" is a text file.`))
+        return Promise.reject(new Error(`"${file}" is a text file.`))
       }
       return Promise.resolve(item)
     },
 
     getText (path: string): Promise<string> {
-      const key = normalizePath(path)
-      const item = storage[key]
+      const file = normalizePath(path)
+      const item = storage['/' + file]
       if (item == null) {
-        return Promise.reject(new Error(`Cannot load "${key}"`))
+        return Promise.reject(new Error(`Cannot load "${file}"`))
       }
       if (typeof item !== 'string') {
-        return Promise.reject(new Error(`"${key}" is a binary file.`))
+        return Promise.reject(new Error(`"${file}" is a binary file.`))
       }
       return Promise.resolve(item)
     },
 
     async list (path: string = ''): Promise<DiskletListing> {
-      const key = normalizePath(path)
+      const file = normalizePath(path)
       const out: DiskletListing = {}
 
       // Try the path as a file:
-      if (storage[key] != null) out[key.slice(1)] = 'file'
+      if (storage['/' + file] != null) out[file] = 'file'
 
       // Try the path as a folder:
-      const prefix = key + '/'
+      const folder = folderizePath(file)
       for (const key of Object.keys(storage)) {
-        if (key.indexOf(prefix) !== 0) continue
+        if (key.indexOf('/' + folder) !== 0) continue
 
-        const slash = key.indexOf('/', prefix.length)
-        if (slash < 0) {
-          out[key.slice(1)] = 'file'
-        } else {
-          out[key.slice(1, slash)] = 'folder'
-        }
+        const slash = key.indexOf('/', 1 + folder.length)
+        if (slash < 0) out[key.slice(1)] = 'file'
+        else out[key.slice(1, slash)] = 'folder'
       }
 
       return Promise.resolve(out)
@@ -77,7 +74,7 @@ export function makeMemoryDisklet (storage: MemoryStorage = {}): Disklet {
       const flowHack: any = data
       const array = Uint8Array.from(flowHack)
 
-      storage[normalizePath(path)] = array
+      storage['/' + normalizePath(path)] = array
       return Promise.resolve()
     },
 
@@ -86,7 +83,7 @@ export function makeMemoryDisklet (storage: MemoryStorage = {}): Disklet {
         return Promise.reject(new TypeError('setText expects a string'))
       }
 
-      storage[normalizePath(path)] = text
+      storage['/' + normalizePath(path)] = text
       return Promise.resolve()
     }
   }

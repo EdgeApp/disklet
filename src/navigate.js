@@ -1,10 +1,10 @@
 // @flow
 
 import { type ArrayLike, type Disklet, type DiskletListing } from './index.js'
-import { normalizePath } from './paths.js'
+import { folderizePath, normalizePath } from './paths.js'
 
 export function navigateDisklet (disklet: Disklet, path: string): Disklet {
-  const prefix = normalizePath(path, true)
+  const prefix = folderizePath(normalizePath(path))
 
   return {
     delete (path: string): Promise<mixed> {

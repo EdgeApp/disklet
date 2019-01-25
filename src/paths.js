@@ -3,10 +3,8 @@
 /**
  * Interprets a path as a series of folder lookups,
  * handling special components like `.` and `..`.
- * @param prefix Returned paths look like `a/b/` when true,
- * or `/a/b` otherwise.
  */
-export function normalizePath (path: string, prefix?: boolean): string {
+export function normalizePath (path: string): string {
   if (/^\//.test(path)) throw new Error('Absolute paths are not supported')
   const parts = path.split('/')
 
@@ -22,7 +20,12 @@ export function normalizePath (path: string, prefix?: boolean): string {
   }
 
   // Array items from 0 to j are the path:
-  let out = ''
-  for (i = 0; i < j; ++i) out += prefix ? parts[i] + '/' : '/' + parts[i]
-  return out
+  return parts.slice(0, j).join('/')
+}
+
+/**
+ * Appends a slash if the path isn't blank.
+ */
+export function folderizePath (path: string) {
+  return path === '' ? path : path + '/'
 }

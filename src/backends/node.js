@@ -4,7 +4,7 @@ import fs from 'fs'
 import pathUtil from 'path'
 
 import { type ArrayLike, type Disklet, type DiskletListing } from '../index.js'
-import { normalizePath } from '../paths.js'
+import { folderizePath, normalizePath } from '../paths.js'
 
 // Promise versions of node.js file operations: -----------------------------
 
@@ -108,7 +108,7 @@ function getType (path: string): Promise<'file' | 'folder' | ''> {
 export function makeNodeDisklet (path: string): Disklet {
   const root = pathUtil.resolve(path)
   function locate (path: string) {
-    return pathUtil.join(root, normalizePath(path, true).replace(/\/$/, ''))
+    return pathUtil.join(root, normalizePath(path))
   }
 
   return {
@@ -137,14 +137,14 @@ export function makeNodeDisklet (path: string): Disklet {
     },
 
     list (path: string = ''): Promise<DiskletListing> {
+      const file = normalizePath(path)
       const nativePath = locate(path)
-      const prefix = normalizePath(path, true)
 
       return getType(nativePath).then(type => {
         const out: DiskletListing = {}
 
         if (type === 'file') {
-          out[prefix.replace(/\/$/, '')] = 'file'
+          out[file] = 'file'
           return out
         }
         if (type === 'folder') {
@@ -152,8 +152,9 @@ export function makeNodeDisklet (path: string): Disklet {
             Promise.all(
               names.map(name => getType(pathUtil.join(nativePath, name)))
             ).then(types => {
+              const folder = folderizePath(file)
               for (let i = 0; i < names.length; ++i) {
-                if (types[i] !== '') out[prefix + names[i]] = types[i]
+                if (types[i] !== '') out[folder + names[i]] = types[i]
               }
               return out
             })
