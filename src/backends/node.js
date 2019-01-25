@@ -4,7 +4,7 @@ import fs from 'fs'
 import pathUtil from 'path'
 
 import { type ArrayLike, type Disklet, type DiskletListing } from '../index.js'
-import { normalizePath } from '../internals.js'
+import { normalizePath } from '../paths.js'
 
 // Promise versions of node.js file operations: -----------------------------
 

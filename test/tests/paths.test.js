@@ -3,10 +3,10 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
-import { normalizePath } from '../src/internals.js'
+import { normalizePath } from '../../src/paths.js'
 
-describe('normalizePath', function () {
-  it('turns paths into folder prefixes', function () {
+describe('paths', function () {
+  it('normalizePath turns paths into folder prefixes', function () {
     expect(normalizePath('', true)).equals('')
     expect(normalizePath('.', true)).equals('')
     expect(normalizePath('./', true)).equals('')
@@ -18,7 +18,7 @@ describe('normalizePath', function () {
     expect(normalizePath('a/../b', true)).equals('b/')
   })
 
-  it('turns paths into absolute locations', function () {
+  it('normalizePath turns paths into absolute locations', function () {
     expect(normalizePath('', false)).equals('')
     expect(normalizePath('.', false)).equals('')
     expect(normalizePath('./', false)).equals('')
@@ -30,7 +30,7 @@ describe('normalizePath', function () {
     expect(normalizePath('a/../b', false)).equals('/b')
   })
 
-  it('rejects absolute paths', function () {
+  it('normalizePath rejects absolute paths', function () {
     expect(() => normalizePath('/a')).throws()
   })
 })

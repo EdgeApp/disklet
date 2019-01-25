@@ -2,8 +2,8 @@
 
 import { describe, it } from 'mocha'
 
-import { makeMemoryDisklet, mergeDisklets } from '../src/index.js'
-import { createFiles, testDisklet } from './common.js'
+import { makeMemoryDisklet, mergeDisklets } from '../../src/index.js'
+import { createFiles, testDisklet } from '../common.js'
 
 describe('merge disklets', function () {
   it('basic tests', async function () {

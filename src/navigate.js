@@ -1,7 +1,7 @@
 // @flow
 
 import { type ArrayLike, type Disklet, type DiskletListing } from './index.js'
-import { normalizePath } from './internals.js'
+import { normalizePath } from './paths.js'
 
 export function navigateDisklet (disklet: Disklet, path: string): Disklet {
   const prefix = normalizePath(path, true)

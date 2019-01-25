@@ -1,5 +1,6 @@
 // @flow
 
-import './backends.test.js'
-import './internals.test.js'
-import './legacy/legacy.test.js'
+import './tests/backends.test.js'
+import './tests/paths.test.js'
+import './tests/legacy/legacy.test.js'
+import './tests/merge.test.js'

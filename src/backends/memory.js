@@ -1,7 +1,7 @@
 // @flow
 
 import { type ArrayLike, type Disklet, type DiskletListing } from '../index.js'
-import { normalizePath } from '../internals.js'
+import { normalizePath } from '../paths.js'
 
 type MemoryStorage = { [key: string]: string | Uint8Array }
 

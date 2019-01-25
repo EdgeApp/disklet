@@ -3,8 +3,8 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
-import { logDisklet, makeMemoryDisklet } from '../src/index.js'
-import { testDisklet } from './common.js'
+import { logDisklet, makeMemoryDisklet } from '../../src/index.js'
+import { testDisklet } from '../common.js'
 
 describe('logged disklet', function () {
   it('basic tests', async function () {

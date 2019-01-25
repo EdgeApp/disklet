@@ -2,8 +2,8 @@
 
 import { assert, expect } from 'chai'
 
-import { type DiskletFolder } from '../../src/index.js'
-import { expectRejection } from '../expect-rejection.js'
+import { type DiskletFolder } from '../../../src/index.js'
+import { expectRejection } from '../../expect-rejection.js'
 
 function checkData (a, b) {
   expect(a.length).equals(b.length)

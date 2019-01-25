@@ -8,9 +8,9 @@ import {
   makeLocalStorageDisklet,
   makeMemoryDisklet,
   makeNodeDisklet
-} from '../src/index.js'
-import { testDisklet } from './common.js'
-import { FakeStorage } from './fake-storage.js'
+} from '../../src/index.js'
+import { testDisklet } from '../common.js'
+import { FakeStorage } from '../fake-storage.js'
 
 tmp.setGracefulCleanup()
 

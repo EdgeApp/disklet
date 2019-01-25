@@ -15,8 +15,8 @@ import {
   makeUnionFolder,
   mapAllFiles,
   mapFiles
-} from '../../src/index.js'
-import { FakeStorage } from '../fake-storage.js'
+} from '../../../src/index.js'
+import { FakeStorage } from '../../fake-storage.js'
 import { setupFiles, testFolder } from './legacy-helpers.js'
 
 tmp.setGracefulCleanup()
