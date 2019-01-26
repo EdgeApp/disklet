@@ -1,5 +1,11 @@
 # Disklet
 
+## 0.3.1 (2019-01-25)
+
+- Activate unit tests that were not running.
+- Fix `navigateDisklet` directory listing not to include the parent path.
+- Fix `logDisklet` to always return normalized paths.
+
 ## 0.3.0 (2018-11-16)
 
 - Add a new, radically simplified API. The existing API is still available but deprecated:
