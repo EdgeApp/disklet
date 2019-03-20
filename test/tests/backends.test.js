@@ -2,6 +2,7 @@
 
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
+import rimraf from 'rimraf'
 import tmp from 'tmp'
 
 import {
@@ -9,17 +10,16 @@ import {
   makeMemoryDisklet,
   makeNodeDisklet
 } from '../../src/index.js'
-import { testDisklet } from '../common.js'
+import { tests } from '../common.js'
 import { FakeStorage } from '../fake-storage.js'
 
-tmp.setGracefulCleanup()
-
 describe('localStorage disklet', function () {
-  it('basic tests', async function () {
-    const disklet = makeLocalStorageDisklet(new FakeStorage())
-
-    await testDisklet(disklet)
-  })
+  for (const name in tests) {
+    it(name, () => {
+      const disklet = makeLocalStorageDisklet(new FakeStorage())
+      return tests[name](disklet)
+    })
+  }
 
   it('load existing data', async function () {
     const storage = new FakeStorage({ 'file://my-prefix/a/b.txt': 'Hello' })
@@ -32,11 +32,12 @@ describe('localStorage disklet', function () {
 })
 
 describe('memory disklet', function () {
-  it('basic tests', async function () {
-    const disklet = makeMemoryDisklet()
-
-    await testDisklet(disklet)
-  })
+  for (const name in tests) {
+    it(name, () => {
+      const disklet = makeMemoryDisklet()
+      return tests[name](disklet)
+    })
+  }
 
   it('load existing data', async function () {
     const storage = { '/a/b.txt': 'Hello' }
@@ -47,12 +48,20 @@ describe('memory disklet', function () {
 })
 
 describe('node.js disklet', function () {
-  it('basic tests', async function () {
-    const path = await new Promise((resolve, reject) => {
-      tmp.dir({}, (err, path) => (err != null ? reject(err) : resolve(path)))
-    })
-    const disklet = makeNodeDisklet(path)
+  for (const name in tests) {
+    it(name, async () => {
+      const path = await new Promise((resolve, reject) => {
+        tmp.dir({}, (err, path) => (err != null ? reject(err) : resolve(path)))
+      })
+      const disklet = makeNodeDisklet(path)
 
-    await testDisklet(disklet)
-  })
+      try {
+        await tests[name](disklet)
+      } finally {
+        await new Promise((resolve, reject) =>
+          rimraf(path, err => (err != null ? reject(err) : resolve()))
+        )
+      }
+    })
+  }
 })
