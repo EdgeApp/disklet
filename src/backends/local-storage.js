@@ -49,7 +49,6 @@ export function makeLocalStorageDisklet (
 
     getText (path: string): Promise<string> {
       const file = normalizePath(path)
-
       const item = storage.getItem(prefix + file)
       if (item == null) {
         return Promise.reject(new Error(`Cannot load "${file}"`))
