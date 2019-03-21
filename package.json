@@ -13,11 +13,17 @@
     "Paul Puey <paul@airbitz.co>"
   ],
   "files": [
+    "android/build.gradle",
+    "android/src",
     "CHANGELOG.md",
-    "lib/*",
+    "ios/*.h",
+    "ios/*.m",
+    "ios/Disklet.xcodeproj",
+    "ios/Disklet.xcworkspace",
+    "lib",
     "package.json",
     "README.md",
-    "src/*"
+    "src"
   ],
   "main": "lib/disklet.cjs.js",
   "module": "lib/disklet.js",
