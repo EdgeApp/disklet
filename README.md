@@ -52,6 +52,10 @@ The library has tree-shaking support, so tools like [rollup.js](https://rollupjs
 
 Disklet requires a `Promise` implementation, but is plain ES5 otherwise. The library also includes TypeScript and Flow typings if you need them.
 
+## React Native
+
+To use this library on React Native, simply run `react-native link disklet` after installing via yarn / NPM.
+
 ## Legacy API
 
 Disklet used to have an older, more complicated API. To help porting old codebases to the new API, this library contains a `downgradeDisklet` function, which will convert a modern `Disklet` object to the older `Folder` interface.

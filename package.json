@@ -13,14 +13,21 @@
     "Paul Puey <paul@airbitz.co>"
   ],
   "files": [
+    "android/build.gradle",
+    "android/src",
     "CHANGELOG.md",
-    "lib/*",
+    "ios/*.h",
+    "ios/*.m",
+    "ios/Disklet.xcodeproj",
+    "ios/Disklet.xcworkspace",
+    "lib",
     "package.json",
     "README.md",
-    "src/*"
+    "src"
   ],
   "main": "lib/disklet.cjs.js",
   "module": "lib/disklet.js",
+  "browser": "lib/disklet.web.js",
   "types": "src/index.d.ts",
   "scripts": {
     "build": "rimraf lib && rollup -c",
@@ -31,11 +38,6 @@
     "prepare": "npm run build",
     "pretest": "rollup -c test/rollup.config.js",
     "test": "mocha -r source-map-support/register build/tests.js"
-  },
-  "browser": {
-    "fs": false,
-    "path": false,
-    "tmp": false
   },
   "dependencies": {
     "rfc4648": "^0.9.1"
@@ -49,12 +51,10 @@
     "chai": "^4.2.0",
     "eslint": "^5.8.0",
     "eslint-config-standard": "^12.0.0",
-    "eslint-config-standard-jsx": "^6.0.2",
     "eslint-plugin-flowtype": "^3.1.4",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-node": "^8.0.0",
     "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-standard": "^4.0.0",
     "flow-bin": "^0.78.0",
     "husky": "^0.13.3",
@@ -62,12 +62,8 @@
     "import-sort-parser-babylon": "^5.2.0",
     "import-sort-style-module": "^5.0.0",
     "lint-staged": "^8.0.4",
-    "metro-react-native-babel-preset": "0.49.0",
     "mocha": "^3.3.0",
     "prettier-eslint-cli": "^4.7.1",
-    "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.4",
-    "react-native-fs": "^2.12.1",
     "rimraf": "^2.6.2",
     "rollup": "0.48.0",
     "rollup-plugin-alias": "^1.4.0",

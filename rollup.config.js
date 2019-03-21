@@ -39,8 +39,21 @@ export default [
       { file: packageJson.module, format: 'es' }
     ],
     plugins: [
+      alias({ './react-native.js': 'src/backends/dummy.js' }),
+      babel(babelOpts),
+      flowEntry(),
+      filesize()
+    ],
+    sourcemap: true
+  },
+  // Browser build:
+  {
+    external,
+    input: 'src/index.js',
+    output: [{ file: packageJson.browser, format: 'cjs' }],
+    plugins: [
       alias({
-        './node.js': 'src/backends/node.js',
+        './node.js': 'src/backends/dummy.js',
         './react-native.js': 'src/backends/dummy.js'
       }),
       babel(babelOpts),
@@ -55,10 +68,7 @@ export default [
     input: 'src/index.js',
     output: [{ file: packageJson['react-native'], format: 'cjs' }],
     plugins: [
-      alias({
-        './node.js': 'src/backends/dummy.js',
-        './react-native.js': 'src/backends/react-native.js'
-      }),
+      alias({ './node.js': 'src/backends/dummy.js' }),
       babel(babelOpts),
       flowEntry(),
       filesize()

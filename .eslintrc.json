@@ -1,5 +1,5 @@
 {
-  "extends": ["standard", "standard-jsx", "plugin:flowtype/recommended"],
+  "extends": ["standard", "plugin:flowtype/recommended"],
   "parser": "babel-eslint",
   "plugins": ["flowtype", "standard"],
   "rules": {
