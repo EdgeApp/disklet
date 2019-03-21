@@ -21,6 +21,7 @@
   ],
   "main": "lib/disklet.cjs.js",
   "module": "lib/disklet.js",
+  "browser": "lib/disklet.web.js",
   "types": "src/index.d.ts",
   "scripts": {
     "build": "rimraf lib && rollup -c",
@@ -31,11 +32,6 @@
     "prepare": "npm run build",
     "pretest": "rollup -c test/rollup.config.js",
     "test": "mocha -r source-map-support/register build/tests.js"
-  },
-  "browser": {
-    "fs": false,
-    "path": false,
-    "tmp": false
   },
   "dependencies": {
     "rfc4648": "^0.9.1"
