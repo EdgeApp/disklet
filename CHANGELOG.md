@@ -1,5 +1,9 @@
 # Disklet
 
+## 0.4.0 (2019-03-21)
+
+- Implement the React Native backend directly, avoiding the external dependency on `react-native-fs`. The `react-native link disklet` command works instead now.
+
 ## 0.3.1 (2019-01-25)
 
 - Activate unit tests that were not running.

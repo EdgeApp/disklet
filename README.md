@@ -178,11 +178,11 @@ Recursively deletes a file or folder (including all contents). Does nothing if t
 
 #### `getData(path: string): Promise<Uint8Array>`
 
-Reads a file's contents as binary data. The path must exisit and be a binary file, or this will fail.
+Reads a file's contents as binary data. The path must exist and be a binary file, or this will fail.
 
 #### `getText(path: string): Promise<string>`
 
-Reads a file's contents as text. The path must exisit and be a text file, or this will fail.
+Reads a file's contents as text. The path must exist and be a text file, or this will fail.
 
 #### `list(path?: string): Promise<DiskletListing>`
 
