@@ -2,6 +2,7 @@
   "name": "disklet",
   "version": "0.4.0",
   "description": "A tiny, composable filesystem API",
+  "homepage": "https://github.com/EdgeApp/disklet",
   "repository": {
     "type": "git",
     "url": "git@github.com:Airbitz/disklet.git"
@@ -16,8 +17,8 @@
     "android/build.gradle",
     "android/src",
     "CHANGELOG.md",
-    "ios/*.h",
-    "ios/*.m",
+    "ios/Disklet.h",
+    "ios/Disklet.m",
     "ios/Disklet.xcodeproj",
     "ios/Disklet.xcworkspace",
     "lib",
@@ -31,13 +32,20 @@
   "types": "src/index.d.ts",
   "scripts": {
     "build": "rimraf lib && rollup -c",
-    "precommit": "lint-staged && flow && npm test",
     "flow": "flow",
     "format": "import-sort -l --write '*.js' 'src/**/*.js' 'test/**/*.js'; prettier-eslint --write '*.js' 'src/**/*.js' 'test/**/*.js'",
     "lint": "eslint '*.js' 'src/**/*.js' 'test/**/*.js'",
+    "precommit": "lint-staged && flow && npm test",
     "prepare": "npm run build",
     "pretest": "rollup -c test/rollup.config.js",
     "test": "mocha -r source-map-support/register build/tests.js"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint",
+      "import-sort --list-different",
+      "prettier-eslint --list-different"
+    ]
   },
   "dependencies": {
     "rfc4648": "^0.9.1"
@@ -78,13 +86,6 @@
       "parser": "babylon",
       "style": "module"
     }
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint",
-      "import-sort --list-different",
-      "prettier-eslint --list-different"
-    ]
   },
   "react-native": "lib/disklet.rn.js"
 }
