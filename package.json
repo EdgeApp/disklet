@@ -17,6 +17,7 @@
     "android/build.gradle",
     "android/src",
     "CHANGELOG.md",
+    "disklet.podspec",
     "ios/Disklet.h",
     "ios/Disklet.m",
     "ios/Disklet.xcodeproj",
