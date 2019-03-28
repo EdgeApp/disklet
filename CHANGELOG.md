@@ -1,5 +1,10 @@
 # Disklet
 
+## 0.4.1 (2019-03-28)
+
+- Add `disklet.podspec` file for iOS React Native.
+- Simplify `build.gradle` file for Android React Native.
+
 ## 0.4.0 (2019-03-21)
 
 - Implement the React Native backend directly, avoiding the external dependency on `react-native-fs`. The `react-native link disklet` command works instead now.
