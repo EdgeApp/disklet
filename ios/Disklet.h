@@ -1,8 +1,7 @@
 #import <React/RCTBridgeModule.h>
 
-@interface Disklet : NSObject <RCTBridgeModule>
-{
-    NSString *basePath;
+@interface Disklet : NSObject <RCTBridgeModule> {
+  NSString *basePath;
 }
 
 @end

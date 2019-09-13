@@ -1,13 +1,17 @@
+# Build output:
+build/
+lib/
+
+# Package managers:
+node_modules/
+npm-debug.log
+package-lock.json
+yarn-error.log
+
+# Editors:
 .DS_Store
 .idea/
 .vscode/
-
-build/
-lib/
-node_modules/
-
-npm-debug.log
-yarn-error.log
 
 # Xcode
 !default.mode1v3
@@ -29,4 +33,5 @@ xcuserdata
 # Android/IntelliJ
 .gradle
 *.iml
+*.jar
 local.properties
