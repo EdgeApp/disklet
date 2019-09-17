@@ -1,5 +1,9 @@
 # Disklet
 
+## 0.4.2 (2019-09-17)
+
+- Upgrade to rfc4648 ^1.0.0.
+
 ## 0.4.1 (2019-03-28)
 
 - Add `disklet.podspec` file for iOS React Native.

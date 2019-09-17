@@ -1,6 +1,6 @@
 {
   "name": "disklet",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A tiny, composable filesystem API",
   "homepage": "https://github.com/EdgeApp/disklet",
   "repository": {
