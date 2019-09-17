@@ -1,6 +1,8 @@
-export type DiskletListing = { [path: string]: 'file' | 'folder' }
+export interface DiskletListing {
+  [path: string]: 'file' | 'folder'
+}
 
-export type Disklet = {
+export interface Disklet {
   // Like `rm -r path`:
   delete(path: string): Promise<unknown>
 
@@ -16,11 +18,6 @@ export type Disklet = {
   setText(path: string, text: string): Promise<unknown>
 }
 
-export function deepList(
-  disklet: Disklet,
-  path?: string
-): Promise<DiskletListing>
-
 type LogOperation =
   | 'delete'
   | 'get data'
@@ -29,24 +26,32 @@ type LogOperation =
   | 'set data'
   | 'set text'
 
-type LogOptions = {
+interface LogOptions {
   callback?: (path: string, operation: LogOperation) => unknown
   verbose?: boolean
 }
 
-type MemoryStorage = { [key: string]: string | Uint8Array }
+interface MemoryStorage {
+  [key: string]: string | Uint8Array
+}
 
-export function logDisklet(disklet: Disklet, opts?: LogOptions): Disklet
-export function mergeDisklets(master: Disklet, fallback: Disklet): Disklet
-export function navigateDisklet(disklet: Disklet, path: string): Disklet
-
-export function makeLocalStorageDisklet(
+// Storage backends:
+declare function makeLocalStorageDisklet(
   storage?: Storage,
   opts?: { prefix?: string }
 ): Disklet
-export function makeMemoryDisklet(storage?: MemoryStorage): Disklet
-export function makeNodeDisklet(path: string): Disklet
-export function makeReactNativeDisklet(): Disklet
+declare function makeMemoryDisklet(storage?: MemoryStorage): Disklet
+declare function makeNodeDisklet(path: string): Disklet
+declare function makeReactNativeDisklet(): Disklet
+
+// Helpers:
+declare function deepList(
+  disklet: Disklet,
+  path?: string
+): Promise<DiskletListing>
+declare function logDisklet(disklet: Disklet, opts?: LogOptions): Disklet
+declare function mergeDisklets(master: Disklet, fallback: Disklet): Disklet
+declare function navigateDisklet(disklet: Disklet, path: string): Disklet
 
 // legacy API ----------------------------------------------------------------
 
@@ -54,8 +59,8 @@ export interface Folder {
   delete(): Promise<void>
   file(name: string): File
   folder(name: string): Folder
-  listFiles(): Promise<Array<string>>
-  listFolders(): Promise<Array<string>>
+  listFiles(): Promise<string[]>
+  listFolders(): Promise<string[]>
 }
 
 export interface File {
@@ -68,23 +73,23 @@ export interface File {
 
 // Helper functions:
 
-export function locateFile(folder: Folder, path: string): File
-export function locateFolder(folder: Folder, path: string): Folder
+declare function locateFile(folder: Folder, path: string): File
+declare function locateFolder(folder: Folder, path: string): Folder
 
-export function mapAllFiles(
+declare function mapAllFiles(
   folder: Folder,
   callback: (file: File, path: string, parentFolder: Folder) => any
-): Promise<Array<any>>
+): Promise<any[]>
 
-export function mapFiles(
+declare function mapFiles(
   folder: Folder,
   callback: (file: File, name: string, parent: Folder) => any
-): Promise<Array<any>>
+): Promise<any[]>
 
-export function mapFolders(
+declare function mapFolders(
   folder: Folder,
   callback: (folder: Folder, name: string, parent: Folder) => any
-): Promise<Array<any>>
+): Promise<any[]>
 
 // Folder types:
 
@@ -107,16 +112,16 @@ interface LoggedFolderOpts {
   verbose?: boolean
 }
 
-export function makeLocalStorageFolder(
+declare function makeLocalStorageFolder(
   storage?: object,
   opts?: LocalStorageOpts
 ): Folder
 
-export function makeLoggedFolder(
+declare function makeLoggedFolder(
   folder: Folder,
   opts?: LoggedFolderOpts
 ): Folder
 
-export function makeMemoryFolder(storage?: object): Folder
-export function makeNodeFolder(path: string): Folder
-export function makeUnionFolder(master: Folder, fallback: Folder): Folder
+declare function makeMemoryFolder(storage?: object): Folder
+declare function makeNodeFolder(path: string): Folder
+declare function makeUnionFolder(master: Folder, fallback: Folder): Folder

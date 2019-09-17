@@ -67,19 +67,19 @@ The [old functions](./docs/legacy.md) are deprecated but still present for now. 
 The `Disklet` interface has the following methods:
 
 ```typescript
-type Disklet = {
+export interface Disklet {
   // Like `rm -r path`:
-  delete(path: string): Promise<unknown>,
+  delete(path: string): Promise<unknown>
 
   // Like `cat path`:
-  getData(path: string): Promise<Uint8Array>,
-  getText(path: string): Promise<string>,
+  getData(path: string): Promise<Uint8Array>
+  getText(path: string): Promise<string>
 
   // Like `ls -l path`:
-  list(path?: string): Promise<DiskletListing>,
+  list(path?: string): Promise<DiskletListing>
 
   // Like `mkdir -p $(dirname path); echo data > path`:
-  setData(path: string, data: ArrayLike<number>): Promise<unknown>,
+  setData(path: string, data: ArrayLike<number>): Promise<unknown>
   setText(path: string, text: string): Promise<unknown>
 }
 
