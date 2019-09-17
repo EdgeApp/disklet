@@ -35,9 +35,19 @@ interface MemoryStorage {
   [key: string]: string | Uint8Array
 }
 
+// The Typescript DOM library isn't available on React Native,
+// so work around that:
+interface WebStorage {
+  readonly length: number;
+  getItem(key: string): string | null;
+  key(index: number): string | null;
+  removeItem(key: string): void;
+  setItem(key: string, value: string): void;
+}
+
 // Storage backends:
 declare function makeLocalStorageDisklet(
-  storage?: Storage,
+  storage?: WebStorage,
   opts?: { prefix?: string }
 ): Disklet
 declare function makeMemoryDisklet(storage?: MemoryStorage): Disklet
