@@ -3,13 +3,14 @@
 formatJava() {
   tool="google-java-format-1.7-all-deps.jar"
   url="https://github.com/google/google-java-format/releases/download/google-java-format-1.7/$tool"
+  jar="./android/$tool"
 
   # If the tool is missing, grab it from GitHub:
-  if [ ! -e "./$tool" ]; then
-    curl -L -o "./$tool" "$url"
+  if [ ! -e "$jar" ]; then
+    curl -L -o "$jar" "$url"
   fi
 
-  java -jar "./$tool" --replace ./android/src/main/java/com/reactlibrary/*.java
+  java -jar "$jar" --replace ./android/src/main/java/com/reactlibrary/*.java
 }
 
 formatObjectiveC() {
