@@ -49,7 +49,7 @@
     ]
   },
   "dependencies": {
-    "rfc4648": "^0.9.1"
+    "rfc4648": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
