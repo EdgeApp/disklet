@@ -1,6 +1,6 @@
 // @flow
 
-import { type ArrayLike, type Disklet, type DiskletListing } from './index.js'
+import { type ArrayLike, type Disklet, type DiskletListing } from '../index.js'
 import { folderizePath, normalizePath } from './paths.js'
 
 export function navigateDisklet(disklet: Disklet, path: string): Disklet {

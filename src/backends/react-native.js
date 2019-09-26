@@ -4,8 +4,8 @@
 import { NativeModules } from 'react-native'
 import { base64 } from 'rfc4648'
 
+import { normalizePath } from '../helpers/paths.js'
 import { type ArrayLike, type Disklet, type DiskletListing } from '../index.js'
-import { normalizePath } from '../paths.js'
 
 const native = NativeModules.Disklet
 

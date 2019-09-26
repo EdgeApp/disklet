@@ -1,9 +1,8 @@
 // @flow
 
-import { makeReactNativeDisklet } from './backends/dummy.js'
+import { makeNodeDisklet, makeReactNativeDisklet } from './backends/dummy.js'
 import { makeLocalStorageDisklet } from './backends/local-storage.js'
 import { makeMemoryDisklet } from './backends/memory.js'
-import { makeNodeDisklet } from './backends/node.js'
 import { type DiskletFolder, downgradeDisklet } from './legacy/legacy.js'
 
 export * from './helpers/helpers.js'

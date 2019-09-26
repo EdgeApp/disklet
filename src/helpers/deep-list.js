@@ -1,6 +1,6 @@
 // @flow
 
-import { type Disklet, type DiskletListing } from './index.js'
+import { type Disklet, type DiskletListing } from '../index.js'
 
 /**
  * Recursively lists a folder.

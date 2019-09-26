@@ -1,6 +1,6 @@
 // @flow
 
-import { type ArrayLike, type Disklet, type DiskletListing } from './index.js'
+import { type ArrayLike, type Disklet, type DiskletListing } from '../index.js'
 import { normalizePath } from './paths.js'
 
 type LogOperation =

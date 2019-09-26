@@ -1,11 +1,5 @@
 // @flow
 
-import {
-  makeLocalStorageDisklet,
-  makeMemoryDisklet,
-  makeNodeDisklet,
-  makeReactNativeDisklet
-} from '../backends/backends.js'
 import { type ArrayLike } from '../index.js'
 import { downgradeDisklet } from './downgrade.js'
 import {
@@ -45,25 +39,4 @@ export type DiskletFolder = {
   folder(name: string): DiskletFolder,
   listFiles(): Promise<Array<string>>,
   listFolders(): Promise<Array<string>>
-}
-
-// downgrade -----------------------------------------------------------------
-
-export function makeLocalStorageFolder(
-  storage: Storage,
-  opts?: { prefix?: string }
-): DiskletFolder {
-  return downgradeDisklet(makeLocalStorageDisklet(storage, opts))
-}
-
-export function makeMemoryFolder(storage?: Object): DiskletFolder {
-  return downgradeDisklet(makeMemoryDisklet(storage))
-}
-
-export function makeNodeFolder(path: string): DiskletFolder {
-  return downgradeDisklet(makeNodeDisklet(path))
-}
-
-export function makeReactNativeFolder(): DiskletFolder {
-  return downgradeDisklet(makeReactNativeDisklet())
 }

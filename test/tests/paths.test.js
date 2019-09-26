@@ -3,7 +3,7 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
-import { folderizePath, normalizePath } from '../../src/paths.js'
+import { folderizePath, normalizePath } from '../../src/helpers/paths.js'
 
 describe('paths', function() {
   it('normalizePath turns paths into simple locations', function() {

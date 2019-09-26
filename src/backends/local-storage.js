@@ -2,8 +2,8 @@
 
 import { base64 } from 'rfc4648'
 
+import { folderizePath, normalizePath } from '../helpers/paths.js'
 import { type ArrayLike, type Disklet, type DiskletListing } from '../index.js'
-import { folderizePath, normalizePath } from '../paths.js'
 
 /**
  * Lists the keys in a localStorage object.
