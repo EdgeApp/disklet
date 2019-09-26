@@ -34,8 +34,8 @@
   "scripts": {
     "build": "rimraf lib && rollup -c",
     "flow": "flow",
-    "format": "import-sort -l --write '*.js' 'src/**/*.js' 'test/**/*.js'; prettier-eslint --write '*.js' 'src/**/*.js' 'test/**/*.js'",
-    "lint": "eslint '*.js' 'src/**/*.js' 'test/**/*.js'",
+    "format": "import-sort -l --write '*.js' 'src/**/*.js' 'test/**/*.js'; npm run lint -- --fix",
+    "lint": "eslint --ignore-path .gitignore .",
     "precommit": "lint-staged && flow && npm test",
     "prepare": "npm run build",
     "pretest": "rollup -c test/rollup.config.js",
@@ -43,9 +43,8 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint",
       "import-sort --list-different",
-      "prettier-eslint --list-different"
+      "eslint"
     ]
   },
   "dependencies": {
@@ -56,15 +55,16 @@
     "@babel/plugin-transform-object-assign": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-flow": "^7.0.0",
-    "babel-eslint": "^10.0.1",
+    "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
-    "eslint": "^5.8.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-flowtype": "^3.1.4",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^8.0.0",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0",
+    "eslint": "^6.4.0",
+    "eslint-config-standard-kit": "^0.14.0",
+    "eslint-plugin-flowtype": "^4.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "flow-bin": "^0.78.0",
     "husky": "^0.13.3",
     "import-sort-cli": "^5.2.0",
@@ -72,7 +72,7 @@
     "import-sort-style-module": "^5.0.0",
     "lint-staged": "^8.0.4",
     "mocha": "^6.2.0",
-    "prettier-eslint-cli": "^4.7.1",
+    "prettier": "^1.18.2",
     "rimraf": "^2.6.2",
     "rollup": "0.48.0",
     "rollup-plugin-alias": "^1.4.0",

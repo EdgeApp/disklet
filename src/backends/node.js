@@ -1,4 +1,5 @@
 // @flow
+/* global Buffer */
 
 import fs from 'fs'
 import pathUtil from 'path'
@@ -12,7 +13,7 @@ function mkdir (path) {
   return new Promise((resolve, reject) =>
     fs.mkdir(
       path,
-      void 0,
+     undefined,
       err => (err != null && err.code !== 'EEXIST' ? reject(err) : resolve())
     )
   )
