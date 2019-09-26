@@ -24,7 +24,9 @@ const babelOpts = {
 }
 
 const external = [
-  ...Object.keys(packageJson.browser),
+  'fs',
+  'path',
+  'react-native',
   ...Object.keys(packageJson.dependencies),
   ...Object.keys(packageJson.devDependencies)
 ]
@@ -35,44 +37,51 @@ export default [
     external,
     input: 'src/index.js',
     output: [
-      { file: packageJson.main, format: 'cjs' },
-      { file: packageJson.module, format: 'es' }
+      { file: packageJson.main, format: 'cjs', sourcemap: true },
+      { file: packageJson.module, format: 'es', sourcemap: true }
     ],
     plugins: [
-      alias({ './react-native.js': 'src/backends/dummy.js' }),
+      alias({
+        entries: [
+          { find: './react-native.js', replacement: 'src/backends/dummy.js' }
+        ]
+      }),
       babel(babelOpts),
       flowEntry(),
       filesize()
-    ],
-    sourcemap: true
+    ]
   },
   // Browser build:
   {
     external,
     input: 'src/index.js',
-    output: [{ file: packageJson.browser, format: 'cjs' }],
+    output: [{ file: packageJson.browser, format: 'cjs', sourcemap: true }],
     plugins: [
       alias({
-        './node.js': 'src/backends/dummy.js',
-        './react-native.js': 'src/backends/dummy.js'
+        entries: [
+          { find: './node.js', replacement: 'src/backends/dummy.js' },
+          { find: './react-native.js', replacement: 'src/backends/dummy.js' }
+        ]
       }),
       babel(babelOpts),
       flowEntry(),
       filesize()
-    ],
-    sourcemap: true
+    ]
   },
   // React Native build:
   {
     external,
     input: 'src/index.js',
-    output: [{ file: packageJson['react-native'], format: 'cjs' }],
+    output: [
+      { file: packageJson['react-native'], format: 'cjs', sourcemap: true }
+    ],
     plugins: [
-      alias({ './node.js': 'src/backends/dummy.js' }),
+      alias({
+        entries: [{ find: './node.js', replacement: 'src/backends/dummy.js' }]
+      }),
       babel(babelOpts),
       flowEntry(),
       filesize()
-    ],
-    sourcemap: true
+    ]
   }
 ]
