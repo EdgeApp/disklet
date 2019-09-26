@@ -4,7 +4,7 @@
  * Interprets a path as a series of folder lookups,
  * handling special components like `.` and `..`.
  */
-export function normalizePath (path: string): string {
+export function normalizePath(path: string): string {
   if (/^\//.test(path)) throw new Error('Absolute paths are not supported')
   const parts = path.split('/')
 
@@ -26,6 +26,6 @@ export function normalizePath (path: string): string {
 /**
  * Appends a slash if the path isn't blank.
  */
-export function folderizePath (path: string) {
+export function folderizePath(path: string) {
   return path === '' ? path : path + '/'
 }

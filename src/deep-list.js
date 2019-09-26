@@ -5,7 +5,7 @@ import { type Disklet, type DiskletListing } from './index.js'
 /**
  * Recursively lists a folder.
  */
-export function deepList (
+export function deepList(
   disklet: Disklet,
   path?: string
 ): Promise<DiskletListing> {

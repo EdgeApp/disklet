@@ -6,7 +6,7 @@ import { type DiskletFile, type DiskletFolder } from './legacy.js'
  * Interprets a path as a series of folder lookups,
  * handling special components like `.` and `..`.
  */
-function followPath (folder: DiskletFolder, parts: Array<string>) {
+function followPath(folder: DiskletFolder, parts: Array<string>) {
   let i = 0 // Read index
   let j = 0 // Write index
 
@@ -29,7 +29,7 @@ function followPath (folder: DiskletFolder, parts: Array<string>) {
 /**
  * Navigates down to the file indicated by the path.
  */
-export function locateFile (folder: DiskletFolder, path: string): DiskletFile {
+export function locateFile(folder: DiskletFolder, path: string): DiskletFile {
   const parts = path.split('/')
   const filename = parts.pop()
   return followPath(folder, parts).file(filename)
@@ -38,7 +38,7 @@ export function locateFile (folder: DiskletFolder, path: string): DiskletFile {
 /**
  * Navigates down to the sub-folder indicated by the path.
  */
-export function locateFolder (
+export function locateFolder(
   folder: DiskletFolder,
   path: string
 ): DiskletFolder {
@@ -61,7 +61,7 @@ type FolderIterator = (
 /**
  * Applies an async function to all the files in a folder.
  */
-export function mapFiles (
+export function mapFiles(
   folder: DiskletFolder,
   f: FileIterator
 ): Promise<Array<any>> {
@@ -75,7 +75,7 @@ export function mapFiles (
 /**
  * Applies an async function to all the sub-folders in a folder.
  */
-export function mapFolders (
+export function mapFolders(
   folder: DiskletFolder,
   f: FolderIterator
 ): Promise<Array<any>> {
@@ -90,11 +90,11 @@ export function mapFolders (
  * Recursively applies an async function to all the files in a folder tree.
  * The file names are expanded into paths, and the result is a flat array.
  */
-export function mapAllFiles (
+export function mapAllFiles(
   folder: DiskletFolder,
   f: FileIterator
 ): Promise<Array<any>> {
-  function recurse (folder, f, prefix): Promise<Array<any>> {
+  function recurse(folder, f, prefix): Promise<Array<any>> {
     return Promise.all([
       mapFiles(folder, (file, name) => f(file, prefix + name, folder)),
       mapFolders(folder, (folder, name) =>

@@ -16,7 +16,7 @@ type LogOptions = {
   verbose?: boolean
 }
 
-export function logDisklet (disklet: Disklet, opts: LogOptions = {}): Disklet {
+export function logDisklet(disklet: Disklet, opts: LogOptions = {}): Disklet {
   const {
     callback = (path, operation) => console.log(`${operation} "${path}"`),
     verbose
@@ -29,32 +29,32 @@ export function logDisklet (disklet: Disklet, opts: LogOptions = {}): Disklet {
   }
 
   return {
-    delete (path: string): Promise<mixed> {
+    delete(path: string): Promise<mixed> {
       log('delete', normalizePath(path))
       return disklet.delete(path)
     },
 
-    getData (path: string): Promise<Uint8Array> {
+    getData(path: string): Promise<Uint8Array> {
       log('get data', normalizePath(path))
       return disklet.getData(path)
     },
 
-    getText (path: string): Promise<string> {
+    getText(path: string): Promise<string> {
       log('get text', normalizePath(path))
       return disklet.getText(path)
     },
 
-    list (path?: string): Promise<DiskletListing> {
+    list(path?: string): Promise<DiskletListing> {
       log('list', path != null ? normalizePath(path) : '')
       return disklet.list(path)
     },
 
-    setData (path: string, data: ArrayLike<number>): Promise<mixed> {
+    setData(path: string, data: ArrayLike<number>): Promise<mixed> {
       log('set data', normalizePath(path))
       return disklet.setData(path, data)
     },
 
-    setText (path: string, text: string): Promise<mixed> {
+    setText(path: string, text: string): Promise<mixed> {
       log('set text', normalizePath(path))
       return disklet.setText(path, text)
     }

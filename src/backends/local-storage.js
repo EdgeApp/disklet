@@ -8,7 +8,7 @@ import { folderizePath, normalizePath } from '../paths.js'
 /**
  * Lists the keys in a localStorage object.
  */
-function storageKeys (storage): Array<string> {
+function storageKeys(storage): Array<string> {
   const out = []
   for (let i = 0; i < storage.length; ++i) {
     const key = storage.key(i)
@@ -20,14 +20,14 @@ function storageKeys (storage): Array<string> {
 /**
  * Emulates a filesystem in memory.
  */
-export function makeLocalStorageDisklet (
+export function makeLocalStorageDisklet(
   storage: Storage = window.localStorage,
   opts: { prefix?: string } = {}
 ): Disklet {
   const prefix = opts.prefix != null ? folderizePath(opts.prefix) : '/'
 
   return {
-    delete (path: string): Promise<mixed> {
+    delete(path: string): Promise<mixed> {
       const file = normalizePath(path)
 
       // Try deleteing as a file:
@@ -43,11 +43,11 @@ export function makeLocalStorageDisklet (
       return Promise.resolve()
     },
 
-    getData (path: string): Promise<Uint8Array> {
+    getData(path: string): Promise<Uint8Array> {
       return this.getText(path).then(text => base64.parse(text))
     },
 
-    getText (path: string): Promise<string> {
+    getText(path: string): Promise<string> {
       const file = normalizePath(path)
       const item = storage.getItem(prefix + file)
       if (item == null) {
@@ -56,7 +56,7 @@ export function makeLocalStorageDisklet (
       return Promise.resolve(item)
     },
 
-    async list (path: string = ''): Promise<DiskletListing> {
+    async list(path: string = ''): Promise<DiskletListing> {
       const file = normalizePath(path)
       const out: DiskletListing = {}
 
@@ -76,11 +76,11 @@ export function makeLocalStorageDisklet (
       return Promise.resolve(out)
     },
 
-    setData (path: string, data: ArrayLike<number>) {
+    setData(path: string, data: ArrayLike<number>) {
       return this.setText(path, base64.stringify(data))
     },
 
-    setText (path: string, text: string): Promise<mixed> {
+    setText(path: string, text: string): Promise<mixed> {
       if (typeof text !== 'string') {
         return Promise.reject(new TypeError('setText expects a string'))
       }

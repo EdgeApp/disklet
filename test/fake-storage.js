@@ -2,31 +2,31 @@
  * Emulates the `localStorage` browser API.
  */
 export class FakeStorage {
-  constructor (items = {}) {
+  constructor(items = {}) {
     this._items = items
   }
 
-  getItem (key) {
+  getItem(key) {
     return key in this._items ? this._items[key] : null
   }
 
-  setItem (key, value) {
+  setItem(key, value) {
     this._items[key] = value
   }
 
-  removeItem (key) {
+  removeItem(key) {
     delete this._items[key]
   }
 
-  key (n) {
+  key(n) {
     return Object.keys(this._items)[n]
   }
 
-  clear () {
+  clear() {
     this._items = {}
   }
 
-  get length () {
+  get length() {
     return Object.keys(this._items).length
   }
 }

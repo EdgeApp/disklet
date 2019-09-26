@@ -13,7 +13,7 @@ import {
 import { tests } from '../common.js'
 import { FakeStorage } from '../fake-storage.js'
 
-describe('localStorage disklet', function () {
+describe('localStorage disklet', function() {
   for (const name in tests) {
     it(name, () => {
       const disklet = makeLocalStorageDisklet(new FakeStorage())
@@ -21,7 +21,7 @@ describe('localStorage disklet', function () {
     })
   }
 
-  it('load existing data', async function () {
+  it('load existing data', async function() {
     const storage = new FakeStorage({ 'file://my-prefix/a/b.txt': 'Hello' })
     const disklet = makeLocalStorageDisklet(storage, {
       prefix: 'file://my-prefix'
@@ -31,7 +31,7 @@ describe('localStorage disklet', function () {
   })
 })
 
-describe('memory disklet', function () {
+describe('memory disklet', function() {
   for (const name in tests) {
     it(name, () => {
       const disklet = makeMemoryDisklet()
@@ -39,7 +39,7 @@ describe('memory disklet', function () {
     })
   }
 
-  it('load existing data', async function () {
+  it('load existing data', async function() {
     const storage = { '/a/b.txt': 'Hello' }
     const disklet = makeMemoryDisklet(storage)
 
@@ -47,7 +47,7 @@ describe('memory disklet', function () {
   })
 })
 
-describe('node.js disklet', function () {
+describe('node.js disklet', function() {
   for (const name in tests) {
     it(name, async () => {
       const path = await new Promise((resolve, reject) => {

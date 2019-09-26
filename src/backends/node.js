@@ -9,41 +9,36 @@ import { folderizePath, normalizePath } from '../paths.js'
 
 // Promise versions of node.js file operations: -----------------------------
 
-function mkdir (path) {
+function mkdir(path) {
   return new Promise((resolve, reject) =>
-    fs.mkdir(
-      path,
-     undefined,
-      err => (err != null && err.code !== 'EEXIST' ? reject(err) : resolve())
+    fs.mkdir(path, undefined, err =>
+      err != null && err.code !== 'EEXIST' ? reject(err) : resolve()
     )
   )
 }
 
-function rmdir (path) {
+function rmdir(path) {
   return new Promise((resolve, reject) =>
     fs.rmdir(path, (err, out) => (err != null ? reject(err) : resolve(out)))
   )
 }
 
-function readdir (path) {
+function readdir(path) {
   return new Promise((resolve, reject) =>
     fs.readdir(path, (err, out) => (err != null ? reject(err) : resolve(out)))
   )
 }
 
-function unlink (path) {
+function unlink(path) {
   return new Promise((resolve, reject) =>
     fs.unlink(path, (err, out) => (err != null ? reject(err) : resolve(out)))
   )
 }
 
-function writeFile (path, data, opts) {
+function writeFile(path, data, opts) {
   return new Promise((resolve, reject) =>
-    fs.writeFile(
-      path,
-      data,
-      opts,
-      (err, out) => (err != null ? reject(err) : resolve(out))
+    fs.writeFile(path, data, opts, (err, out) =>
+      err != null ? reject(err) : resolve(out)
     )
   )
 }
@@ -53,7 +48,7 @@ function writeFile (path, data, opts) {
 /**
  * Recursively deletes a file or directory.
  */
-function deepDelete (path: string): Promise<mixed> {
+function deepDelete(path: string): Promise<mixed> {
   return getType(path).then(type => {
     if (type === 'file') {
       return unlink(path)
@@ -71,7 +66,7 @@ function deepDelete (path: string): Promise<mixed> {
 /**
  * Recursively creates a directory.
  */
-function deepMkdir (path) {
+function deepMkdir(path) {
   return mkdir(path).catch(err => {
     if (err.code !== 'ENOENT') throw err
     return deepMkdir(pathUtil.dirname(path)).then(() => mkdir(path))
@@ -81,7 +76,7 @@ function deepMkdir (path) {
 /**
  * Writes a file, creating its directory if needed.
  */
-function deepWriteFile (path, data, opts) {
+function deepWriteFile(path, data, opts) {
   return writeFile(path, data, opts).catch(err => {
     if (err.code !== 'ENOENT') throw err
     return deepMkdir(pathUtil.dirname(path)).then(() =>
@@ -93,7 +88,7 @@ function deepWriteFile (path, data, opts) {
 /**
  * Returns a path's type, or '' if anything goes wrong.
  */
-function getType (path: string): Promise<'file' | 'folder' | ''> {
+function getType(path: string): Promise<'file' | 'folder' | ''> {
   return new Promise(resolve =>
     fs.stat(path, (err, out) => {
       if (err != null) resolve('')
@@ -106,38 +101,34 @@ function getType (path: string): Promise<'file' | 'folder' | ''> {
 
 // --------------------------------------------------------------------------
 
-export function makeNodeDisklet (path: string): Disklet {
+export function makeNodeDisklet(path: string): Disklet {
   const root = pathUtil.resolve(path)
-  function locate (path: string) {
+  function locate(path: string) {
     return pathUtil.join(root, normalizePath(path))
   }
 
   return {
-    delete (path: string): Promise<mixed> {
+    delete(path: string): Promise<mixed> {
       return deepDelete(locate(path))
     },
 
-    getData (path: string): Promise<Uint8Array> {
+    getData(path: string): Promise<Uint8Array> {
       return new Promise((resolve, reject) =>
-        fs.readFile(
-          locate(path),
-          {},
-          (err, out) => (err != null ? reject(err) : resolve(out))
+        fs.readFile(locate(path), {}, (err, out) =>
+          err != null ? reject(err) : resolve(out)
         )
       )
     },
 
-    getText (path: string): Promise<string> {
+    getText(path: string): Promise<string> {
       return new Promise((resolve, reject) =>
-        fs.readFile(
-          locate(path),
-          'utf8',
-          (err, out) => (err != null ? reject(err) : resolve(out))
+        fs.readFile(locate(path), 'utf8', (err, out) =>
+          err != null ? reject(err) : resolve(out)
         )
       )
     },
 
-    list (path: string = ''): Promise<DiskletListing> {
+    list(path: string = ''): Promise<DiskletListing> {
       const file = normalizePath(path)
       const nativePath = locate(path)
 
@@ -165,12 +156,12 @@ export function makeNodeDisklet (path: string): Disklet {
       })
     },
 
-    setData (path: string, data: ArrayLike<number>): Promise<mixed> {
+    setData(path: string, data: ArrayLike<number>): Promise<mixed> {
       const flowHack: any = data
       return deepWriteFile(locate(path), Buffer.from(flowHack), {})
     },
 
-    setText (path: string, text: string): Promise<mixed> {
+    setText(path: string, text: string): Promise<mixed> {
       return deepWriteFile(locate(path), text, 'utf8')
     }
   }
