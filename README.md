@@ -172,7 +172,7 @@ Creates a new Disklet scoped to a sub-folder of the parent Disklet.
 
 ### `Disklet`
 
-#### `delete(path: string): Promise<mixed>`
+#### `delete(path: string): Promise<unknown>`
 
 Recursively deletes a file or folder (including all contents). Does nothing if the path doesn't exist.
 
@@ -188,10 +188,10 @@ Reads a file's contents as text. The path must exist and be a text file, or this
 
 Lists a folders's contents. Returns an empty listing if the location is missing (`{}`). If the path points to a file instead of a folder, returns the file's normalized path and type (`{ 'a/somefile.txt': 'file' }`).
 
-#### `setData(path: string, data: ArrayLike<number>): Promise<mixed>`
+#### `setData(path: string, data: ArrayLike<number>): Promise<unknown>`
 
 Writes an array of bytes to disk as a file. This will recursively create any folders needed to hold the file.
 
-#### `setText(path: string, text: string): Promise<mixed>`
+#### `setText(path: string, text: string): Promise<unknown>`
 
 Writes a string to disk as a file. This will recursively create any folders needed to hold the file.
