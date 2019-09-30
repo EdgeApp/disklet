@@ -10,7 +10,7 @@ import {
 } from '../../src/index.js'
 import { tests } from '../common.js'
 
-describe('navigate disklet', function () {
+describe('navigate disklet', function() {
   for (const name in tests) {
     it(name, () => {
       const disklet = navigateDisklet(makeMemoryDisklet(), 'blah')
@@ -18,7 +18,7 @@ describe('navigate disklet', function () {
     })
   }
 
-  it('Correctly operates in subfolder', async function () {
+  it('Correctly operates in subfolder', async function() {
     const outer = makeMemoryDisklet()
     const inner = navigateDisklet(outer, 'test')
     await inner.setText('subfolder/file.txt', 'contents')

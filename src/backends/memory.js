@@ -8,9 +8,9 @@ type MemoryStorage = { [key: string]: string | Uint8Array }
 /**
  * Emulates a filesystem in memory.
  */
-export function makeMemoryDisklet (storage: MemoryStorage = {}): Disklet {
+export function makeMemoryDisklet(storage: MemoryStorage = {}): Disklet {
   return {
-    delete (path: string): Promise<mixed> {
+    delete(path: string): Promise<mixed> {
       const file = normalizePath(path)
 
       // Try deleteing as a file:
@@ -24,7 +24,7 @@ export function makeMemoryDisklet (storage: MemoryStorage = {}): Disklet {
       return Promise.resolve()
     },
 
-    getData (path: string): Promise<Uint8Array> {
+    getData(path: string): Promise<Uint8Array> {
       const file = normalizePath(path)
       const item = storage['/' + file]
       if (item == null) {
@@ -36,7 +36,7 @@ export function makeMemoryDisklet (storage: MemoryStorage = {}): Disklet {
       return Promise.resolve(item)
     },
 
-    getText (path: string): Promise<string> {
+    getText(path: string): Promise<string> {
       const file = normalizePath(path)
       const item = storage['/' + file]
       if (item == null) {
@@ -48,7 +48,7 @@ export function makeMemoryDisklet (storage: MemoryStorage = {}): Disklet {
       return Promise.resolve(item)
     },
 
-    async list (path: string = ''): Promise<DiskletListing> {
+    async list(path: string = ''): Promise<DiskletListing> {
       const file = normalizePath(path)
       const out: DiskletListing = {}
 
@@ -68,7 +68,7 @@ export function makeMemoryDisklet (storage: MemoryStorage = {}): Disklet {
       return Promise.resolve(out)
     },
 
-    setData (path: string, data: ArrayLike<number>) {
+    setData(path: string, data: ArrayLike<number>) {
       // We use `any` here becase Flow is too dumb to know that `ArrayLike`
       // is a perfectly acceptable argument to `Uint8Array.from`:
       const flowHack: any = data
@@ -78,7 +78,7 @@ export function makeMemoryDisklet (storage: MemoryStorage = {}): Disklet {
       return Promise.resolve()
     },
 
-    setText (path: string, text: string): Promise<mixed> {
+    setText(path: string, text: string): Promise<mixed> {
       if (typeof text !== 'string') {
         return Promise.reject(new TypeError('setText expects a string'))
       }

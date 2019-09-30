@@ -9,14 +9,14 @@ export type DiskletTests = {
   [name: string]: (disklet: Disklet) => Promise<mixed>
 }
 
-export async function createFiles (disklet: Disklet) {
+export async function createFiles(disklet: Disklet) {
   await disklet.setText('a.txt', 'text a')
   await disklet.setData('a.txt.bin', [1, 2, 3])
   await disklet.setText('./sub//c.txt', 'text c')
   await disklet.setText('./sub/deep/ignore/../d.txt', 'text d')
 }
 
-export async function testDisklet (disklet: Disklet) {
+export async function testDisklet(disklet: Disklet) {
   // Should be harmless:
   await disklet.delete('.')
   expect(await deepList(disklet)).deep.equals({})

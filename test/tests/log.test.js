@@ -6,10 +6,10 @@ import { describe, it } from 'mocha'
 import { logDisklet, makeMemoryDisklet } from '../../src/index.js'
 import { testDisklet } from '../common.js'
 
-describe('logged disklet', function () {
-  it('basic tests', async function () {
+describe('logged disklet', function() {
+  it('basic tests', async function() {
     const log = []
-    function callback (path, operation) {
+    function callback(path, operation) {
       log.push([operation, path])
     }
     const disklet = logDisklet(makeMemoryDisklet(), { callback })
@@ -28,9 +28,9 @@ describe('logged disklet', function () {
     ])
   })
 
-  it('verbose tests', async function () {
+  it('verbose tests', async function() {
     const log = []
-    function callback (path, operation) {
+    function callback(path, operation) {
       log.push([operation, path])
     }
     const disklet = logDisklet(makeMemoryDisklet(), { callback, verbose: true })

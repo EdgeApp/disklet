@@ -4,7 +4,7 @@ import { type ArrayLike } from '../index.js'
 import { mapFiles, mapFolders } from './helpers.js'
 import { type DiskletFile, type DiskletFolder } from './legacy.js'
 
-function removeDuplicates (master, fallback) {
+function removeDuplicates(master, fallback) {
   const blacklist = {}
   const out = []
   master.forEach(item => {
@@ -31,7 +31,7 @@ class UnionFile {
   _fallback: DiskletFile
   _whiteout: DiskletFile
 
-  constructor (
+  constructor(
     master: DiskletFile,
     fallback: DiskletFile,
     whiteout: DiskletFile
@@ -41,14 +41,14 @@ class UnionFile {
     this._whiteout = whiteout
   }
 
-  delete (): Promise<mixed> {
+  delete(): Promise<mixed> {
     return Promise.all([
       this._whiteout.setData([]),
       this._master.delete().catch(e => null)
     ])
   }
 
-  getData (): Promise<Uint8Array> {
+  getData(): Promise<Uint8Array> {
     return this._master.getData().catch(e =>
       this._whiteout.getData().then(
         data => {
@@ -59,7 +59,7 @@ class UnionFile {
     )
   }
 
-  getText (): Promise<string> {
+  getText(): Promise<string> {
     return this._master.getText().catch(e =>
       this._whiteout.getData().then(
         data => {
@@ -70,15 +70,15 @@ class UnionFile {
     )
   }
 
-  setData (data: ArrayLike<number>): Promise<mixed> {
+  setData(data: ArrayLike<number>): Promise<mixed> {
     return this._master.setData(data)
   }
 
-  setText (text: string): Promise<mixed> {
+  setText(text: string): Promise<mixed> {
     return this._master.setText(text)
   }
 
-  getPath (): string {
+  getPath(): string {
     throw new Error('Cannot call getPath on a Union Folder')
   }
 }
@@ -91,19 +91,19 @@ export class UnionFolder {
   _master: DiskletFolder
   _fallback: DiskletFolder
 
-  constructor (master: DiskletFolder, fallback: DiskletFolder) {
+  constructor(master: DiskletFolder, fallback: DiskletFolder) {
     this._master = master
     this._fallback = fallback
   }
 
-  delete (): Promise<mixed> {
+  delete(): Promise<mixed> {
     return Promise.all([
       mapFiles(this, file => file.delete()),
       mapFolders(this, folder => folder.delete())
     ]).then(() => {})
   }
 
-  file (name: string): DiskletFile {
+  file(name: string): DiskletFile {
     return new UnionFile(
       this._master.file(name),
       this._fallback.file(name),
@@ -111,21 +111,21 @@ export class UnionFolder {
     )
   }
 
-  folder (name: string): DiskletFolder {
+  folder(name: string): DiskletFolder {
     return new UnionFolder(
       this._master.folder(name),
       this._fallback.folder(name)
     )
   }
 
-  listFiles (): Promise<Array<string>> {
+  listFiles(): Promise<Array<string>> {
     return Promise.all([
       this._master.listFiles(),
       this._fallback.listFiles()
     ]).then(values => removeDuplicates(values[0], values[1]))
   }
 
-  listFolders (): Promise<Array<string>> {
+  listFolders(): Promise<Array<string>> {
     return Promise.all([
       this._master.listFolders(),
       this._fallback.listFolders()
@@ -133,7 +133,7 @@ export class UnionFolder {
   }
 }
 
-export function makeUnionFolder (
+export function makeUnionFolder(
   master: DiskletFolder,
   fallback: DiskletFolder
 ): DiskletFolder {

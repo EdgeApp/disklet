@@ -5,14 +5,14 @@ import { assert, expect } from 'chai'
 import { type DiskletFolder } from '../../../src/index.js'
 import { expectRejection } from '../../expect-rejection.js'
 
-function checkData (a, b) {
+function checkData(a, b) {
   expect(a.length).equals(b.length)
   for (let i = 0; i < a.length; ++i) {
     expect(a[i]).equals(b[i])
   }
 }
 
-export async function setupFiles (root: DiskletFolder) {
+export async function setupFiles(root: DiskletFolder) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
 
@@ -21,7 +21,7 @@ export async function setupFiles (root: DiskletFolder) {
   await deep.file('c.txt').setText('text c')
 }
 
-function checkFiles (root, expected) {
+function checkFiles(root, expected) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
 
@@ -35,7 +35,7 @@ function checkFiles (root, expected) {
   })
 }
 
-function checkFolders (root, expected) {
+function checkFolders(root, expected) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
 
@@ -49,7 +49,7 @@ function checkFolders (root, expected) {
   })
 }
 
-export async function testFolder (root: DiskletFolder) {
+export async function testFolder(root: DiskletFolder) {
   const sub = root.folder('sub')
   const deep = sub.folder('deep')
   const empty = { root: [], sub: [], deep: [] }

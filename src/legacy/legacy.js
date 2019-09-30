@@ -49,21 +49,21 @@ export type DiskletFolder = {
 
 // downgrade -----------------------------------------------------------------
 
-export function makeLocalStorageFolder (
+export function makeLocalStorageFolder(
   storage: Storage,
   opts?: { prefix?: string }
 ): DiskletFolder {
   return downgradeDisklet(makeLocalStorageDisklet(storage, opts))
 }
 
-export function makeMemoryFolder (storage?: Object): DiskletFolder {
+export function makeMemoryFolder(storage?: Object): DiskletFolder {
   return downgradeDisklet(makeMemoryDisklet(storage))
 }
 
-export function makeNodeFolder (path: string): DiskletFolder {
+export function makeNodeFolder(path: string): DiskletFolder {
   return downgradeDisklet(makeNodeDisklet(path))
 }
 
-export function makeReactNativeFolder (): DiskletFolder {
+export function makeReactNativeFolder(): DiskletFolder {
   return downgradeDisklet(makeReactNativeDisklet())
 }
