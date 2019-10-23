@@ -1,5 +1,10 @@
 # Disklet
 
+## 0.4.3 (2019-10-23)
+
+- Fix the TypeScript definitions not to conflict with React Native.
+- Convert the internal type system from Flow to TypeScript.
+
 ## 0.4.2 (2019-09-17)
 
 - Upgrade to rfc4648 ^1.0.0.
