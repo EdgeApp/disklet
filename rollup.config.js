@@ -1,12 +1,15 @@
-import alias from 'rollup-plugin-alias'
 import babel from 'rollup-plugin-babel'
 import filesize from 'rollup-plugin-filesize'
 import flowEntry from 'rollup-plugin-flow-entry'
+import resolve from 'rollup-plugin-node-resolve'
 
 import packageJson from './package.json'
 
+const extensions = ['.ts']
 const babelOpts = {
   babelrc: false,
+  extensions,
+  include: ['src/**/*'],
   presets: [
     [
       '@babel/preset-env',
@@ -15,13 +18,15 @@ const babelOpts = {
         loose: true
       }
     ],
-    '@babel/preset-flow'
+    '@babel/preset-typescript'
   ],
   plugins: [
     ['@babel/plugin-transform-for-of', { assumeArray: true }],
     '@babel/plugin-transform-object-assign'
   ]
 }
+const resolveOpts = { extensions }
+const flowOpts = { types: 'src/index.flow.js' }
 
 const external = [
   'fs',
@@ -35,53 +40,32 @@ export default [
   // Normal build:
   {
     external,
-    input: 'src/index.js',
+    input: 'src/index.ts',
     output: [
       { file: packageJson.main, format: 'cjs', sourcemap: true },
       { file: packageJson.module, format: 'es', sourcemap: true }
     ],
     plugins: [
-      alias({
-        entries: [
-          { find: './react-native.js', replacement: 'src/backends/dummy.js' }
-        ]
-      }),
+      resolve(resolveOpts),
       babel(babelOpts),
-      flowEntry(),
+      flowEntry(flowOpts),
       filesize()
     ]
   },
   // Browser build:
   {
     external,
-    input: 'src/index.js',
+    input: 'src/browser.ts',
     output: [{ file: packageJson.browser, format: 'cjs', sourcemap: true }],
-    plugins: [
-      alias({
-        entries: [
-          { find: './node.js', replacement: 'src/backends/dummy.js' },
-          { find: './react-native.js', replacement: 'src/backends/dummy.js' }
-        ]
-      }),
-      babel(babelOpts),
-      flowEntry(),
-      filesize()
-    ]
+    plugins: [resolve(resolveOpts), babel(babelOpts), filesize()]
   },
   // React Native build:
   {
     external,
-    input: 'src/index.js',
+    input: 'src/react-native.ts',
     output: [
       { file: packageJson['react-native'], format: 'cjs', sourcemap: true }
     ],
-    plugins: [
-      alias({
-        entries: [{ find: './node.js', replacement: 'src/backends/dummy.js' }]
-      }),
-      babel(babelOpts),
-      flowEntry(),
-      filesize()
-    ]
+    plugins: [resolve(resolveOpts), babel(babelOpts), filesize()]
   }
 ]

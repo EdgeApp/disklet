@@ -1,8 +1,8 @@
 # Build output:
-build/
 lib/
 
 # Package managers:
+*.tgz
 node_modules/
 npm-debug.log
 package-lock.json
@@ -27,8 +27,9 @@ yarn-error.log
 *.perspectivev3
 *.xccheckout
 *.xcuserstate
-DerivedData
-xcuserdata
+build/
+DerivedData/
+xcuserdata/
 
 # Android/IntelliJ
 .gradle
