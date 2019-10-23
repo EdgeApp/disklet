@@ -1,5 +1,8 @@
 # Disklet
 
+[![Build Status](https://travis-ci.org/EdgeApp/disklet.svg?branch=master)](https://travis-ci.org/EdgeApp/disklet)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
 > A tiny, composable filesystem API.
 
 The Disklet library provides a simple way to read and write files on a variety of platforms:
