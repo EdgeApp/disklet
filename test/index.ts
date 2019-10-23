@@ -1,6 +1,0 @@
-import './tests/backends.test'
-import './tests/paths.test'
-import './tests/legacy/legacy.test'
-import './tests/log.test'
-import './tests/merge.test'
-import './tests/navigate.test'

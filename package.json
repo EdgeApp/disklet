@@ -37,7 +37,7 @@
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts .",
     "precommit": "lint-staged && npm test && npm run build",
     "prepare": "npm run build",
-    "test": "mocha -r sucrase/register test/index.ts"
+    "test": "mocha -r sucrase/register test/**/*.test.ts"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint"
