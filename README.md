@@ -126,7 +126,7 @@ You can use the `navigateDisklet` function to create a new Disklet instance lock
 
 Creates a Disklet that stores its data in the browser's localStorage.
 
-A file's paths becomes its localStorage key, and its contents become a localStorage string value. If a `prefix` is provided via the `opts` parameter, then all localStorage keys will begin with the provided string. Binary data is transformed to base64, since localStorage can only handle strings.
+A file's path becomes its localStorage key, and its contents become a localStorage string value. If a `prefix` is provided via the `opts` parameter, then all localStorage keys will begin with the provided string. Binary data is transformed to base64, since localStorage can only handle strings.
 
 #### `makeMemoryFolder(storage = {}): Disklet`
 
@@ -142,7 +142,7 @@ Binary data is written as-is, while text is stored in utf-8.
 
 #### `makeReactNativeDisklet()`
 
-Creates a Disklet object with access to the phone's file system, starting at the app's documents directory. Requires [react-native-fs](https://www.npmjs.com/package/react-native-fs) to be installed & linked in the project as well.
+Creates a Disklet object with access to the phone's file system, starting at the app's document directory.
 
 ### Helpers
 
