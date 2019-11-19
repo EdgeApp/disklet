@@ -1,5 +1,10 @@
 # Disklet
 
+## 0.4.4 (2019-11-19)
+
+- Fix a race condition when writing files on Node.js.
+- Improve the readme file.
+
 ## 0.4.3 (2019-10-23)
 
 - Fix the TypeScript definitions not to conflict with React Native.
