@@ -34,16 +34,58 @@ function unlink(path: string): Promise<unknown> {
   )
 }
 
+class Queue {
+  private _active: boolean
+
+  callBackList: Array<(onEnd: () => void) => void>
+  onEmpty?: () => void
+
+  constructor() {
+    this.callBackList = []
+    this._active = false
+  }
+
+  next(): void {
+    if (this._active) return
+    const fn = this.callBackList.shift()
+    if (fn == null) {
+      if (this.onEmpty != null) {
+        this.onEmpty()
+        this.onEmpty = undefined
+      }
+      return
+    }
+    this._active = true
+    fn(() => {
+      this._active = false
+      process.nextTick(() => this.next())
+    })
+  }
+}
+
+const writeFilePathQueue: { [id: string]: Queue } = {}
+
 function writeFile(
   path: string,
   data: any,
   opts: fs.WriteFileOptions
 ): Promise<unknown> {
-  return new Promise((resolve, reject) =>
-    fs.writeFile(path, data, opts, err =>
-      err != null ? reject(err) : resolve()
-    )
-  )
+  return new Promise((resolve, reject) => {
+    const currentTask = (onEnd: () => void): void => {
+      fs.writeFile(path, data, opts, err => {
+        onEnd()
+        err != null ? reject(err) : resolve()
+      })
+    }
+    if (writeFilePathQueue[path] == null) {
+      writeFilePathQueue[path] = new Queue()
+      writeFilePathQueue[path].onEmpty = () => {
+        delete writeFilePathQueue[path]
+      }
+    }
+    writeFilePathQueue[path].callBackList.push(currentTask)
+    writeFilePathQueue[path].next()
+  })
 }
 
 // Helpers: -----------------------------------------------------------------
