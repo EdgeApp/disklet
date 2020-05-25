@@ -26,12 +26,12 @@ export function makeTempDir(): Promise<string> {
   })
 }
 
-describe('memory folder', function() {
-  it('basic tests', function() {
+describe('memory folder', function () {
+  it('basic tests', function () {
     return testFolder(makeMemoryFolder())
   })
 
-  it('load existing data', function() {
+  it('load existing data', function () {
     const storage = { '/a/b.txt': 'Hello' }
 
     return makeMemoryFolder(storage)
@@ -42,12 +42,12 @@ describe('memory folder', function() {
   })
 })
 
-describe('localStorage folder', function() {
-  it('basic tests', function() {
+describe('localStorage folder', function () {
+  it('basic tests', function () {
     return testFolder(makeLocalStorageFolder(new FakeStorage()))
   })
 
-  it('load existing data', function() {
+  it('load existing data', function () {
     const storage = new FakeStorage({ 'file://my-prefix/a/b.txt': 'Hello' })
 
     return makeLocalStorageFolder(storage, { prefix: 'file://my-prefix' })
@@ -58,8 +58,8 @@ describe('localStorage folder', function() {
   })
 })
 
-describe('logged folder', function() {
-  it('basic tests', function() {
+describe('logged folder', function () {
+  it('basic tests', function () {
     const log: Array<[string, string]> = []
     function callback(path: string, operation: string): void {
       log.push([operation, path])
@@ -78,7 +78,7 @@ describe('logged folder', function() {
     )
   })
 
-  it('verbose tests', function() {
+  it('verbose tests', function () {
     const log: Array<[string, string]> = []
     function callback(path: string, operation: string): void {
       log.push([operation, path])
@@ -124,21 +124,21 @@ describe('logged folder', function() {
   })
 })
 
-describe('node.js folder', function() {
-  it('basic tests', function() {
+describe('node.js folder', function () {
+  it('basic tests', function () {
     return makeTempDir().then(path => testFolder(makeNodeFolder(path)))
   })
 })
 
-describe('union folder', function() {
-  it('basic tests', function() {
+describe('union folder', function () {
+  it('basic tests', function () {
     const master = makeMemoryFolder()
     const fallback = makeMemoryFolder()
 
     return testFolder(makeUnionFolder(master, fallback))
   })
 
-  it('basic tests with fallback data', function() {
+  it('basic tests with fallback data', function () {
     const master = makeMemoryFolder()
     const fallback = makeMemoryFolder()
 
@@ -148,8 +148,8 @@ describe('union folder', function() {
   })
 })
 
-describe('helpers', function() {
-  it('navigate to file', function() {
+describe('helpers', function () {
+  it('navigate to file', function () {
     const root = makeMemoryFolder()
 
     return setupFiles(root)
@@ -165,7 +165,7 @@ describe('helpers', function() {
       )
   })
 
-  it('navigate to folder', function() {
+  it('navigate to folder', function () {
     const root = makeMemoryFolder()
 
     return setupFiles(root)
@@ -181,7 +181,7 @@ describe('helpers', function() {
       )
   })
 
-  it('map files', function() {
+  it('map files', function () {
     const root = makeMemoryFolder()
     let count = 0
 
@@ -202,7 +202,7 @@ describe('helpers', function() {
       })
   })
 
-  it('map all files', function() {
+  it('map all files', function () {
     const root = makeMemoryFolder()
     let count = 0
 

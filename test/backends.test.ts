@@ -11,15 +11,15 @@ import {
 import { tests } from './common'
 import { FakeStorage } from './fake-storage'
 
-describe('localStorage disklet', function() {
+describe('localStorage disklet', function () {
   for (const name in tests) {
-    it(name, async function() {
+    it(name, async function () {
       const disklet = makeLocalStorageDisklet(new FakeStorage())
       await tests[name](disklet)
     })
   }
 
-  it('load existing data', async function() {
+  it('load existing data', async function () {
     const storage = new FakeStorage({ 'file://my-prefix/a/b.txt': 'Hello' })
     const disklet = makeLocalStorageDisklet(storage, {
       prefix: 'file://my-prefix'
@@ -29,15 +29,15 @@ describe('localStorage disklet', function() {
   })
 })
 
-describe('memory disklet', function() {
+describe('memory disklet', function () {
   for (const name in tests) {
-    it(name, async function() {
+    it(name, async function () {
       const disklet = makeMemoryDisklet()
       await tests[name](disklet)
     })
   }
 
-  it('load existing data', async function() {
+  it('load existing data', async function () {
     const storage = { '/a/b.txt': 'Hello' }
     const disklet = makeMemoryDisklet(storage)
 
@@ -45,9 +45,9 @@ describe('memory disklet', function() {
   })
 })
 
-describe('node.js disklet', function() {
+describe('node.js disklet', function () {
   for (const name in tests) {
-    it(name, async function() {
+    it(name, async function () {
       const path: string = await new Promise((resolve, reject) => {
         tmp.dir({}, (err, path) => (err != null ? reject(err) : resolve(path)))
       })

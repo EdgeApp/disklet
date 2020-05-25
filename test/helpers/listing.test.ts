@@ -8,8 +8,8 @@ import {
   makeMemoryDisklet
 } from '../../src/index'
 
-describe('listing helpers', function() {
-  it('deepList handles nested folders', async function() {
+describe('listing helpers', function () {
+  it('deepList handles nested folders', async function () {
     const disklet = makeMemoryDisklet()
     await disklet.setText('a/b/c/file.txt', 'hello')
 
@@ -21,7 +21,7 @@ describe('listing helpers', function() {
     })
   })
 
-  it('justFiles returns a file array', async function() {
+  it('justFiles returns a file array', async function () {
     const disklet = makeMemoryDisklet()
     await disklet.setText('a/b/c/file.txt', 'hello')
 
@@ -30,7 +30,7 @@ describe('listing helpers', function() {
     ])
   })
 
-  it('justFolders returns a folder array', async function() {
+  it('justFolders returns a folder array', async function () {
     const disklet = makeMemoryDisklet()
     await disklet.setText('a/b/c/file.txt', 'hello')
 

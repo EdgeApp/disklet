@@ -4,8 +4,8 @@ import { describe, it } from 'mocha'
 import { logDisklet, makeMemoryDisklet } from '../../src/index'
 import { testDisklet } from '../common'
 
-describe('logged disklet', function() {
-  it('basic tests', async function() {
+describe('logged disklet', function () {
+  it('basic tests', async function () {
     const log: Array<[string, string]> = []
     function callback(path: string, operation: string): void {
       log.push([operation, path])
@@ -26,7 +26,7 @@ describe('logged disklet', function() {
     ])
   })
 
-  it('verbose tests', async function() {
+  it('verbose tests', async function () {
     const log: Array<[string, string]> = []
     function callback(path: string, operation: string): void {
       log.push([operation, path])

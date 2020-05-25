@@ -97,7 +97,7 @@ export class UnionFolder {
     return Promise.all([
       mapFiles(this, file => file.delete()),
       mapFolders(this, folder => folder.delete())
-    ]).then(() => {})
+    ]).then(() => undefined)
   }
 
   file(name: string): DiskletFile {
