@@ -1,5 +1,9 @@
 # Disklet
 
+## 0.4.5 (2020-05-25)
+
+- Add `justFiles` and `justFolders` helper functions.
+
 ## 0.4.4 (2019-11-19)
 
 - Fix a race condition when writing files on Node.js.
