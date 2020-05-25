@@ -63,17 +63,21 @@ declare export function makeMemoryDisklet(storage?: MemoryStorage): Disklet
 declare export function makeNodeDisklet(path: string): Disklet
 declare export function makeReactNativeDisklet(): Disklet
 
-// Helpers:
-declare export function deepList(
-  disklet: Disklet,
-  path?: string
-): Promise<DiskletListing>
+// Wrappers:
 declare export function logDisklet(disklet: Disklet, opts?: LogOptions): Disklet
 declare export function mergeDisklets(
   master: Disklet,
   fallback: Disklet
 ): Disklet
 declare export function navigateDisklet(disklet: Disklet, path: string): Disklet
+
+// Listing helpers:
+declare export function deepList(
+  disklet: Disklet,
+  path?: string
+): Promise<DiskletListing>
+declare export function justFiles(listing: DiskletListing): string[]
+declare export function justFolders(listing: DiskletListing): string[]
 
 // legacy API ----------------------------------------------------------------
 

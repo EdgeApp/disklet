@@ -102,7 +102,11 @@ These functions combine or wrap `Disklet` instances in various ways:
 * `mergeDisklets`
 * `navigateDisklet`
 
-Finally, there is a `deepList` helper function that can list folders recursively.
+Finally, the library contains some standalone functions to help with folder listings:
+
+* `deepList`
+* `justFiles`
+* `justFolders`
 
 ### Text vs. Data
 
@@ -149,6 +153,14 @@ Creates a Disklet object with access to the phone's file system, starting at the
 #### `deepList(disklet: Disklet, path: string = ''): Promise<DiskletListing>`
 
 Recursively lists a folder.
+
+#### `justFiles(listing: DiskletListing): string[]`
+
+This function will return an array with just the file names in a listing. You can use it like `justFiles(await disklet.list())` or `justFiles(await deepList(disklet))`.
+
+#### `justFolders(listing: DiskletListing): string[]`
+
+Like `justFiles`, but for folders, this will return an array with just the paths to subfolders.
 
 #### `logDisklet(disklet: Disklet, opts = {}): Disklet`
 

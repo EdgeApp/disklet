@@ -16,3 +16,17 @@ export function deepList(
     ).then(children => Object.assign(list, ...children))
   )
 }
+
+/**
+ * Filters a listing down to just an array of file paths.
+ */
+export function justFiles(listing: DiskletListing): string[] {
+  return Object.keys(listing).filter(path => listing[path] === 'file')
+}
+
+/**
+ * Filters a listing down to just an array of folder paths.
+ */
+export function justFolders(listing: DiskletListing): string[] {
+  return Object.keys(listing).filter(path => listing[path] === 'folder')
+}
