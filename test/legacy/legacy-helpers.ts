@@ -1,8 +1,8 @@
 import { assert, expect } from 'chai'
 
-import { DiskletFolder } from '../../../src/index'
-import { sortStrings } from '../../common'
-import { expectRejection } from '../../expect-rejection'
+import { DiskletFolder } from '../../src/index'
+import { sortStrings } from '../common'
+import { expectRejection } from '../expect-rejection'
 
 function checkData<T>(a: ArrayLike<T>, b: ArrayLike<T>): void {
   expect(a.length).equals(b.length)

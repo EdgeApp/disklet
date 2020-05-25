@@ -7,9 +7,9 @@ import {
   makeLocalStorageDisklet,
   makeMemoryDisklet,
   makeNodeDisklet
-} from '../../src/index'
-import { tests } from '../common'
-import { FakeStorage } from '../fake-storage'
+} from '../src/index'
+import { tests } from './common'
+import { FakeStorage } from './fake-storage'
 
 describe('localStorage disklet', function() {
   for (const name in tests) {

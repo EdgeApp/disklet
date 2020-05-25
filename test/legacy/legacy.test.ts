@@ -13,9 +13,9 @@ import {
   makeUnionFolder,
   mapAllFiles,
   mapFiles
-} from '../../../src/index'
-import { sortStrings } from '../../common'
-import { FakeStorage } from '../../fake-storage'
+} from '../../src/index'
+import { sortStrings } from '../common'
+import { FakeStorage } from '../fake-storage'
 import { setupFiles, testFolder } from './legacy-helpers'
 
 tmp.setGracefulCleanup()
