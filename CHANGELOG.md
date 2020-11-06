@@ -1,5 +1,9 @@
 # Disklet
 
+## 0.4.6 (2020-10-06)
+
+- Stop using deprecated Gradle features for React Native Android.
+
 ## 0.4.5 (2020-05-25)
 
 - Add `justFiles` and `justFolders` helper functions.
