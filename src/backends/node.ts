@@ -8,7 +8,7 @@ import { Disklet, DiskletListing } from '../types'
 
 // Promise versions of node.js file operations: -----------------------------
 
-function mkdir(path: string): Promise<unknown> {
+function mkdir(path: string): Promise<void> {
   return new Promise((resolve, reject) =>
     fs.mkdir(path, undefined, err =>
       err != null && err.code !== 'EEXIST' ? reject(err) : resolve()
@@ -16,7 +16,7 @@ function mkdir(path: string): Promise<unknown> {
   )
 }
 
-function rmdir(path: string): Promise<unknown> {
+function rmdir(path: string): Promise<void> {
   return new Promise((resolve, reject) =>
     fs.rmdir(path, err => (err != null ? reject(err) : resolve()))
   )
@@ -28,7 +28,7 @@ function readdir(path: string): Promise<string[]> {
   )
 }
 
-function unlink(path: string): Promise<unknown> {
+function unlink(path: string): Promise<void> {
   return new Promise((resolve, reject) =>
     fs.unlink(path, err => (err != null ? reject(err) : resolve()))
   )
@@ -69,7 +69,7 @@ function writeFile(
   path: string,
   data: any,
   opts: fs.WriteFileOptions
-): Promise<unknown> {
+): Promise<void> {
   return new Promise((resolve, reject) => {
     const currentTask = (onEnd: () => void): void => {
       fs.writeFile(path, data, opts, err => {

@@ -55,7 +55,7 @@ describe('node.js disklet', function () {
         await tests[name](disklet)
       } finally {
         await new Promise((resolve, reject) =>
-          rimraf(path, err => (err != null ? reject(err) : resolve()))
+          rimraf(path, err => (err != null ? reject(err) : resolve(undefined)))
         )
       }
     })
