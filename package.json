@@ -13,6 +13,10 @@
     "William Swanson <william@airbitz.co>",
     "Paul Puey <paul@airbitz.co>"
   ],
+  "main": "lib/disklet.cjs.js",
+  "module": "lib/disklet.js",
+  "browser": "lib/disklet.web.js",
+  "types": "lib/src/index.d.ts",
   "files": [
     "android/build.gradle",
     "android/src",
@@ -27,10 +31,6 @@
     "README.md",
     "src"
   ],
-  "main": "lib/disklet.cjs.js",
-  "module": "lib/disklet.js",
-  "browser": "lib/disklet.web.js",
-  "types": "lib/src/index.d.ts",
   "scripts": {
     "fix": "npm run lint -- --fix",
     "lint": "eslint .",
