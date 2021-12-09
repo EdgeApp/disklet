@@ -1,12 +1,8 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
-import {
-  deepList,
-  justFiles,
-  justFolders,
-  makeMemoryDisklet
-} from '../../src/index'
+import { makeMemoryDisklet } from '../../src/backends/memory'
+import { deepList, justFiles, justFolders } from '../../src/helpers/listing'
 
 describe('listing helpers', function () {
   it('deepList handles nested folders', async function () {

@@ -3,11 +3,9 @@ import { describe, it } from 'mocha'
 import rimraf from 'rimraf'
 import tmp from 'tmp'
 
-import {
-  makeLocalStorageDisklet,
-  makeMemoryDisklet,
-  makeNodeDisklet
-} from '../src/index'
+import { makeLocalStorageDisklet } from '../src/backends/local-storage'
+import { makeMemoryDisklet } from '../src/backends/memory'
+import { makeNodeDisklet } from '../src/backends/node'
 import { tests } from './common'
 import { FakeStorage } from './fake-storage'
 

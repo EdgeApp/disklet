@@ -1,4 +1,4 @@
-import { Disklet } from '../index'
+import { Disklet } from '../types'
 import { DiskletFile, DiskletFolder } from './legacy'
 
 class File {

@@ -1,7 +1,7 @@
 import { base64 } from 'rfc4648'
 
 import { folderizePath, normalizePath } from '../helpers/paths'
-import { Disklet, DiskletListing } from '../index'
+import { Disklet, DiskletListing } from '../types'
 
 // The Typescript DOM library isn't available on React Native,
 // so work around that:

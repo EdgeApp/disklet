@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 
-import { deepList, Disklet } from '../src/index'
+import { deepList } from '../src/helpers/listing'
+import { Disklet } from '../src/types'
 import { expectRejection } from './expect-rejection'
 
 export interface DiskletTests {

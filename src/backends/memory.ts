@@ -1,5 +1,5 @@
 import { folderizePath, normalizePath } from '../helpers/paths'
-import { Disklet, DiskletListing } from '../index'
+import { Disklet, DiskletListing } from '../types'
 
 export interface MemoryStorage {
   [key: string]: string | Uint8Array

@@ -1,4 +1,4 @@
-import { Disklet } from '../index'
+import { Disklet } from '../types'
 
 export function makeNodeDisklet(path: string): Disklet {
   throw new Error('makeNodeDisklet is not available on this platform')

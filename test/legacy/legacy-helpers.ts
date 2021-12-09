@@ -1,6 +1,6 @@
 import { assert, expect } from 'chai'
 
-import { DiskletFolder } from '../../src/index'
+import { DiskletFolder } from '../../src/legacy/legacy'
 import { sortStrings } from '../common'
 import { expectRejection } from '../expect-rejection'
 

@@ -1,4 +1,4 @@
-import { Disklet, DiskletListing } from '../index'
+import { Disklet, DiskletListing } from '../types'
 import { folderizePath, normalizePath } from './paths'
 
 export function navigateDisklet(disklet: Disklet, path: string): Disklet {

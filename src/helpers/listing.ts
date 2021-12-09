@@ -1,4 +1,4 @@
-import { Disklet, DiskletListing } from '../index'
+import { Disklet, DiskletListing } from '../types'
 
 /**
  * Recursively lists a folder.
