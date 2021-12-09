@@ -65,7 +65,7 @@ export function makeMemoryDisklet(storage: MemoryStorage = {}): Disklet {
         else out[key.slice(1, slash)] = 'folder'
       }
 
-      return Promise.resolve(out)
+      return out
     },
 
     setData(path: string, data: ArrayLike<number>) {

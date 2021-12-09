@@ -190,7 +190,7 @@ describe('helpers', function () {
         mapFiles(root, (file, name, folder) => {
           ++count
           assert.equal(folder, root)
-          return /\.txt/.test(name)
+          return /\.txt$/.test(name)
             ? file.getText()
             : file.getData().then(data => base16.stringify(data))
         })
@@ -210,7 +210,7 @@ describe('helpers', function () {
       .then(() =>
         mapAllFiles(root, (file, name, folder) => {
           ++count
-          return /\.txt/.test(name)
+          return /\.txt$/.test(name)
             ? file.getText()
             : file.getData().then(data => base16.stringify(data))
         })
