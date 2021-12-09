@@ -2,7 +2,8 @@
   "extends": [
     "standard-kit/prettier",
     "standard-kit/prettier/flow",
-    "standard-kit/prettier/typescript"
+    "standard-kit/prettier/typescript",
+    "standard-kit/prettier/react"
   ],
   "parserOptions": {
     "project": "tsconfig.json"
