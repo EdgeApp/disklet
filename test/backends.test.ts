@@ -3,11 +3,9 @@ import { describe, it } from 'mocha'
 import rimraf from 'rimraf'
 import tmp from 'tmp'
 
-import {
-  makeLocalStorageDisklet,
-  makeMemoryDisklet,
-  makeNodeDisklet
-} from '../src/index'
+import { makeLocalStorageDisklet } from '../src/backends/local-storage'
+import { makeMemoryDisklet } from '../src/backends/memory'
+import { makeNodeDisklet } from '../src/backends/node'
 import { tests } from './common'
 import { FakeStorage } from './fake-storage'
 
@@ -57,7 +55,7 @@ describe('node.js disklet', function () {
         await tests[name](disklet)
       } finally {
         await new Promise((resolve, reject) =>
-          rimraf(path, err => (err != null ? reject(err) : resolve()))
+          rimraf(path, err => (err != null ? reject(err) : resolve(undefined)))
         )
       }
     })

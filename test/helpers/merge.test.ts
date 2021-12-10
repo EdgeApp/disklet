@@ -1,6 +1,7 @@
 import { describe, it } from 'mocha'
 
-import { makeMemoryDisklet, mergeDisklets } from '../../src/index'
+import { makeMemoryDisklet } from '../../src/backends/memory'
+import { mergeDisklets } from '../../src/helpers/merge'
 import { createFiles, testDisklet } from '../common'
 
 describe('merge disklets', function () {

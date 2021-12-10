@@ -1,4 +1,4 @@
-import { Disklet, DiskletListing } from '../index'
+import { Disklet, DiskletListing } from '../types'
 import { normalizePath } from './paths'
 
 type LogOperation =

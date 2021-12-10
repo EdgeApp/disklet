@@ -1,12 +1,13 @@
-import babel from 'rollup-plugin-babel'
+import babel from '@rollup/plugin-babel'
+import resolve from '@rollup/plugin-node-resolve'
 import filesize from 'rollup-plugin-filesize'
 import flowEntry from 'rollup-plugin-flow-entry'
-import resolve from 'rollup-plugin-node-resolve'
 
 import packageJson from './package.json'
 
 const extensions = ['.ts']
 const babelOpts = {
+  babelHelpers: 'bundled',
   babelrc: false,
   extensions,
   include: ['src/**/*'],

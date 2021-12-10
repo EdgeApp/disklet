@@ -1,7 +1,8 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
-import { logDisklet, makeMemoryDisklet } from '../../src/index'
+import { makeMemoryDisklet } from '../../src/backends/memory'
+import { logDisklet } from '../../src/helpers/log'
 import { testDisklet } from '../common'
 
 describe('logged disklet', function () {

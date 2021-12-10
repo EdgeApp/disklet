@@ -1,4 +1,4 @@
-import { Disklet, DiskletListing } from '../index'
+import { Disklet, DiskletListing } from '../types'
 
 export function mergeDisklets(master: Disklet, fallback: Disklet): Disklet {
   return {
@@ -15,11 +15,8 @@ export function mergeDisklets(master: Disklet, fallback: Disklet): Disklet {
     },
 
     list(path?: string): Promise<DiskletListing> {
-      return Promise.all([
-        master.list(path),
-        fallback.list(path)
-      ]).then(([masterList, fallbackList]) =>
-        Object.assign(fallbackList, masterList)
+      return Promise.all([master.list(path), fallback.list(path)]).then(
+        ([masterList, fallbackList]) => Object.assign(fallbackList, masterList)
       )
     },
 

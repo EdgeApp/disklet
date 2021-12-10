@@ -1,7 +1,9 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
-import { deepList, makeMemoryDisklet, navigateDisklet } from '../../src/index'
+import { makeMemoryDisklet } from '../../src/backends/memory'
+import { deepList } from '../../src/helpers/listing'
+import { navigateDisklet } from '../../src/helpers/navigate'
 import { tests } from '../common'
 
 describe('navigate disklet', function () {

@@ -1,5 +1,5 @@
 import { folderizePath, normalizePath } from '../helpers/paths'
-import { Disklet, DiskletListing } from '../index'
+import { Disklet, DiskletListing } from '../types'
 
 export interface MemoryStorage {
   [key: string]: string | Uint8Array
@@ -65,7 +65,7 @@ export function makeMemoryDisklet(storage: MemoryStorage = {}): Disklet {
         else out[key.slice(1, slash)] = 'folder'
       }
 
-      return Promise.resolve(out)
+      return out
     },
 
     setData(path: string, data: ArrayLike<number>) {

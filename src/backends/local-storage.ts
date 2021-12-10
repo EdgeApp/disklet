@@ -1,16 +1,16 @@
 import { base64 } from 'rfc4648'
 
 import { folderizePath, normalizePath } from '../helpers/paths'
-import { Disklet, DiskletListing } from '../index'
+import { Disklet, DiskletListing } from '../types'
 
 // The Typescript DOM library isn't available on React Native,
 // so work around that:
 export interface WebStorage {
   readonly length: number
-  getItem(key: string): string | null
-  key(index: number): string | null
-  removeItem(key: string): void
-  setItem(key: string, value: string): void
+  getItem: (key: string) => string | null
+  key: (index: number) => string | null
+  removeItem: (key: string) => void
+  setItem: (key: string, value: string) => void
 }
 declare const window: { localStorage: WebStorage }
 
@@ -82,7 +82,7 @@ export function makeLocalStorageDisklet(
         else out[key.slice(prefix.length, slash)] = 'folder'
       }
 
-      return Promise.resolve(out)
+      return out
     },
 
     setData(path: string, data: ArrayLike<number>) {
