@@ -1,5 +1,9 @@
 # Disklet
 
+## 0.5.1 (2021-12-29)
+
+- Fix the React Native build to not depend on any Node-only modules.
+
 ## 0.5.0 (2021-03-08)
 
 - Add a `dumpData` helper function to grab all the data stored under a Disklet object.
