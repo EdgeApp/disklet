@@ -11,16 +11,13 @@ export function dumpData(disklet: Disklet): Promise<DiskletDump> {
     return Promise.all(
       Object.keys(listing).map(path => {
         const type = listing[path]
-        if (type === 'folder') {
-          return dumpData(navigateDisklet(disklet, path)).then(folderData => {
-            json[path] = folderData
-          })
-        }
-        if (type === 'file') {
-          return disklet.getText(path).then(data => {
-            json[path] = JSON.parse(data)
-          })
-        }
+        return type === 'folder'
+          ? dumpData(navigateDisklet(disklet, path)).then(folderData => {
+              json[path] = folderData
+            })
+          : disklet.getText(path).then(data => {
+              json[path] = JSON.parse(data)
+            })
       })
     ).then(() => json)
   })
