@@ -1,3 +1,4 @@
+export { dumpData } from './dump'
 export { deepList, justFiles, justFolders } from './listing'
 export { logDisklet } from './log'
 export { mergeDisklets } from './merge'
