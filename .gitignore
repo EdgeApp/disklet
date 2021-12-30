@@ -1,5 +1,6 @@
 # Build output:
-lib/
+/android/*.jar
+/lib/
 
 # Package managers:
 *.tgz

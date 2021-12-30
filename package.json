@@ -33,6 +33,7 @@
   ],
   "scripts": {
     "fix": "eslint . --fix",
+    "fix-android": "(cd android; ./format-java.sh)",
     "lint": "eslint .",
     "precommit": "lint-staged && npm test && npm run prepare",
     "prepare": "husky install && rimraf lib && rollup -c && tsc",
