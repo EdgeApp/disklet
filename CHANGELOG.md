@@ -1,5 +1,9 @@
 # Disklet
 
+## 0.5.2 (2022-02-02)
+
+- fix: Update the gradle build file to avoid JCenter.
+
 ## 0.5.1 (2021-12-29)
 
 - Fix the React Native build to not depend on any Node-only modules.
