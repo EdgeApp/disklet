@@ -4,7 +4,7 @@
   cd $(dirname $0)
 
   if [ ! -d ./ReactNativeDiskletTest/node_modules/disklet/ ]; then
-    echo 'Please run yarn inside the ReactNativeDiskletTest folder first'
+    echo 'Please run npm run inside the ReactNativeDiskletTest folder first'
     exit 1
   fi
 
