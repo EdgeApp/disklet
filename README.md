@@ -57,7 +57,7 @@ Disklet requires a `Promise` implementation, but is plain ES5 otherwise. The lib
 
 ## React Native
 
-To use this library on React Native, simply run `react-native link disklet` after installing via yarn / NPM.
+To use this library on React Native, simply run `react-native link disklet` after installing via npm install / NPM.
 
 ## Legacy API
 
