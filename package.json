@@ -82,5 +82,8 @@
     "tmp": "^0.2.1",
     "typescript": "^3.9.3"
   },
-  "react-native": "lib/disklet.rn.js"
+  "react-native": "lib/disklet.rn.js",
+  "overrides": {
+    "get-func-name": "2.0.2"
+  }
 }
