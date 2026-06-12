@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- changed: Convert the build tooling from Yarn to npm.
+- security: Upgrade dependencies per Socket security recommendations.
+
 ## 0.5.2 (2022-02-02)
 
 - fix: Update the gradle build file to avoid JCenter.
